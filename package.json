@@ -9,6 +9,7 @@
   "author": "Alex Butterworth",
   "license": "ISC",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.1",
     "bootstrap": "^3.3.7",
     "connect-flash": "^0.1.1",

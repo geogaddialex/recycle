@@ -1,5 +1,5 @@
-var User = require('mongoose').model('User'),
-    passport = require('passport');
+var User = require('mongoose').model('User');
+var passport = require('passport');
 
 exports.create = function(req, res, next) {
     var user = new User(req.body);
