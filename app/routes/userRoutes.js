@@ -1,4 +1,4 @@
-var users = require('../../app/controllers/users.server.controller'),
+var users = require('../../app/controllers/userController'),
 	passport = require('passport');
 
 module.exports = function(app) {
@@ -9,8 +9,8 @@ module.exports = function(app) {
     app.param('userId', users.userByID);
 
     app.route('/register')
-        .get( users.renderRegister)
-        .post( users.register);
+        .get( users.renderRegister )
+        .post( users.register );
 
     app.route('/login')
         .get( users.renderLogin )
