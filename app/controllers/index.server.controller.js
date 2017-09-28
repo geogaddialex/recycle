@@ -1,5 +1,6 @@
 exports.render = function(req, res) {
     res.render('index', {
-        title: 'Recycle'
-    })
+        title: 'Recycle',
+        user: req.user ? req.user.username : ''
+    });
 };

@@ -2,9 +2,18 @@
 <html>
 <head>
     <title><%= title %></title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
 </head>
 
 <body>
-    <h1><%= title %></h1>
+	<% if ( user ) { %>
+	    <h2>Hello <%=user%> </h2>
+	    <a href="/logout">Logout</a>
+	<% } else { %>
+	    <a href="/register">Register</a>
+	    <a href="/login">Login</a>
+	<% } %>
 </body>
 </html>
+
+
