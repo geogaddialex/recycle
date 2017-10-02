@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body         { padding-top:80px; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="jumbotron text-center">
+        <h1>Recycle</h1>
+
+        <% if ( user ) { %>
+            <h2>Hello <%= user.local.email %> </h2>
+            <a href="/logout">Logout</a>
+        <% } else { %>
+            <p>Login or Register with:</p>
+            <a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
+            <a href="/register" class="btn btn-default"><span class="fa fa-user"></span> Register</a>
+        <% } %>
+
+        
+    </div>
+
+</div>
+</body>
+</html>
