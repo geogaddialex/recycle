@@ -1,0 +1,55 @@
+body {
+	background-color: #0D3D54;
+	margin:0;
+	
+}
+
+.darkblue {
+	background-color: #0D3D54;
+}
+
+.lightblue {
+	
+}
+
+.orange {
+	background-color: #F16C21;
+}
+
+ul {
+	padding:	0;
+	margin:		0;
+	list-style-type: none;
+}
+
+li{
+	padding:	5px;
+	display: inline;
+}
+
+a {
+	text-decoration: 	none;
+	color :				white;
+}
+
+a:visited { text-decoration: none; color:white; }
+a:hover { text-decoration: none; color:#F16C21; }
+a:focus { text-decoration: none; color:#F16C21; }
+a:hover, a:active { text-decoration: none; color:#F16C21 }
+
+#nav{
+	height:30px;
+	line-height: 30px;
+	vertical-align: center;
+
+	margin-bottom: 5px;
+
+	background-color: #1395BA;
+}
+
+#content{
+	margin:10px;
+	padding:10px;
+
+	background-color: #1395BA;
+}

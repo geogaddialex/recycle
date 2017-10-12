@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
+</head>
+<body>
+    
+<div id="container">
+
+    <div id="nav">
+        <ul>
+            <li><a href="/register">Register</a></li>
+            <li><a href="/">Home</a></li>
+        </ul>
+    </div>
+
+    <% if (message.length > 0) { %>
+       <div class="orange"><%= message %></div>
+    <% } %>
+
+    <div id="content">
+
+        <form action="/login" method="post">
+
+                <label>Email</label>
+                <input type="text" name="email">
+                <label>Password</label>
+                <input type="password" name="password">
+
+            <button type="submit">Login</button>
+        </form>
+
+    </div>
+
+</div>
+</body>
+</html>

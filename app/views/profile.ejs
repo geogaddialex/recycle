@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+    <title>Your Profile</title>
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
+</head>
+<body>
+
+<div id="container">
+    <div id="nav">
+        <ul>
+            <li><a href="/logout">Logout</a></li>
+            <li><a href="/">Home</a></li>
+        </ul>
+    </div>
+
+    <div id="content">
+
+        <% if (user.local.email) { %>
+
+            <h3>Account</h3>
+            email: <%= user.local.email %>
+
+        <% } %>
+
+    </div>
+</div>
+</body>
+</html>

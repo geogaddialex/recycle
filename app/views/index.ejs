@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+    <title>Recycle</title>
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
+</head>
+<body>
+<div id="container">
+    <div id="nav">
+        <ul>
+        <% if ( user ) { %>
+            <li><a href="/profile"><%= user.local.email %></a></li>
+            <li><a href="/logout">Logout</a></li>
+        <% } else { %>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+        <% } %>
+        </ul>
+    </div>
+
+    <div id="content">
+        Start swapping!
+    </div>
+
+</div> 
+</body>
+</html>

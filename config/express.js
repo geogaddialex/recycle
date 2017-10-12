@@ -11,9 +11,9 @@ module.exports = function( passport ){
 
 	app.use( express.static('./public') );
 
-	app.use( morgan('dev') ); // log every request to the console
-	app.use( cookieParser() ); // read cookies (needed for auth)
-	app.use( bodyParser.json() ); // get information from html forms
+	app.use( morgan('dev') ); // console logger
+	app.use( cookieParser() ); 
+	app.use( bodyParser.json() ); 
 	app.use( bodyParser.urlencoded({ extended: true }) );
 
 	app.use( session({
@@ -21,14 +21,15 @@ module.exports = function( passport ){
 	    resave: true,
 	    saveUninitialized: true
 	}) );
+
 	app.use( passport.initialize() );
 	app.use( passport.session() );
 	app.use( flash() );
 
-	app.set( 'view engine', 'ejs' ); // set up ejs for templating
-	app.set( 'views', './views' );
+	app.set( 'view engine', 'ejs' );
+	app.set( 'views', './app/views' );
 
-	require( '../app/routes.js' )( app, passport ); // load routes, pass in app and fully configured passport
+	require( '../app/routes.js' )( app, passport );
 
 	return app;
 }
