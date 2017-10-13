@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Recycle</title>
+    <title>Add item</title>
     <link rel="stylesheet" type="text/css" href="./css/main.css">
 </head>
 <body>
@@ -9,16 +9,17 @@
     <div id="nav">
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/items">Items</a></li>
             <li><a href="/profile"><%= user.username %></a></li>
             <li><a href="/logout">Logout</a></li>
         </ul>
     </div>
 
     <div id="content">
-    	<a href="/addItem">List an item</a>
+        <form action="/addItem" method="post">
+            <label>name</label><input type="text" name="name"><br>
+            <button type="submit">Add item</button>
+        </form>	
     </div>
-
 </div> 
 </body>
 </html>

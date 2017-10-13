@@ -1,24 +1,30 @@
 <!doctype html>
 <html>
 <head>
-    <title>Recycle</title>
+    <title>Items</title>
     <link rel="stylesheet" type="text/css" href="./css/main.css">
 </head>
 <body>
+
 <div id="container">
     <div id="nav">
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/items">Items</a></li>
             <li><a href="/profile"><%= user.username %></a></li>
             <li><a href="/logout">Logout</a></li>
         </ul>
     </div>
 
     <div id="content">
-    	<a href="/addItem">List an item</a>
-    </div>
 
-</div> 
+            <h3>Items</h3>
+
+            <% items.forEach( function( item ){
+                if( item.name ){
+                    <div class="item"><%= item.name %></div>
+                } %>   
+            <% }); %>
+    </div>
+</div>
 </body>
 </html>

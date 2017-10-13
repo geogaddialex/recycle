@@ -10,21 +10,22 @@
 
     <div id="nav">
         <ul>
-            <li><a href="/login">Login</a></li>
             <li><a href="/">Home</a></li>
+            <li><a href="/login">Login</a></li>
         </ul>
     </div>
+
+    <% if (message.length > 0) { %>
+       <div class="orange"><%= message %></div>
+    <% } %>
 
     <div id="content">
     
             <form action="/register" method="post">
-                    <label>Email</label>
-                    <input type="text" name="email">
-
-                    <label>Password</label>
-                    <input type="password" name="password">
-
-                <button type="submit">Register</button>
+                    <label>Username</label><input type="text" name="username"><br>
+                    <label>Password</label><input type="password" name="password"><br>
+                    <label>Email</label><input type="text" name="email"><br>
+                    <button type="submit">Register</button>
             </form>
 
     </div>

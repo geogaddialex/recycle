@@ -52,4 +52,5 @@ a:hover, a:active { text-decoration: none; color:#F16C21 }
 	padding:10px;
 
 	background-color: #1395BA;
+	border-radius: 3px;
 }

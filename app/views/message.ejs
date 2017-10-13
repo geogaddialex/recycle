@@ -9,16 +9,23 @@
     <div id="nav">
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/items">Items</a></li>
             <li><a href="/profile"><%= user.username %></a></li>
             <li><a href="/logout">Logout</a></li>
         </ul>
     </div>
 
     <div id="content">
-    	<a href="/addItem">List an item</a>
-    </div>
+    	<% if (message.length > 0) { %>
 
+            <div id="msg"><%= message %></div>
+
+        <% } else { %>
+
+            <div id="msg">No message</div>
+
+        <% } %>
+
+    </div>
 </div> 
 </body>
 </html>

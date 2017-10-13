@@ -9,17 +9,18 @@
 <div id="container">
     <div id="nav">
         <ul>
-            <li><a href="/logout">Logout</a></li>
             <li><a href="/">Home</a></li>
+            <li><a href="/logout">Logout</a></li>
         </ul>
     </div>
 
     <div id="content">
 
-        <% if (user.local.email) { %>
+        <% if (user) { %>
 
             <h3>Account</h3>
-            email: <%= user.local.email %>
+            username: <%= user.username %><br>
+            email: <%= user.email %>
 
         <% } %>
 

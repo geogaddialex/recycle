@@ -30,6 +30,7 @@ module.exports = function( passport ){
 	app.set( 'views', './app/views' );
 
 	require( '../app/routes.js' )( app, passport );
+	require( '../app/routes/itemRoutes.js' )( app );
 
 	return app;
 }
