@@ -20,9 +20,10 @@
             <h3>Items</h3>
 
             <% items.forEach( function( item ){
-                if( item.name ){
-                    <div class="item"><%= item.name %></div>
-                } %>   
+                if( item.name ){ %>
+                    <div class="item"><%= item.owner %> / <%= item.name %></div>    
+                <% } %>
+
             <% }); %>
     </div>
 </div>

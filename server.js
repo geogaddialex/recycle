@@ -2,7 +2,7 @@ var config = require('./config/config.js');
 
 var passport = require('passport');
 var mongoose = require('mongoose');
-require('./config/passport')(passport); //pass to configure
+require('./config/passport')(passport);
 require('./config/database')(mongoose);
 
 var app = require('./config/express')(passport); 

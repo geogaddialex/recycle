@@ -1,4 +1,5 @@
 var item = require('../app/controllers/itemController');
+var user = require('../app/controllers/userController');
 
 module.exports = function(app, passport){
 
@@ -37,12 +38,6 @@ module.exports = function(app, passport){
     app.get('/logout', function(req, res){
         req.logout();
         res.redirect('/');
-    });
-
-    app.get('/addItem', loggedIn, function(req, res){
-        res.render('addItem', {
-            user: req.user
-        });
     });
 
 };
