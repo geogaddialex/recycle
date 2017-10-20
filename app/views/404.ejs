@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+    <title>Page not found!</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 centerText">
+            <br><br><br>
+        	<% if (message.length > 0) { %>
+                <div class="alert alert-danger"><%= message %> <a href="/">Click here to return Home</a></div>
+            <% } else { %>
+                <div class="alert alert-danger">Uh-oh! That page doesn't exist. <a href="/">Click here to return Home</a></div>
+            <% } %>
+
+        </div>
+    </div>
+</div> 
+</body>
+</html>

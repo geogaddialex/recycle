@@ -5,7 +5,8 @@ module.exports = function(app, passport){
 
     app.get('/', loggedIn, function(req, res){
         res.render('index', {
-            user: req.user
+            user: req.user,
+            message: req.flash('msg')
         });
     });
 
@@ -20,18 +21,12 @@ module.exports = function(app, passport){
     }));
 
     app.get('/profile', loggedIn, function(req, res){
-        res.render('profile', {
-            user: req.user
-        });
-    });
-
-    app.get('/register', alreadyLoggedIn, function(req, res){
-        res.render('register', { message: req.flash('msg') });
+        user.showProfile( req, res );
     });
 
     app.post('/register', passport.authenticate('signup',{
         successRedirect: '/',
-        failureRedirect: '/register',
+        failureRedirect: '/login',
         failureFlash: true
     }));
 
@@ -39,6 +34,13 @@ module.exports = function(app, passport){
         req.logout();
         res.redirect('/');
     });
+
+    // app.use(function(req, res, next){
+    //     res.render('404', {
+    //         user: req.user,
+    //         message: req.flash('msg')
+    //     });
+    // });
 
 };
 

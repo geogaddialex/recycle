@@ -27,7 +27,7 @@ module.exports = function( passport ){
                     return done( null, false, req.flash( 'msg', 'Password incorrect' ));
 
                 } else {
-                    return done( null, user );
+                    return done( null, user, req.flash('msg', "Welcome " + username + ", you have successfully logged in!"));
                 }
             });
         });
@@ -70,7 +70,7 @@ module.exports = function( passport ){
                             if( err ){
                                 return done( err );
                             }else{
-                                return done( null, newUser );
+                                return done( null, newUser, req.flash('msg', "Welcome " + username + ", you have successfully registered!") );
                             }
                         });
                     }

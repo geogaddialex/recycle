@@ -1,4 +1,41 @@
 var User = require( '../models/userModel' );
+var Item = require( '../models/itemModel' );
+var items = require('./itemController');
+var async = require('async');
+
+
+exports.showProfile = function( req, res ){
+
+	//find all items for req.user
+
+    Item.find({ }, function( err, items ){
+        newItems = [];
+        async.each( items, ofUser, whenDone );
+            
+    });
+
+    function ofUser( item, callback ){
+        items.findItemByID( item, function( item ){
+
+        		if( item.owner.toString().trim() === req.user._id.toString().trim() ){
+        			
+        			newItems.push({ name: item.name });
+        		}
+                callback();
+        }); 
+    }
+
+    function whenDone( err ){
+        if( err ){
+            console.log( "error: " + err );
+        } else {
+            res.render('profile', {
+		        user: req.user,
+		        items: newItems
+		    });
+        }        
+    }
+}
 
 
 exports.validEmail = function( email ){
@@ -25,19 +62,19 @@ exports.findUser = function( username ){
     });
 }
 
-exports.findUserbyID = function( id ){
+exports.findUserByID = function( id, callback ){
 
 	User.findOne({ '_id':  id }, function( err, user ){
         if( err ){	
         	console.log( err ); 
-            return false;
+            callback( null );
         }
 
         if( !user ){
-            return false;
+            callback( null );
     
         } else {
-            return user;
+            callback( user );
         }
     });
 }

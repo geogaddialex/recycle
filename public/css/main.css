@@ -1,56 +1,99 @@
-body {
-	background-color: #0D3D54;
-	margin:0;
-	
+body a:hover {
+    color: orange;
+    text-decoration: none;
 }
 
-.darkblue {
-	background-color: #0D3D54;
-}
-
-.lightblue {
-	
-}
-
-.orange {
-	background-color: #F16C21;
-}
-
-ul {
-	padding:	0;
-	margin:		0;
-	list-style-type: none;
-}
-
-li{
+li {
 	padding:	5px;
-	display: inline;
+	margin:		10px;
+	display: 	inline;
 }
 
-a {
-	text-decoration: 	none;
-	color :				white;
+h1, li a{
+	color:white;
+	font-size:18px;
 }
 
-a:visited { text-decoration: none; color:white; }
-a:hover { text-decoration: none; color:#F16C21; }
-a:focus { text-decoration: none; color:#F16C21; }
-a:hover, a:active { text-decoration: none; color:#F16C21 }
+h1:hover, li a:hover{
+	color:orange;
+}
+.container-fluid{
+	padding: 0;
+}
 
-#nav{
-	height:30px;
-	line-height: 30px;
+.nav {
+	text-align: center;
 	vertical-align: center;
-
-	margin-bottom: 5px;
-
+	margin-bottom: 20px;
 	background-color: #1395BA;
+	height:80px;
+	line-height:80px;
 }
 
-#content{
-	margin:15px 8% 0;
-	padding:10px;
-
+.content {
 	background-color: #1395BA;
-	border-radius: 3px;
+	border-radius: 5px;
+	margin: 0 2%;
+	padding: 15px;
+}
+
+.login {
+	text-align: center;
+	margin-top: 20px;
+}
+
+.centerText{
+	text-align: center;
+}
+
+.panel-heading {
+	margin-bottom: 10px;
+}
+
+input {
+   text-align:center;
+}
+
+::-webkit-input-placeholder {
+   text-align: center;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   text-align: center;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   text-align: center;  
+}
+
+:-ms-input-placeholder {  
+   text-align: center; 
+}
+
+.button{
+	background-color: #1395BA;
+	color:white;}
+
+.button:hover{
+	background-color: #1395BA;
+	color:orange;
+}
+
+.item{
+	background-color:white;
+	border-radius:5px;
+	border-style: solid;
+	border-width: 1px;
+	text-align: center;
+	margin:1px;
+}
+
+.itemImage{
+	width:200px;
+	height:200px;
+	max-width:100%;
+}
+
+body{
+	overflow-x:hidden;
 }
