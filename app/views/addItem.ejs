@@ -6,29 +6,46 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="./css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
 <body>
-<div class="container-fluid">
-    <div id="nav">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/profile"><%= user.username %></a></li>
-            <li><a href="/logout">Logout</a></li>
-        </ul>
-    </div>
 
-    <% if (message.length > 0) { %>
-       <div class="orange"><%= message %></div>
-    <% } %>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="row nav">
 
-    <div id="content">
-        <form action="/addItem" method="post">
-            <label>name</label><input type="text" name="name"><br>
-            <button type="submit">Add item</button>
-        </form>	
-    </div>
-</div> 
+            <div class="col-xs-3 col-sm-2  col-md-1 navItem">
+                <a href="/">Home</a>
+            </div>
+            <div class="col-xs-6 col-sm-8 col-md-9 search navItem">
+                <div class="form-group">
+                    <input type="text" name="search" id="search" class="form-control" placeholder="Find an item" value="">
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-2 col-md-2 navItem">
+                <img src="/images/whiteHamburger.png" class="navButton">
+                <img src="/images/user.png" class="navButton">
+                    <!-- <a href="/profile"><%= user.username %></a>
+                    <a href="/logout">Logout</a> -->
+            </div>
+
+        </div><!-- row -->
+      </div>
+    </nav>
+        
+    <div class="container-fluid">
+
+        <% if (message.length > 0) { %>
+           <div class="orange"><%= message %></div>
+        <% } %>
+
+        <div id="content">
+            <form action="/addItem" method="post">
+                <label>name</label><input type="text" name="name"><br>
+                <button type="submit">Add item</button>
+            </form>	
+        </div>
+    </div> 
 </body>
 </html>

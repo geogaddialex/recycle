@@ -1,49 +1,26 @@
+body{
+	overflow-x:hidden;
+	background-color: #F9F4EE;
+	padding:60px;
+}
+
 body a:hover {
-    color: orange;
     text-decoration: none;
 }
 
+ul{
+	padding: 0;
+}
+
 li {
-	padding:	5px;
 	margin:		10px;
 	display: 	inline;
 }
 
-h1, li a{
-	color:white;
-	font-size:18px;
-}
-
-h1:hover, li a:hover{
-	color:orange;
-}
-.container-fluid{
-	padding: 0;
-}
-
-.nav {
-	text-align: center;
-	vertical-align: center;
-	margin-bottom: 20px;
-	background-color: #1395BA;
-	height:80px;
-	line-height:80px;
-}
-
 .content {
-	background-color: #1395BA;
-	border-radius: 5px;
+	background-color: #D1C6BF;
 	margin: 0 2%;
-	padding: 15px;
-}
-
-.login {
-	text-align: center;
-	margin-top: 20px;
-}
-
-.centerText{
-	text-align: center;
+	padding: 0 5px;
 }
 
 .panel-heading {
@@ -70,30 +47,22 @@ input {
    text-align: center; 
 }
 
-.button{
-	background-color: #1395BA;
-	color:white;}
-
-.button:hover{
-	background-color: #1395BA;
-	color:orange;
-}
-
-.item{
-	background-color:white;
-	border-radius:5px;
-	border-style: solid;
-	border-width: 1px;
+.nav {
 	text-align: center;
-	margin:1px;
+	vertical-align: center;
+	margin-bottom: 0px;
+	background-color: #D1C6BF;
+	border-bottom-style: solid;
+	border-width: 1px;
+	border-color: #B7A6AD;
+	overflow: hidden;
 }
 
-.itemImage{
-	width:200px;
-	height:200px;
-	max-width:100%;
+.navItem{
+	padding: 0 5px;
 }
 
-body{
-	overflow-x:hidden;
+.navButton{
+	border-radius:5px;
+	height:35px;
 }

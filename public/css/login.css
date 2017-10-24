@@ -1,0 +1,26 @@
+.nav {
+	text-align: center;
+	vertical-align: center;
+	margin-bottom: 0px;
+	background-color: #D1C6BF;
+	border-radius: 3px;
+	border-bottom-style: solid;
+	border-width: 1px;
+	border-color: #B7A6AD;
+	overflow: hidden;
+}
+
+.login {
+	text-align: center;
+	margin-top: 20px;
+}
+
+.button{
+	background-color: #1395BA;
+	color:white;
+}
+
+.button:hover{
+	background-color: #1395BA;
+	color:orange;
+}

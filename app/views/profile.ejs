@@ -6,39 +6,58 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="./css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
 <body>
 
-<div class="container-fluid">
-    <div id="nav">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/logout">Logout</a></li>
-        </ul>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="row nav">
+
+            <div class="col-xs-3 col-sm-2  col-md-1 navItem">
+                <a href="/">Home</a>
+            </div>
+            <div class="col-xs-6 col-sm-8 col-md-9 search navItem">
+                <div class="form-group">
+                    <input type="text" name="search" id="search" class="form-control" placeholder="Find an item" value="">
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-2 col-md-2 navItem">
+                <img src="/images/whiteHamburger.png" class="navButton">
+                <img src="/images/user.png" class="navButton">
+                    <!-- <a href="/profile"><%= user.username %></a>
+                    <a href="/logout">Logout</a> -->
+            </div>
+
+        </div><!-- row -->
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+
+        <div id="content">
+
+            <% if (user) { %>
+
+                <h3>Account</h3>
+                username: <%= user.username %><br>
+                email: <%= user.email %><br>
+                <br>
+                Items:<br><br>
+
+                <% items.forEach( function( item ){
+                    if( item ){  %>
+                        <div class="item"><%= item.name %></div>    
+                    <% } %>
+
+                <% }); %>
+
+            <% } %>
+
+        </div>
     </div>
-
-    <div id="content">
-
-        <% if (user) { %>
-
-            <h3>Account</h3>
-            username: <%= user.username %><br>
-            email: <%= user.email %><br>
-            <br>
-            Items:<br><br>
-
-            <% items.forEach( function( item ){
-                if( item ){  %>
-                    <div class="item"><%= item.name %></div>    
-                <% } %>
-
-            <% }); %>
-
-        <% } %>
-
-    </div>
-</div>
+    
 </body>
 </html>

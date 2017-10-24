@@ -18,18 +18,14 @@ module.exports = function( app ){
     	item.create( req, res );
     });
 
+    app.get('/items/:id', loggedIn, function(req, res){
+        item.displayOne( req, res );
+    });
+
 };
 
 function loggedIn( req, res, next ) {
     if ( req.isAuthenticated() )
         return next( );
     res.redirect( '/login' );
-}
-
-function alreadyLoggedIn( req, res, next ) {
-    if ( req.isAuthenticated() ){
-        res.redirect( '/' );
-    } else {
-        return next( );
-    }
 }

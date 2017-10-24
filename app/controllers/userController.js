@@ -3,6 +3,39 @@ var Item = require( '../models/itemModel' );
 var items = require('./itemController');
 var async = require('async');
 
+exports.findUserByID = function( id, callback ){
+
+    User.findOne({ '_id':  id }, function( err, user ){
+        if( err ){  
+            console.log( err ); 
+            callback( null );
+        }
+
+        if( !user ){
+            callback( null );
+    
+        } else {
+            callback( user );
+        }
+    });
+}
+
+exports.findUserByName = function( username, callback ){
+
+    User.findOne({ 'username':  username }, function( err, user ){
+        if( err ){  
+            console.log( err ); 
+            callback( null );
+        }
+
+        if( !user ){
+            callback( null );
+
+        } else {
+            callback( user );
+        }
+    });
+}
 
 exports.showProfile = function( req, res ){
 
@@ -37,47 +70,12 @@ exports.showProfile = function( req, res ){
     }
 }
 
-
 exports.validEmail = function( email ){
 	var match = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
     
 	return match.test( email );
 };
 
-
-exports.findUser = function( username ){
-
-	User.findOne({ 'username':  username }, function( err, user ){
-        if( err ){	
-        	console.log( err ); 
-            return false;
-        }
-
-        if( !user ){
-            return false;
-
-        } else {
-            return user;
-        }
-    });
-}
-
-exports.findUserByID = function( id, callback ){
-
-	User.findOne({ '_id':  id }, function( err, user ){
-        if( err ){	
-        	console.log( err ); 
-            callback( null );
-        }
-
-        if( !user ){
-            callback( null );
-    
-        } else {
-            callback( user );
-        }
-    });
-}
 
 function loggedIn( req, res, next ) {
     if ( req.isAuthenticated() )

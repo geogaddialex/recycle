@@ -9,7 +9,7 @@ module.exports = function( passport ){
 	var session      = require( 'express-session' );
 	var flash  		 = require( 'connect-flash' );
 
-	app.use( express.static('./public') );
+	app.use( express.static( './public' ));
 
 	app.use( morgan('dev') ); // console logger
 	app.use( cookieParser() ); 
@@ -29,8 +29,9 @@ module.exports = function( passport ){
 	app.set( 'view engine', 'ejs' );
 	app.set( 'views', './app/views' );
 
-	require( '../app/routes.js' )( app, passport );
+	require( '../app/routes/userRoutes.js' )( app, passport );
 	require( '../app/routes/itemRoutes.js' )( app );
+	require( '../app/routes/exchangeRoutes.js' )( app );
 
 	return app;
 }

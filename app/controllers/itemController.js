@@ -3,6 +3,23 @@ var User = require( '../models/userModel' );
 var users = require('./userController');
 var async = require('async');
 
+exports.findItemByID = function( id, callback ){
+
+    Item.findOne({ '_id':  id }, function( err, item ){
+        if( err ){  
+            console.log( err ); 
+            callback( null );
+        }
+
+        if( !item ){
+            console.log( "no item" );
+            callback( null );
+    
+        } else {
+            callback( item );
+        }
+    });
+}
 
 exports.create = function( req, res ){
 
@@ -58,6 +75,15 @@ exports.addToUser = function( user, item, callback ){
     );
 }
 
+exports.findOwnerOfItem = function( id, callback ){
+    exports.findItemByID( id, function( item ){
+        users.findUserByID( item.owner, function( user ){
+            callback();
+        } )
+    });
+}
+
+
 exports.list = function( req, res ){
 
     Item.find({ }, function( err, items ){
@@ -68,7 +94,7 @@ exports.list = function( req, res ){
 
     function findUser( item, callback ){
         users.findUserByID( item.owner, function( user ){
-                newItems.push({ name: item.name, owner: user.username });
+                newItems.push({ id:item._id, name: item.name, owner: user.username });
                 callback();
         }); 
     }
@@ -82,20 +108,51 @@ exports.list = function( req, res ){
     }
 }
 
-exports.findItemByID = function( id, callback ){
 
-    Item.findOne({ '_id':  id }, function( err, item ){
-        if( err ){  
-            console.log( err ); 
-            callback( null );
-        }
+exports.displayOne = function( req, res ){
 
-        if( !item ){
-            console.log( "no item" );
-            callback( null );
-    
-        } else {
-            callback( item );
-        }
+    exports.findItemByID( req.params.id, function( item ){
+
+        users.findUserByID( item.owner, function( user ){
+
+            var itemToDisplay = { id: req.params.id, name: item.name, owner: user.username }
+
+            res.render('item', {
+                item: itemToDisplay,
+                user: req.user,
+                message: req.flash('msg')
+            });
+
+        }); 
     });
+
+}
+
+exports.findItemsBelongingTo = function( user, callback ){
+
+    var userToTest = user;
+    var newItems = [];
+
+    Item.find({ }, function( err, items ){
+
+        async.each( items, ofUser, whenDone );    
+    });
+
+    function ofUser( item, callback ){
+        exports.findItemByID( item, function( item ){
+
+            if( item.owner.toString().trim() === userToTest.id.toString().trim() ){
+                newItems.push({ name: item.name });
+            }
+            callback();
+        }); 
+    }
+
+    function whenDone( err ){
+        if( err ){
+            console.log( "error: " + err );
+        } else {
+            callback( newItems ); 
+        }        
+    }
 }

@@ -1,5 +1,5 @@
-var item = require('../app/controllers/itemController');
-var user = require('../app/controllers/userController');
+var item = require('../controllers/itemController');
+var user = require('../controllers/userController');
 
 module.exports = function(app, passport){
 

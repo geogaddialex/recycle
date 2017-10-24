@@ -1,0 +1,47 @@
+.itemContainer{
+	padding:5px;
+}
+
+.item{
+	background-color:white;
+	border-radius:5px;
+	border-style: solid;
+	border-width: 1px;
+	text-align: center;
+	padding: 5px;
+	overflow:hidden;
+}
+
+.itemImage{
+	max-width:100%;
+	border-radius: 3px;
+	border-style: solid;
+	border-width: 1px;
+}
+
+.nav div a {
+	color:white;
+	font-size:18px;
+}
+
+
+.itemName{
+	margin:5px;
+}
+
+.itemButton{
+	border-radius:5px;
+
+}
+
+.content{
+	text-align: center;
+}
+
+h3{
+	color:white;
+}
+
+.search{
+	padding-top: 9px;
+}
