@@ -4,26 +4,19 @@
 
 .item{
 	background-color:white;
-	border-radius:5px;
-	border-style: solid;
-	border-width: 1px;
 	text-align: center;
 	padding: 5px;
 	overflow:hidden;
+	box-shadow: 0 0 5px #e4ceb4;
+}
+
+.item:hover{
+	box-shadow: 0 0 10px #dec2a1;
 }
 
 .itemImage{
 	max-width:100%;
-	border-radius: 3px;
-	border-style: solid;
-	border-width: 1px;
 }
-
-.nav div a {
-	color:white;
-	font-size:18px;
-}
-
 
 .itemName{
 	margin:5px;
@@ -38,10 +31,7 @@
 	text-align: center;
 }
 
-h3{
-	color:white;
+span.glyphicon {
+    font-size: 150%;
 }
 
-.search{
-	padding-top: 9px;
-}

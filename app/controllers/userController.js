@@ -1,6 +1,7 @@
 var User = require( '../models/userModel' );
 var Item = require( '../models/itemModel' );
 var items = require('./itemController');
+var users = require('./userController');
 var async = require('async');
 
 exports.findUserByID = function( id, callback ){
@@ -70,6 +71,30 @@ exports.showProfile = function( req, res ){
     }
 }
 
+exports.goToUser = function( req, res ){
+    users.findUserByName( req.params.user, function( userToView ){
+
+        items.findItemsBelongingTo( userToView, function( items ){
+            res.render('user', {
+                user: req.user,
+                userToView: userToView,
+                items: items
+            });
+        })
+
+    });
+}
+
+exports.showMyItems = function( req, res ){
+    items.findItemsBelongingTo( req.user, function( items ){
+        res.render('myItems', {
+            user: req.user,
+            items: items
+        });
+    })
+
+}
+
 exports.validEmail = function( email ){
 	var match = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
     
@@ -80,7 +105,9 @@ exports.validEmail = function( email ){
 function loggedIn( req, res, next ) {
     if ( req.isAuthenticated() )
         return next( );
-    res.redirect( '/login' );
+    app.get('/login', function(req, res){
+        res.render('login', { message: "Please log in to access this feature" });
+    });
 }
 
 function alreadyLoggedIn( req, res, next ) {

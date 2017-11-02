@@ -1,61 +1,43 @@
 <!doctype html>
-<html>
+<html ng-app>
+
 <head>
     <title><%= item.name %></title>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet"/>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/css/main.css">
-
+    <link rel="stylesheet" type="text/css" href="/css/items.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
 
 <body>
 
     <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="row nav">
-
-            <div class="col-xs-3 col-sm-2  col-md-1 navItem">
-                <a href="/">Home</a>
-            </div>
-            <div class="col-xs-6 col-sm-8 col-md-9 search navItem">
-                <div class="form-group">
-                    <input type="text" name="search" id="search" class="form-control" placeholder="Find an item" value="">
-                </div>
-            </div>
-            <div class="col-xs-3 col-sm-2 col-md-2 navItem">
-                <img src="/images/whiteHamburger.png" class="navButton">
-                <img src="/images/user.png" class="navButton">
-                    <!-- <a href="/profile"><%= user.username %></a>
-                    <a href="/logout">Logout</a> -->
-            </div>
-
-        </div><!-- row -->
-      </div>
+      <div ng-include="'/partials/nav.html'"></div>
     </nav>
 
-<div class="container-fluid">
+<div class="container-fluid content">
 
-    <div class="row content">
+    <div class="row">
             
                <% if( item.name ){ %>
 
                     <h3><%= item.name %></h3>
 
-                    <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 itemContainer">
+                    <div class="col-xs-12 itemContainer">
 
                             <div class="row">
                                 <div class="col imageContainer">
-                                    <img src="/images/man.jpg" class="itemImage"><br>
+                                    <img src="/images/none.jpg" class="itemImage"><br>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    Belongs to: <%= item.owner %>
-                                    <a href="/exchange/<%= item.owner %>/<%= item.id %>">Exchange</a>
+                                    Belongs to: <a href="/users/<%= item.owner %>"><%= item.owner %></a><br>
+                                    <a href="/exchange/<%= item.owner %>/<%= item.id %>">Make an offer</a>
                                 </div>
                             </div>
                         

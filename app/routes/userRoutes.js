@@ -30,24 +30,25 @@ module.exports = function(app, passport){
         failureFlash: true
     }));
 
-    app.get('/logout', function(req, res){
+    app.get('/logout', loggedIn, function(req, res){
         req.logout();
-        res.redirect('/');
+        res.redirect('/login');
     });
 
-    // app.use(function(req, res, next){
-    //     res.render('404', {
-    //         user: req.user,
-    //         message: req.flash('msg')
-    //     });
-    // });
+    app.get('/users/:user', loggedIn, function(req, res){
+        user.goToUser( req, res );
+    });
+
+    app.get('/myItems', loggedIn, function(req, res){
+        user.showMyItems( req, res );
+    });
 
 };
 
 function loggedIn( req, res, next ) {
     if ( req.isAuthenticated() )
         return next( );
-    res.redirect( '/login' );
+    res.render('login', { message: "Please log in for full access" });   //dont show message if going to root
 }
 
 function alreadyLoggedIn( req, res, next ) {

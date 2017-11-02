@@ -142,7 +142,7 @@ exports.findItemsBelongingTo = function( user, callback ){
         exports.findItemByID( item, function( item ){
 
             if( item.owner.toString().trim() === userToTest.id.toString().trim() ){
-                newItems.push({ name: item.name });
+                newItems.push({ id:item._id, name: item.name, owner: userToTest.username });
             }
             callback();
         }); 

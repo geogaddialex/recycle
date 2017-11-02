@@ -22,7 +22,7 @@ module.exports = function( app ){
 
 
 function loggedIn( req, res, next ) {
-	if ( req.isAuthenticated() )
-	    return next( );
-	res.redirect( '/login' );
+    if ( req.isAuthenticated() )
+        return next( );
+    res.render('login', { message: "Please log in to access this feature" });
 }

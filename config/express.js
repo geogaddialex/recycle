@@ -33,5 +33,13 @@ module.exports = function( passport ){
 	require( '../app/routes/itemRoutes.js' )( app );
 	require( '../app/routes/exchangeRoutes.js' )( app );
 
+	app.use(function(req, res, next){
+        res.render('404', {
+        	intended: req.url.replace( /\// , "" ),
+            user: req.user,
+            message: req.flash('msg')
+        });
+    });
+
 	return app;
 }
