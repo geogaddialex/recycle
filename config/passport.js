@@ -13,8 +13,7 @@ module.exports = function( passport ){
         if ( username ){
             username = username.toLowerCase( );
         }
-        console.log("in funcs");
-
+        
         process.nextTick(function( ){
             User.findOne({ 'username':  username }, function( err, user ){
                 if( err ){
