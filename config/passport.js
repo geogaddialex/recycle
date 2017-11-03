@@ -13,14 +13,17 @@ module.exports = function( passport ){
         if ( username ){
             username = username.toLowerCase( );
         }
+        console.log("in funcs");
 
         process.nextTick(function( ){
             User.findOne({ 'username':  username }, function( err, user ){
                 if( err ){
+                    console.log("err");
                     return done( err );
                 }
 
                 if( !user ){
+                    console.log("no user");
                     return done( null, false, req.flash( 'msg', 'User not found' ));
                     
                 }else if( !user.correctPassword( password ) ){

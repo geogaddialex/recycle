@@ -30,7 +30,9 @@ exports.initiate = function( req, res ){
 		        });
 			});
 
-    	
-
     });
+}
+
+exports.send = function( req, res ){
+	
 }

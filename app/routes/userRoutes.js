@@ -14,7 +14,7 @@ module.exports = function(app, passport){
         res.render('login', { message: req.flash('msg') });
     });
 
-    app.post('/login', passport.authenticate('login',{
+    app.post('/login', passport.authenticate('login', {
         successRedirect: '/',
         failureRedirect: '/login',
         failureFlash: true
