@@ -1,11 +1,9 @@
-var config = require('./config/config.js');
+var config = require( './server/config/config.js' );
 
-var passport = require('passport');
-var mongoose = require('mongoose');
-require('./config/passport')(passport);
-require('./config/database')(mongoose);
+var mongoose = require( 'mongoose' );
+require( './server/config/database' )( mongoose );
 
-var app = require('./config/express')(passport); 
+var app = require( './server/config/express' ); 
 
-app.listen(config.port);
-console.log('Site live at port: ' + config.port);
+app.listen( config.port );
+console.log( 'Site live at port: ' + config.port );

@@ -1,0 +1,29 @@
+<link rel="stylesheet" type="text/css" href="/css/items.css">
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div ng-if="ctrl.message">{{ctrl.message}}</div>
+        </div>
+    </div>
+    <div class="row addItem">
+        <div class="col-xs-12">
+
+            <form action="/addItem" method="post">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <label>name</label><input type="text" name="name"><br>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <button type="submit">Add item</button>
+                    </div>
+                </div>
+
+                
+            </form> 
+
+        </div>
+    </div>
+</div> 
