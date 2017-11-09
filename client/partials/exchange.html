@@ -1,0 +1,58 @@
+<div class="container-fluid content">
+
+    <div class="row">
+
+        <div class="col-xs-1" id="myItems">
+            <h3> You </h3>
+            
+            <div ng-repeat="item in ctrl.myItems">
+                <div class="item">{{ item.name }}</div>    
+            </div>
+        </div>
+
+        <div class="col-xs-10" id="exchange">
+            <div class="row">
+
+                <div class="col-xs-6" id="myExchangeItems">
+
+                        <h3> {{ ctrl.user.username }} </h3>
+
+                        <div ng-repeat="item in ctrl.exchange.recipientItems">
+                            <div class="item">{{ item.name }}</div>    
+                        </div>
+                </div>
+
+                <div class="col-xs-6" id="theirExchangeItems">
+
+                        <h3> {{ ctrl.recipient.username }} </h3>
+
+                        <div ng-repeat="item in ctrl.exchange.recipientItems">
+                            <div class="item">{{ item.name }}</div>    
+                        </div>
+                </div>
+
+            </div><!-- row -->
+
+            <div class="row" id="exchangeDecision">
+                <div class="col-xs-6">
+                    <button type="button" class="btn btn-outline-primary">Send offer</button>
+                </div>
+                <div class="col-xs-6">
+                    <button type="button" class="btn btn-outline-danger">Cancel offer</button>
+                </div>
+            </div>
+
+        </div><!-- exchange -->
+
+        <div class="col-xs-1" id="theirItems">
+            <h3> {{ ctrl.recipient.username }} </h3>
+
+            <div ng-repeat="item in ctrl.recipientItems">
+                <div class="item">{{ item.name }}</div>    
+            </div>
+        </div>
+
+    </div>
+
+
+</div>

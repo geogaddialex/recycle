@@ -1,0 +1,39 @@
+<div class="container-fluid content" ng-if="ctrl.user">
+    <div class="row">
+        <div class="col">
+
+            <h3>{{ctrl.user.username}}</h3>
+            email: {{ctrl.user.email}}<br>
+            <br>
+            
+            <div ng-repeat="item in ctrl.items" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 itemContainer">
+                <div class="item">
+
+                    <div class="row">
+                        <div class="col imageContainer">
+                            <a href="/#!/items/{{item.id}}"><img src="/images/none.jpg" class="itemImage"></a><br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col itemName">
+                            <a href="/#!/items/{{item.id}}">{{item.name}}</a><br>
+                            <a href="/#!/exchange/{{item.owner}}/{{item.id}}">Make an offer</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <a href="/#!/viewInfo/{{item.id}}"><span class="glyphicon glyphicon-info-sign"></span></a>    
+                        </div>
+                        <div class="col-xs-4">
+                            <img src="/images/btn.png" class="itemButton">
+                        </div>
+                        <div class="col-xs-4">
+                            <img src="/images/btn.png" class="itemButton">
+                        </div>
+                    </div>
+                
+                </div><!-- item -->
+            </div>    
+        </div><!-- col -->
+    </div>
+</div>

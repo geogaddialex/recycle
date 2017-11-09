@@ -5,6 +5,7 @@ angular.module( 'myApp' ).factory( 'AuthService', [ '$q', '$timeout', '$http', f
     return ({
       isLoggedIn: isLoggedIn,
       getUserStatus: getUserStatus,
+      getUser: getUser,
       login: login,
       logout: logout,
       register: register
@@ -19,18 +20,41 @@ angular.module( 'myApp' ).factory( 'AuthService', [ '$q', '$timeout', '$http', f
     }
 
     function getUserStatus() {
-          return $http.get( '/api/status' ).then(
-            function successCallback( res ) {
+      return $http.get( '/api/status' ).then(
+        function successCallback( res ) {
 
-                if( res.data.authenticated ){
-                  user = true;
-                } else {
-                  user = false;
-                }
-            }, function errorCallback( res ){
-                user = false;
+            if( res.data.authenticated ){
+              user = true;
+            } else {
+              user = false;
             }
-          );
+        }, function errorCallback( res ){
+            user = false;
+        }
+      );
+    }
+
+    function getUser() {
+      
+      var deferred = $q.defer();
+
+      $http.get( '/api/user' ).then(
+        function successCallback( res ) {
+
+            if( res.data.user ){
+              deferred.resolve( res.data.user );
+            } else {
+              deferred.reject();
+            }
+
+            deferred.resolve( res.data.user );
+
+        }, function errorCallback( res ){
+          deferred.reject();
+        }
+      );
+
+      return deferred.promise;
     }
 
     function register( username, password, email ){

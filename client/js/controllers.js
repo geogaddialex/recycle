@@ -1,4 +1,4 @@
-angular.module('myApp').controller('itemController', function( $http ){
+angular.module('myApp').controller('itemController', function( $http, $routeParams ){
     var vm = this;
     vm.message = 'sample';
     vm.items = {};
@@ -13,6 +13,24 @@ angular.module('myApp').controller('itemController', function( $http ){
 
     // vm.list();
 
+    vm.itemId = $routeParams.id;
+
+    vm.toggleFilters = function( ){
+
+      if( $( "#menu-toggle:contains('Filter items')" ).length ){ //show filters
+
+          $('#menu-toggle').html("Hide filters");
+
+      } else {     
+
+          $('#menu-toggle').html("Filter items");
+      }
+
+        $("#wrapper").toggleClass("toggled");
+
+    }
+
+
 });
 
 angular.module('myApp').controller('errorController', function( ){
@@ -21,12 +39,23 @@ angular.module('myApp').controller('errorController', function( ){
 
 angular.module('myApp').controller('homeController', function( ){
     var vm = this;
+    vm.message = "";
 })
+
+angular.module('myApp').controller('profileController', [ 'AuthService', function( AuthService ){
+
+    var vm = this;
+
+    AuthService.getUser( ).then( function( user ){
+      vm.user = user;
+    });
+
+}])
 
 angular.module('myApp').controller('loginController', ['$scope', '$location', 'AuthService', function ($scope, $location, AuthService) {
 
-            $scope.loginForm = {};
-            $scope.registerForm = {};
+    $scope.loginForm = {};
+    $scope.registerForm = {};
 
     $scope.login = function( ){
       $scope.error = false;
