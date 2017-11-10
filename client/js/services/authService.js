@@ -47,8 +47,6 @@ angular.module( 'myApp' ).factory( 'AuthService', [ '$q', '$timeout', '$http', f
               deferred.reject();
             }
 
-            deferred.resolve( res.data.user );
-
         }, function errorCallback( res ){
           deferred.reject();
         }

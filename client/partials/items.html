@@ -2,7 +2,7 @@
 
     <div class="row">
         <div class="col-xs-1">
-            <a class="btn btn-secondary" id="menu-toggle" ng-click="ctrl.toggleFilters()">Filter items</a>
+            <a class="btn btn-secondary" id="menu-toggle" ng-click="ctrl.toggleFilters">Filter items</a>
         </div>         
     </div>
 
@@ -27,31 +27,31 @@
             <div class="row">
                 <div ng-show="ctrl.items">
                         
-                    <div ng-for="item in ctrl.items" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 itemContainer">
+                    <div ng-repeat="item in ctrl.items" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 itemContainer">
                         <div class="item">
 
                             <div class="row">
                                 <div class="col imageContainer">
-                                    <a href="/#!/items/{{ item.id }}"><img src="/images/none.jpg" class="itemImage"></a><br>
+                                    <a href="/#!/items/{{ item._id }}"><img src="/images/none.jpg" class="itemImage"></a><br>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col itemName">
-                                    <a href="/#!/items/{{ item.id }}">{{ item.name }}</a><br>
-                                    <a href="/#!/users/{{ item.owner }}">{{ item.owner }}</a><br>
-                                    <a href="/#!/exchange/{{ item.owner }}/{{ item.id }}">Make an offer</a>
+                                    <a href="/#!/items/{{ item._id }}">{{ item.name }}</a><br>
+                                    <a href="/#!/users/{{ item.owner.username }}">{{ item.owner.username }}</a><br>
+                                    <a href="/#!/exchange/{{ item.owner.username }}/{{ item._id }}">Make an offer</a>
                                     
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-4">
-                                    <a href="/#!/viewInfo/{{ item.id }}"><span class="glyphicon glyphicon-info-sign"></span></a>    
+                                    <a href="/#!/viewInfo/{{ item._id }}"><span class="glyphicon glyphicon-info-sign"></span></a>    
                                 </div>
                                 <div class="col-xs-4">
-                                    <a href="/#!/addToFavourites/{{ item.id }}"><span class="glyphicon glyphicon-star"></span></a>
+                                    <a href="/#!/addToFavourites/{{ item._id }}"><span class="glyphicon glyphicon-star"></span></a>
                                 </div>
                                 <div class="col-xs-4">
-                                    <a href="/#!/showLocation/{{ item.id }}"><span class="glyphicon glyphicon-map-marker"></span></a>
+                                    <a href="/#!/showLocation/{{ item._id }}"><span class="glyphicon glyphicon-map-marker"></span></a>
                                 </div>
                             </div>
                         

@@ -1,18 +1,10 @@
-var item = require('../controllers/itemController');
-var user = require('../controllers/userController');
+var users = require('../controllers/userController');
+var express = require('express');
+var router = express.Router();
 
-module.exports = function( app ){
 
-    app.get('/profile', function(req, res){
-        user.showProfile( req, res );
-    });
+	router.get('/users', users.list );
 
-    app.get('/users/:user', function(req, res){
-        user.goToUser( req, res );
-    });
+	// router.get('/users/:name', users.getUser( id ) );
 
-    app.get('/myItems', function(req, res){
-        user.showMyItems( req, res );
-    });
-
-};
+module.exports = router;

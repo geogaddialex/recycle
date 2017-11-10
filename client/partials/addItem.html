@@ -9,20 +9,10 @@
     <div class="row addItem">
         <div class="col-xs-12">
 
-            <form action="/addItem" method="post">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <label>name</label><input type="text" name="name"><br>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <button type="submit">Add item</button>
-                    </div>
-                </div>
-
-                
-            </form> 
+            <form name="itemForm">
+                Item Name: <input type="text" ng-model="ctrl.item.name" />
+                <button ng-click="ctrl.createItem( ctrl.item )">Add this item</button>
+            </form>
 
         </div>
     </div>

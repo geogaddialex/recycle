@@ -3,60 +3,43 @@ var User = require( '../models/userModel' );
 var users = require('./userController');
 var async = require('async');
 
-exports.findItemByID = function( id, callback ){
+exports.list = function( req, res ){
 
-    Item.findOne({ '_id':  id }, function( err, item ){
-        if( err ){  
-            console.log( err ); 
-            callback( null );
-        }
+    Item.find({ }).populate({ path: 'owner' }).exec( function( err, items ){
 
-        if( !item ){
-            console.log( "no item" );
-            callback( null );
-    
-        } else {
-            callback( item );
+        if( err ){
+            console.log( "error: " + err );
+            return res.status( 500 );
         }
-    });
+        
+        res.json({ items: items });
+            
+    })
 }
 
 exports.create = function( req, res ){
 
-    if( req.user ){
-        var item = new Item({ name: req.body.name, owner: req.user });
+    var item = new Item({ name: req.body.name, owner: req.user });
 
-        item.save(function( err ){
-            if( err ){
-                console.log("error: " + err);
-                return err;
+    item.save( function( err ){
+        if( err ){
+            console.log( "error: " + err );
+            return res.status(500).json({ errors: "Could not create item" });
+        } 
 
-            } else {
+        console.log("item added: " + item);
+        res.status( 201 ).json( item );
 
-                exports.addToUser( req.user, item, function( success ){
+        // exports.addToUser( req.user, item, function( success ){
 
-                    if( success ){
-                        req.flash( 'msg', "Item added: " + item.name );
-                        // res.render( 'message', {
-                        //     message: req.flash( 'msg' ),
-                        //     user: req.user
-                        // });
-                    } else {
-                        console.log( "un" )
-                    }
-                    
-                });
-                
-            }
-        });
-    } else {
-        req.flash('msg', "No user detected, item not added");
-
-        res.render( 'addItem', {
-            message: req.flash('msg'),
-            user: req.user
-        });
-    }
+        //     if( success ){
+                      
+        //     } else {
+        //         console.log( "yeah nah" )
+        //     }
+            
+        // });  
+    });
 };
 
 exports.addToUser = function( user, item, callback ){
@@ -81,51 +64,6 @@ exports.findOwnerOfItem = function( id, callback ){
             callback();
         } )
     });
-}
-
-
-exports.list = function( req, res ){
-
-    Item.find({ }, function( err, items ){
-        newItems = [];
-        async.each( items, findUser, whenDone );
-            
-    });
-
-    function findUser( item, callback ){
-        users.findUserByID( item.owner, function( user ){
-                newItems.push({ id:item._id, name: item.name, owner: user.username });
-                callback();
-        }); 
-    }
-
-    function whenDone( err ){
-        if( err ){
-            console.log( "error: " + err );
-        } else {
-            res.render( 'items', { items: newItems, user: req.user } ); 
-        }        
-    }
-}
-
-
-exports.displayOne = function( req, res ){
-
-    exports.findItemByID( req.params.id, function( item ){
-
-        users.findUserByID( item.owner, function( user ){
-
-            var itemToDisplay = { id: req.params.id, name: item.name, owner: user.username }
-
-            res.render('item', {
-                item: itemToDisplay,
-                user: req.user,
-                message: req.flash('msg')
-            });
-
-        }); 
-    });
-
 }
 
 exports.findItemsBelongingTo = function( user, callback ){

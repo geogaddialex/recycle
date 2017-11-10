@@ -11,7 +11,7 @@ myApp.config( function( $routeProvider ){
         .when('/profile', { templateUrl: 'partials/profile.html', controller: 'profileController', controllerAs: 'ctrl', access: { restricted: true } })
         .when('/myItems', { templateUrl: 'partials/myItems.html', controller: 'itemController', controllerAs: 'ctrl', access: { restricted: true } })
         .when('/exchange', { templateUrl: 'partials/exchange.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
-        .when('/item/:id', { templateUrl: 'partials/item.html', controller: 'itemController', controllerAs: 'ctrl', access: { restricted: true } })
+        .when('/items/:id', { templateUrl: 'partials/item.html', controller: 'itemController', controllerAs: 'ctrl', access: { restricted: true } })
         .otherwise({ templateUrl: 'partials/404.html', controller: 'errorController', controllerAs: 'ctrl', access: { restricted: true } });
 });
 

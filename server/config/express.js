@@ -9,7 +9,6 @@
 	var localStrategy = require('passport-local' ).Strategy;
 	var User 		 = require( '../models/userModel' );	
 
-
 	var app     	 = express( );
 
 	app.use( express.static( 'client' ) );
@@ -18,6 +17,8 @@
 	app.use( cookieParser() ); 
 	app.use( bodyParser.json() ); 
 	app.use( bodyParser.urlencoded({ extended: false }) );
+	app.use( flash() );
+
 
 	app.use( session({
 	    secret: 'badsecret',
@@ -32,17 +33,13 @@
 	passport.serializeUser( User.serializeUser() );
 	passport.deserializeUser( User.deserializeUser() );
 
-	app.use( flash() );
 
-	app.set( 'view engine', 'ejs' );
-	app.set( 'views', path.join(__dirname, '../views') );
-
-	require( '../routes/userRoutes.js' )( app );
-	require( '../routes/itemRoutes.js' )( app );
-	require( '../routes/exchangeRoutes.js' )( app );
-
-	var routes = require ('../routes/loginRoutes.js');
-	app.use('/api/', routes);
+	var loginRoutes = require ('../routes/loginRoutes.js');
+	var itemRoutes = require( '../routes/itemRoutes.js' );
+	var userRoutes = require( '../routes/userRoutes.js' );
+	app.use('/api/', loginRoutes);
+	app.use('/api/items', itemRoutes);
+	app.use('/api/', userRoutes);
 
 	app.use(function(req, res, next) {
   		res.sendFile( path.join(__dirname, '../../client/index.html') );

@@ -4,6 +4,10 @@ var items = require('./itemController');
 var users = require('./userController');
 var async = require('async');
 
+exports.list = function( ){
+    
+}
+
 exports.findUserByID = function( id, callback ){
 
     User.findOne({ '_id':  id }, function( err, user ){
@@ -100,20 +104,3 @@ exports.validEmail = function( email ){
     
 	return match.test( email );
 };
-
-
-function loggedIn( req, res, next ) {
-    if ( req.isAuthenticated() )
-        return next( );
-    app.get('/login', function(req, res){
-        res.render('login', { message: "Please log in to access this feature" });
-    });
-}
-
-function alreadyLoggedIn( req, res, next ) {
-    if ( req.isAuthenticated() ){
-        res.redirect( '/' );
-    } else {
-        return next( );
-    }
-}

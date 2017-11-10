@@ -9,7 +9,7 @@ var passport = require('passport');
       return res.status( 200 ).json({ user: "" });
     }
     res.status( 200 ).json({ user: req.user });
-    
+
   });
 
 
@@ -71,7 +71,7 @@ var passport = require('passport');
         });
   });
 
-  router.get( '/logout', function( req, res ){ //this does work, sets req.isAuthenticated() to false
+  router.get( '/logout', function( req, res ){
 
     req.logout();
     res.status( 200 ).json({
