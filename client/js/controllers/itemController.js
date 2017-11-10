@@ -1,4 +1,4 @@
-angular.module('myApp').controller('itemController', [ '$routeParams', 'ItemService', function( $routeParams, ItemService ){
+angular.module('myApp').controller('itemController', [ '$routeParams', 'ItemService', 'AuthService', function( $routeParams, ItemService, AuthService ){
     var vm = this;
     
     var itemId = $routeParams.id;
@@ -9,11 +9,20 @@ angular.module('myApp').controller('itemController', [ '$routeParams', 'ItemServ
       });
     }
 
+    ItemService.getItems( ).then( function( items ){
+      vm.items = items;
+    });
 
-      ItemService.getItems( ).then( function( items ){
-        vm.items = items;
+  
+    AuthService.getUser( ).then( function( user ){
+      ItemService.getItemsBelongingTo( user._id ).then( function( items ){
+        vm.myItems = items;
+
+      }).catch( function( err ){
+        console.log( "error = " + err );
       });
-    
+    });
+
     
 
 

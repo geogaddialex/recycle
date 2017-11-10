@@ -8,6 +8,59 @@ exports.list = function( ){
     
 }
 
+exports.create = function( ){
+    
+}
+
+exports.listItems = function( req, res ){
+
+    var user = req.params.user;
+    console.log("user = " + user );
+
+    Item.find({ }).populate({ path: 'owner' }).exec( function( err, items ){
+
+        if( err ){
+            console.log( "error: " + err );
+            return res.status( 500 );
+        }
+        
+        res.json({ items: items });
+            
+    })
+
+
+    findItemsBelongingTo = function( user, callback ){
+
+        var userToTest = user;
+        var newItems = [];
+
+        if( user ){
+            Item.find({ }, function( err, items ){
+                async.each( items, ofUser, whenDone );    
+            });
+        }
+        
+
+        function ofUser( item, callback ){
+            exports.findItemByID( item, function( item ){
+
+                if( item.owner.toString().trim() === userToTest.id.toString().trim() ){
+                    newItems.push({ id:item._id, name: item.name, owner: userToTest.username });
+                }
+                callback();
+            }); 
+        }
+
+        function whenDone( err ){
+            if( err ){
+                console.log( "error: " + err );
+            } else {
+                callback( newItems ); 
+            }        
+        }
+    }
+}
+
 exports.findUserByID = function( id, callback ){
 
     User.findOne({ '_id':  id }, function( err, user ){

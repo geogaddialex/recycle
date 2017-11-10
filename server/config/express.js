@@ -34,12 +34,12 @@
 	passport.deserializeUser( User.deserializeUser() );
 
 
-	var loginRoutes = require ('../routes/loginRoutes.js');
+	var loginRoutes = require( '../routes/loginRoutes.js' );
 	var itemRoutes = require( '../routes/itemRoutes.js' );
 	var userRoutes = require( '../routes/userRoutes.js' );
 	app.use('/api/', loginRoutes);
 	app.use('/api/items', itemRoutes);
-	app.use('/api/', userRoutes);
+	app.use('/api/users', userRoutes);
 
 	app.use(function(req, res, next) {
   		res.sendFile( path.join(__dirname, '../../client/index.html') );

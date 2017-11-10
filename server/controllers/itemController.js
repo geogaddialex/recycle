@@ -65,34 +65,3 @@ exports.findOwnerOfItem = function( id, callback ){
         } )
     });
 }
-
-exports.findItemsBelongingTo = function( user, callback ){
-
-    var userToTest = user;
-    var newItems = [];
-
-    if( user ){
-        Item.find({ }, function( err, items ){
-            async.each( items, ofUser, whenDone );    
-        });
-    }
-    
-
-    function ofUser( item, callback ){
-        exports.findItemByID( item, function( item ){
-
-            if( item.owner.toString().trim() === userToTest.id.toString().trim() ){
-                newItems.push({ id:item._id, name: item.name, owner: userToTest.username });
-            }
-            callback();
-        }); 
-    }
-
-    function whenDone( err ){
-        if( err ){
-            console.log( "error: " + err );
-        } else {
-            callback( newItems ); 
-        }        
-    }
-}
