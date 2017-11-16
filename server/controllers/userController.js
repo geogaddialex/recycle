@@ -25,10 +25,10 @@ exports.create = function( ){
 
 exports.listItems = function( req, res ){
 
-    var user = req.params.user;
+    var user = req.user;
     console.log("user = " + user );
 
-    Item.find({ }).populate({ path: 'owner' }).exec( function( err, items ){
+    Item.find({owner: user}).populate({ path: 'owner' }).exec( function( err, items ){
 
         if( err ){
             console.log( "error: " + err );
@@ -38,38 +38,6 @@ exports.listItems = function( req, res ){
         res.json({ items: items });
             
     })
-
-
-    findItemsBelongingTo = function( user, callback ){
-
-        var userToTest = user;
-        var newItems = [];
-
-        if( user ){
-            Item.find({ }, function( err, items ){
-                async.each( items, ofUser, whenDone );    
-            });
-        }
-        
-
-        function ofUser( item, callback ){
-            exports.findItemByID( item, function( item ){
-
-                if( item.owner.toString().trim() === userToTest.id.toString().trim() ){
-                    newItems.push({ id:item._id, name: item.name, owner: userToTest.username });
-                }
-                callback();
-            }); 
-        }
-
-        function whenDone( err ){
-            if( err ){
-                console.log( "error: " + err );
-            } else {
-                callback( newItems ); 
-            }        
-        }
-    }
 }
 
 exports.findUserByID = function( id, callback ){
@@ -83,23 +51,6 @@ exports.findUserByID = function( id, callback ){
         if( !user ){
             callback( null );
     
-        } else {
-            callback( user );
-        }
-    });
-}
-
-exports.findUserByName = function( username, callback ){
-
-    User.findOne({ 'username':  username }, function( err, user ){
-        if( err ){  
-            console.log( err ); 
-            callback( null );
-        }
-
-        if( !user ){
-            callback( null );
-
         } else {
             callback( user );
         }

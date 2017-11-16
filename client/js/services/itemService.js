@@ -63,13 +63,10 @@ angular.module( 'myApp' ).factory( 'ItemService', [ '$q', '$timeout', '$http', f
     function getItemsBelongingTo( id ){
        
       var deferred = $q.defer();
-
-      var url = '/api/user/'+id+'/items'
+      var url = '/api/users/'+id+'/items'
 
       $http.get( url ).then(
         function successCallback( res ) {
-
-          // console.log( "itemservice success data = " + res.data );
 
             if( res.data.items ){
               deferred.resolve( res.data.items );
@@ -79,9 +76,13 @@ angular.module( 'myApp' ).factory( 'ItemService', [ '$q', '$timeout', '$http', f
 
         }, function errorCallback( res ){
 
+          console.log( "error: " + res.data );
+
           deferred.reject();
         }
-      );
+      ).catch( function( err ){
+        console.log( "caught error: " + err );
+      });
 
       return deferred.promise;
     }

@@ -27,6 +27,7 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
         }).catch( function( err ){
           console.log( "error = " + err );
+          vm.myItems = {};
         });
       });
     }

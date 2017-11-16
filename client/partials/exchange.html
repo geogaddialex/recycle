@@ -17,7 +17,7 @@
 
                         <h3> {{ ctrl.user.username }} </h3>
 
-                        <div ng-repeat="item in ctrl.exchange.recipientItems">
+                        <div ng-repeat="item in ctrl.exchange.myItems">
                             <div class="item">{{ item.name }}</div>    
                         </div>
                 </div>
@@ -26,7 +26,7 @@
 
                         <h3> {{ ctrl.recipient.username }} </h3>
 
-                        <div ng-repeat="item in ctrl.exchange.recipientItems">
+                        <div ng-repeat="item in ctrl.exchange.otherUser.items">
                             <div class="item">{{ item.name }}</div>    
                         </div>
                 </div>
@@ -45,9 +45,9 @@
         </div><!-- exchange -->
 
         <div class="col-xs-1" id="theirItems">
-            <h3> {{ ctrl.recipient.username }} </h3>
+            <h3> {{ ctrl.otherUser.username }} </h3>
 
-            <div ng-repeat="item in ctrl.recipientItems">
+            <div ng-repeat="item in ctrl.otherUser.items">
                 <div class="item">{{ item.name }}</div>    
             </div>
         </div>
