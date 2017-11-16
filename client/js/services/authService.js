@@ -20,7 +20,7 @@ angular.module( 'myApp' ).factory( 'AuthService', [ '$q', '$timeout', '$http', f
     }
 
     function getUserStatus() {
-      return $http.get( '/api/status' ).then(
+      return $http.get( '/api/login/status' ).then(
         function successCallback( res ) {
 
             if( res.data.authenticated ){
@@ -38,7 +38,7 @@ angular.module( 'myApp' ).factory( 'AuthService', [ '$q', '$timeout', '$http', f
       
       var deferred = $q.defer();
 
-      $http.get( '/api/user' ).then(
+      $http.get( '/api/login/user' ).then(
         function successCallback( res ) {
 
             if( res.data.user ){
@@ -59,7 +59,7 @@ angular.module( 'myApp' ).factory( 'AuthService', [ '$q', '$timeout', '$http', f
 
         var deferred = $q.defer();
 
-        $http.post( '/api/register', { username: username, password: password, email: email } ).then(
+        $http.post( '/api/login/register', { username: username, password: password, email: email } ).then(
           function successCallback( res ){
             deferred.resolve();
         }, function errorCallback( res ){
@@ -73,7 +73,7 @@ angular.module( 'myApp' ).factory( 'AuthService', [ '$q', '$timeout', '$http', f
 
         var deferred = $q.defer();
 
-        $http.post('/api/login', { username: username, password: password }).then( 
+        $http.post('/api/login/login', { username: username, password: password }).then( 
             function successCallback( res ){
                 user = true;
                 deferred.resolve();
@@ -89,7 +89,7 @@ angular.module( 'myApp' ).factory( 'AuthService', [ '$q', '$timeout', '$http', f
 
         var deferred = $q.defer();
 
-        $http.get( '/api/logout' ).then( 
+        $http.get( '/api/login/logout' ).then( 
             function successCallback( res ){
 
             user = false;

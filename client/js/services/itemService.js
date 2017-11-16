@@ -69,7 +69,7 @@ angular.module( 'myApp' ).factory( 'ItemService', [ '$q', '$timeout', '$http', f
       $http.get( url ).then(
         function successCallback( res ) {
 
-          console.log( res.data );
+          // console.log( "itemservice success data = " + res.data );
 
             if( res.data.items ){
               deferred.resolve( res.data.items );

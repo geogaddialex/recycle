@@ -1,4 +1,4 @@
-angular.module('myApp').controller('itemController', [ '$routeParams', 'ItemService', 'AuthService', function( $routeParams, ItemService, AuthService ){
+angular.module('myApp').controller('itemController', [ '$routeParams', '$location', 'ItemService', 'AuthService', function( $routeParams, $location, ItemService, AuthService ){
     var vm = this;
     
     var itemId = $routeParams.id;
@@ -6,34 +6,40 @@ angular.module('myApp').controller('itemController', [ '$routeParams', 'ItemServ
     if( itemId ){
       ItemService.getItem( itemId ).then( function( item ){
         vm.singleItem = item;
-      });
-    }
-
-    ItemService.getItems( ).then( function( items ){
-      vm.items = items;
-    });
-
-  
-    AuthService.getUser( ).then( function( user ){
-      ItemService.getItemsBelongingTo( user._id ).then( function( items ){
-        vm.myItems = items;
-
       }).catch( function( err ){
         console.log( "error = " + err );
       });
-    });
+    }
 
+    if( $location.path() == "/items" ){
+      ItemService.getItems( ).then( function( items ){
+        vm.items = items;
+      }).catch( function( err ){
+          console.log( "error = " + err );
+      });
+    }
     
 
+    if( $location.path() == "/myItems" ){
+      AuthService.getUser( ).then( function( user ){
+        ItemService.getItemsBelongingTo( user._id ).then( function( items ){
+          vm.myItems = items;
 
-    // vm.item = {}; might break something to leave this out...?
+        }).catch( function( err ){
+          console.log( "error = " + err );
+        });
+      });
+    }
+   
+
 
     vm.createItem = function( item ){
 
       ItemService.createItem( item ).then( function( ){ 
-          alert( 'created successfully!!!' ); 
+          alert( "Item created successfully" );
+          $location.path("/");
        }, function(){
-          alert( 'something bad' );
+          alert( "Item not created" );
        })
     }
 

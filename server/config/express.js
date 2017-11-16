@@ -37,11 +37,13 @@
 	var loginRoutes = require( '../routes/loginRoutes.js' );
 	var itemRoutes = require( '../routes/itemRoutes.js' );
 	var userRoutes = require( '../routes/userRoutes.js' );
-	app.use('/api/', loginRoutes);
+	app.use('/api/login', loginRoutes);
 	app.use('/api/items', itemRoutes);
 	app.use('/api/users', userRoutes);
 
 	app.use(function(req, res, next) {
+
+		console.log("why the heck is it here?");
   		res.sendFile( path.join(__dirname, '../../client/index.html') );
 	})
 

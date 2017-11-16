@@ -22,7 +22,13 @@
             <li><input type="text" name="search" id="navSearch" class="form-control" placeholder="Find an item" value=""></li>
         </ul>
 
-        <ul class="nav navbar-nav navbar-right">
+        <ul ng-controller="profileController as ctrl" class="nav navbar-nav navbar-right">
+            <li ng-if="ctrl.user.isAdmin" class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+                <ul class="dropdown-menu">
+                    <li><a href="/#!/users">Browse users</a></li>
+                </ul>
+            </li>
             <li><a href="/#!/messages"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a></li>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>

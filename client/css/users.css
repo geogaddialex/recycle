@@ -1,0 +1,37 @@
+.userContainer{
+	padding:5px;
+}
+
+.user{
+	background-color:white;
+	text-align: center;
+	padding: 5px;
+	overflow:hidden;
+	box-shadow: 0 0 5px #e4ceb4;
+}
+
+.user:hover{
+	box-shadow: 0 0 10px #dec2a1;
+}
+
+.userImage{
+	max-width:100%;
+}
+
+.userName{
+	margin:5px;
+}
+
+.userButton{
+	border-radius:5px;
+
+}
+
+.content{
+	text-align: center;
+}
+
+span.glyphicon {
+    font-size: 150%;
+}
+

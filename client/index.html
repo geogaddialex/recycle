@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <link rel="stylesheet" type="text/css" href="/css/items.css">
+    <link rel="stylesheet" type="text/css" href="/css/users.css">
     <link rel="stylesheet" type="text/css" href="/css/exchange.css">
     <link rel="stylesheet" type="text/css" href="/css/login.css">
 
@@ -18,7 +19,9 @@
     <script src="js/routes.js"></script>
     <script src="js/services/authService.js"></script>
     <script src="js/services/itemService.js"></script>
+    <script src="js/services/userService.js"></script>
     <script src="js/controllers/itemController.js"></script>
+    <script src="js/controllers/userController.js"></script>
     <script src="js/controllers/miscController.js"></script>
     <script src="js/controllers/loginController.js"></script>
 
@@ -31,7 +34,7 @@
 
     <!-- include message if any -->
 
-    <div ng-view class="content"></div>
+    <div class="ng-view content"></div>
 
     <div ng-include="'/partials/footer.html'"></div>
 

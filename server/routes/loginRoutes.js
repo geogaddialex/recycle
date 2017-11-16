@@ -55,6 +55,7 @@ var passport = require('passport');
           newUser.username = req.body.username;
           newUser.password = "";
           newUser.email = req.body.email;
+          newUser.isAdmin = false;
           newUser.items = [];
 
         User.register( newUser, req.body.password, function( err, account ){

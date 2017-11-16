@@ -4,9 +4,20 @@ var items = require('./itemController');
 var users = require('./userController');
 var async = require('async');
 
-exports.list = function( ){
-    
+exports.list = function( req, res ){
+
+    User.find({ }, function( err, users ){
+
+        if( err ){
+            console.log( "error: " + err );
+            return res.status( 500 );
+        }
+        
+        res.json({ users: users });
+            
+    })
 }
+
 
 exports.create = function( ){
     
