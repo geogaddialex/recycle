@@ -1,17 +1,58 @@
-angular.module('myApp').controller('exchangeController', [ '$routeParams', '$location', 'ItemService', 'AuthService', 'UserService', function( $routeParams, $location, ItemService, AuthService, UserService ){
+angular.module('myApp').controller('exchangeController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService ){
     var vm = this;
     
+    vm.selectedUser = {};
     var item = $routeParams.item;
     var username = $routeParams.username;
+    vm.exchange = { myItems: [], otherUserItems: [] }
+    vm.options = { myItems: [], otherUserItems: [] }
 
 
-    if( username ){
-      UserService.getUserByName( username ).then( function( user ){
+
+    $scope.$watch( angular.bind( this, function( ){
+      return vm.selectedUser;
+    }), function( selected ){
+
+      //deal with undefined
+      
+      console.log('User changed to ' + selected.username );
+
+      vm.options.otherUserItems = [];
+      vm.exchange.otherUserItems = [];
+
+      UserService.getUserByName( selected.username ).then( function( otherUser ){
           
-          vm.otherUser = user;
+          vm.otherUser = otherUser;
 
           ItemService.getItemsBelongingTo( vm.otherUser._id ).then( function( items ){
-            vm.otherUser.items = items;
+
+            for( x in items ){
+              vm.options.otherUserItems.push( items[x] );
+            }
+
+          }).catch( function( err ){
+            console.log( "error = " + err );
+            vm.otherUser.items = {};
+          });  
+
+        }).catch(function( err ){
+          console.log("err: " + err)
+        });
+    });
+
+
+    //initialise otherUser
+
+    if( username ){
+      UserService.getUserByName( username ).then( function( otherUser ){
+          
+          vm.otherUser = otherUser;
+
+          ItemService.getItemsBelongingTo( vm.otherUser._id ).then( function( items ){
+
+            for( x in items ){
+              vm.options.otherUserItems.push( items[x] );
+            }
 
           }).catch( function( err ){
             console.log( "error = " + err );
@@ -23,29 +64,68 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
       });
     }
 
+    //initialise users dropdown
 
-
-
-
-
-    if( $location.path() == "/items" ){
-      ItemService.getItems( ).then( function( items ){
-        vm.items = items;
-      }).catch( function( err ){
-          console.log( "error = " + err );
-      });
-    }
+    UserService.getUsers( ).then( function( users ){
+      vm.users = users;
+    })
     
 
+    //initialise my items 
 
-      AuthService.getUser( ).then( function( user ){
-        ItemService.getItemsBelongingTo( user._id ).then( function( items ){
-          vm.myItems = items;
+    AuthService.getUser( ).then( function( user ){
+      vm.user = user;
 
-        }).catch( function( err ){
-          console.log( "error = " + err );
-          vm.myItems = {};
-        });
+      ItemService.getItemsBelongingTo( vm.user._id ).then( function( items ){
+
+        for( x in items ){
+            vm.options.myItems.push( items[x] );
+        }
+
+      }).catch( function( err ){
+        console.log( "error = " + err );
+        vm.myItems = {};
       });
+    });
+
+
+
+
+    vm.addToExchange = function( user, item ){
+
+      if( user == 'user' ){
+
+        vm.exchange.myItems.push( item );
+        var optionsArray = vm.options.myItems;
+
+      }else{
+
+        vm.exchange.otherUserItems.push( item );
+        var optionsArray = vm.options.otherUserItems;
+      }
+
+      var index = optionsArray.indexOf( item );
+      if( index > -1 ){
+        optionsArray.splice( index, 1 );
+      }
+
+    }
+
+    vm.removeFromExchange = function( user, item ){
+
+      if( user == 'user' ){
+        vm.options.myItems.push( item );
+        var array = vm.exchange.myItems;
+      }else{
+        vm.options.otherUserItems.push( item );
+        var array = vm.exchange.otherUserItems;
+      }    
+
+      var index = array.indexOf( item );
+      if( index > -1 ){
+        array.splice( index, 1 );
+      }
+
+    }
 
 }]);
