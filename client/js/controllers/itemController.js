@@ -3,6 +3,10 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
     
     var itemId = $routeParams.id;
 
+    AuthService.getUser().then( function(user){
+      vm.user = user;
+    });
+
     if( itemId ){
       ItemService.getItem( itemId ).then( function( item ){
         vm.singleItem = item;

@@ -9,12 +9,40 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
 
 
+    
+
+
+    //initialise otherUser
+
+    if( username ){
+      UserService.getUserByName( username ).then( function( otherUser ){
+          
+          vm.otherUser = otherUser;
+          vm.selectedUser = otherUser;
+
+          // ItemService.getItemsBelongingTo( vm.otherUser._id ).then( function( items ){
+
+          //   for( x in items ){
+          //     vm.options.otherUserItems.push( items[x] );
+          //   }
+
+          // }).catch( function( err ){
+          //   console.log( "error = " + err );
+          //   vm.otherUser.items = {};
+          // });  
+
+      }).catch(function( err ){
+        console.log("err: " + err)
+      });
+    }
+
+
     $scope.$watch( angular.bind( this, function( ){
       return vm.selectedUser;
     }), function( selected ){
 
       //deal with undefined
-      
+
       console.log('User changed to ' + selected.username );
 
       vm.options.otherUserItems = [];
@@ -39,30 +67,6 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
           console.log("err: " + err)
         });
     });
-
-
-    //initialise otherUser
-
-    if( username ){
-      UserService.getUserByName( username ).then( function( otherUser ){
-          
-          vm.otherUser = otherUser;
-
-          ItemService.getItemsBelongingTo( vm.otherUser._id ).then( function( items ){
-
-            for( x in items ){
-              vm.options.otherUserItems.push( items[x] );
-            }
-
-          }).catch( function( err ){
-            console.log( "error = " + err );
-            vm.otherUser.items = {};
-          });  
-
-      }).catch(function( err ){
-        console.log("err: " + err)
-      });
-    }
 
     //initialise users dropdown
 
