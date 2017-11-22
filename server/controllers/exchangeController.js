@@ -1,38 +1,41 @@
-var items = require('./itemController');
+var Item = require( '../models/itemModel' );
+var User = require( '../models/userModel' );
 var users = require('./userController');
-var async = require('async');
+var items = require('./itemController');
 
-exports.initiate = function( req, res ){
-    users.findUserByName( req.params.recipient, function( recipient ){
+exports.list = function( req, res ){
 
-    	async.parallel({
-		    sender: function( callback ){
+    Exchange.find({ }, function( err, exchange ){
 
-		        items.findItemsBelongingTo( req.user, function( sendersItems ){
-		            callback(null, { items: sendersItems });
-		        });
-		    },
-		    recipient: function( callback ){
+        if( err ){
+            console.log( "error: " + err );
+            return res.status( 500 );
+        }
+        
+        res.json({ exchange: exchange });
+            
+    })
+}
 
-		        items.findItemsBelongingTo( recipient, function( recipientsItems ){
-		            callback(null, { items: recipientsItems });
-		        });
-		    }
-		}, function(err, results) {
+exports.create = function( req, res ){
 
-			    res.render('exchange', {
-		            item: req.params.item,
-		            user: req.user,
-		            userItems: results.sender.items,
-		            recipient: recipient,
-		            recipientItems: results.recipient.items,
-		            message: req.flash('msg')
-		        });
-			});
+    var exchange = new Exchange({ 
+    	senderItems: req.body.exchange.myItems,
+		recipientItems: req.body.exchange.otherUserItems,
+		recipient: req.body.otherUser.username,
+		sender: req.user.username,
+    	message: req.body.message, //this should be an array
+    	accepted: { recipient:0, sender:0 }
+    });
+
+    exchange.save( function( err ){
+        if( err ){
+            console.log( "error: " + err );
+            return res.status(500).json({ errors: "Could not create exchange" });
+        } 
+
+        console.log("exchange added: " + exchange);
+        res.status( 201 ).json( exchange );
 
     });
-}
-
-exports.send = function( req, res ){
-	
-}
+};
