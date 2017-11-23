@@ -16,7 +16,7 @@ myApp.config( function( $routeProvider, $locationProvider ){
         .when('/items/:id', { templateUrl: 'partials/item.html', controller: 'itemController', controllerAs: 'ctrl', access: { restricted: true } })
         .otherwise({ templateUrl: 'partials/404.html', access: { restricted: true } });
 
-    $locationProvider.html5Mode( true );
+    $locationProvider.html5Mode({ enabled: true, rewriteLinks: false });
 });
 
 myApp.run( function( $rootScope, $location, $route, AuthService ){
