@@ -42,7 +42,7 @@
 	app.use('/api/users', userRoutes);
 
 	app.use(function(err, req, res) {
-	  res.send('/');
+	  res.sendFile('index.html');
 	});
 
 module.exports = app;
