@@ -41,8 +41,21 @@
 	app.use('/api/items', itemRoutes);
 	app.use('/api/users', userRoutes);
 
+	app.use( function( err, req, res ){
+	  res.send('what');
+	});
+
+	app.use(function(req, res, next) {
+	  var err = new Error('Not Found');
+	  err.status = 404;
+	  next(err);
+	});
+
 	app.use(function(err, req, res) {
-	  res.sendFile('index.html');
+	  res.send(JSON.stringify({
+	    message: err.message,
+	    error: {}
+	  }));
 	});
 
 module.exports = app;
