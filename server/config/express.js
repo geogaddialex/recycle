@@ -41,7 +41,7 @@
 	app.use('/api/items', itemRoutes);
 	app.use('/api/users', userRoutes);
 
-	app.use('*', express.static('client'));
+	app.use('*', express.static('/'));
 
 	app.use(function(req, res, next) {
 	  var err = new Error('Not Found');
