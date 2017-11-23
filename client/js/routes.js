@@ -1,6 +1,6 @@
 var myApp = angular.module("myApp", ['ngRoute']);
 
-myApp.config( function( $routeProvider ){
+myApp.config( function( $routeProvider, $locationProvider ){
     $routeProvider
         .when('/', { templateUrl: 'partials/home.html', controller: 'homeController', controllerAs: 'ctrl', access: { restricted: true } })
         .when('/login', { templateUrl: 'partials/login.html', controller: 'loginController', access: { restricted: false } })
@@ -15,6 +15,8 @@ myApp.config( function( $routeProvider ){
         .when('/exchange/:username/:item', { templateUrl: 'partials/exchange.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
         .when('/items/:id', { templateUrl: 'partials/item.html', controller: 'itemController', controllerAs: 'ctrl', access: { restricted: true } })
         .otherwise({ templateUrl: 'partials/404.html', access: { restricted: true } });
+
+    $locationProvider.html5Mode( true );
 });
 
 myApp.run( function( $rootScope, $location, $route, AuthService ){
