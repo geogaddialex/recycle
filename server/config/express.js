@@ -1,10 +1,10 @@
-	var path 		 = require('path');
+	var path 		 = require('path');							//not in use
 	var express  	 = require( 'express' );
 	var logger       = require( 'morgan' );
 	var cookieParser = require( 'cookie-parser' );
 	var bodyParser   = require( 'body-parser' );
 	var session      = require( 'express-session' );
-	var flash  		 = require( 'connect-flash' );
+	var flash  		 = require( 'connect-flash' );				//not in use
 	var passport 	 = require( 'passport' );
 	var localStrategy = require('passport-local' ).Strategy;
 	var User 		 = require( '../models/userModel' );	
