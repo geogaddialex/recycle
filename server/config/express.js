@@ -41,7 +41,10 @@
 	app.use('/api/items', itemRoutes);
 	app.use('/api/users', userRoutes);
 
-	app.use('*', '/');
+	// app.use('*', express.static('client'));
+	app.get('*', function(req, res) {
+  		res.sendfile('client/index.html')
+	})
 
 	app.use(function(req, res, next) {
 	  var err = new Error('Not Found');
