@@ -43,7 +43,7 @@
 
 	// app.use('*', express.static('client'));
 	app.get('*', function(req, res) {
-  		res.sendFile( path.resolve('../recycle/client/index.html'));
+  		res.sendFile( '/index.html', {root: './client'} );
 	})
 
 	app.use(function(req, res, next) {
