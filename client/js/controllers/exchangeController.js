@@ -11,68 +11,19 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
     AuthService.getUser().then( function(user){
       vm.user = user;
     });
-    
-
-
-    //initialise otherUser when url specifies one
-
-    if( username ){
-      UserService.getUserByName( username ).then( function( otherUser ){
-          
-          vm.otherUser = otherUser;
-          vm.selectedUser = otherUser;
-
-      }).catch(function( err ){
-        console.log("err: " + err)
-      });
-    }
-
-    //watch select list for changes
-
-    $scope.$watch( angular.bind( this, function( ){
-      return vm.selectedUser;
-    }), function( selected ){
-
-      if( !selected ){
-
-        vm.options.otherUserItems = [];
-        vm.exchange.otherUserItems = [];
-        vm.otherUser = {username:"No user selected"};
-
-      }else{
-
-        vm.options.otherUserItems = [];
-        vm.exchange.otherUserItems = [];
-
-        UserService.getUserByName( selected.username ).then( function( otherUser ){
-            
-          vm.otherUser = otherUser;
-
-          ItemService.getItemsBelongingTo( vm.otherUser._id ).then( function( items ){
-
-            for( x in items ){
-              vm.options.otherUserItems.push( items[x] );
-            }
-
-          }).catch( function( err ){
-            console.log( "error = " + err );
-            vm.otherUser.items = {};
-          });  
-
-        }).catch(function( err ){
-          console.log("err: " + err)
-        });
-      }
-    });
 
     //initialise users dropdown
 
     UserService.getUsers( ).then( function( users ){
       vm.users = users;
-    })
-    
 
-    //initialise my items 
+      //initialise otherUser when url specifies one
+      if( username ){
+          vm.otherUser = vm.users.find(user => user.username === username);
+          vm.selectedUser = vm.users.find(user => user.username === username);
+      }
+    })
+        //initialise my items 
 
     AuthService.getUser( ).then( function( user ){
       vm.user = user;
@@ -90,7 +41,38 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
     });
 
 
+    //watch select list for changes
 
+    $scope.$watch( angular.bind( this, function(){
+      return vm.selectedUser;
+    }), function( selected ){
+
+      if( !selected ){
+
+        vm.options.otherUserItems = [];
+        vm.exchange.otherUserItems = [];
+        vm.otherUser = {username:"No user selected"};
+
+      }else{
+
+        vm.options.otherUserItems = [];
+        vm.exchange.otherUserItems = [];
+            
+        vm.otherUser = vm.users.find( user => user.username === selected.username );
+
+        ItemService.getItemsBelongingTo( vm.otherUser._id ).then( function( items ){
+
+          for( x in items ){
+            vm.options.otherUserItems.push( items[x] );
+          }
+
+        }).catch( function( err ){
+          console.log( "error = " + err );
+          vm.otherUser.items = {};
+        });  
+      }
+    });
+    
 
     vm.addToExchange = function( user, item ){
 
