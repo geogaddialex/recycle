@@ -42,12 +42,6 @@
 	app.use('/api/users', userRoutes);
 
 	app.use(function(req, res, next) {
-		console.log("why the heck is it here?");
-  		res.sendFile( path.join(__dirname, '../../client/index.html') );
-	})
-
-	// error handlers
-	app.use(function(req, res, next) {
 	  var err = new Error('Not Found');
 	  err.status = 404;
 	  next(err);
@@ -60,6 +54,5 @@
 	    error: {}
 	  }));
 	});
-
 
 module.exports = app;

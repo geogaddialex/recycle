@@ -29,15 +29,6 @@ exports.create = function( req, res ){
         console.log("item added: " + item);
         res.status( 201 ).json( item );
 
-        // exports.addToUser( req.user, item, function( success ){
-
-        //     if( success ){
-                      
-        //     } else {
-        //         console.log( "yeah nah" )
-        //     }
-            
-        // });  
     });
 };
 

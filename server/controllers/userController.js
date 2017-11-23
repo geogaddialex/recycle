@@ -28,7 +28,6 @@ exports.create = function( ){
 exports.listItems = function( req, res ){
 
     var user = req.user;
-    console.log("user = " + user );
 
     Item.find({owner: user}).populate({ path: 'owner' }).exec( function( err, items ){
 

@@ -18,6 +18,7 @@ a{
 
 a:hover{
   text-decoration: none;
+  color: #414448;
 }
 
 h2, h3{
@@ -33,6 +34,10 @@ h2, h3{
 
 .navbar{
   padding: 0 3%;
+}
+
+#navSearch{
+  box-shadow: none;
 }
 
 .navbar-right li a{
@@ -76,6 +81,10 @@ h2, h3{
   left: 0;
   top: 55px;
   border-radius:0;
+}
+
+#menu-toggle:hover{
+  border-color: #d9e4f2;
 }
 
 .center{

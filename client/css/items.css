@@ -7,7 +7,13 @@
 	text-align: center;
 	padding: 5px;
 	overflow:hidden;
-	box-shadow: 0 0 5px #e4ceb4;
+	border-radius: 5px;
+	border: 1px solid #f2e7d9;
+}
+
+.item:hover{
+	border: 1px solid #d9e4f2;
+	/*box-shadow: 0 0 5px #f2e7d9;*/
 }
 
 .addItem{
@@ -15,11 +21,7 @@
 	text-align: center;
 	padding: 5px;
 	overflow:hidden;
-	box-shadow: 0 0 2px #e4ceb4;
-}
-
-.item:hover{
-	box-shadow: 0 0 10px #dec2a1;
+	border: 2px solid #f2e7d9;
 }
 
 .itemImage{
