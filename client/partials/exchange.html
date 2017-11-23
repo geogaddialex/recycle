@@ -51,14 +51,8 @@
         <div class="col-xs-2" id="theirItems">
             <!-- <h4> {{ ctrl.otherUser.username }}'s items </h4> -->
 
-<<<<<<< HEAD
-            <select name="userSelect" id="userSelect" 
-            ng-options="user as user.username for user in ctrl.users | filter:{username: '!' + ctrl.user.username}" 
-            ng-model="ctrl.selectedUser"> 
-=======
             <select name="userSelect" id="userSelect" ng-model="ctrl.selectedUser"
             ng-options="user as user.username for user in ctrl.users | filter:{username: '!' + ctrl.user.username}"> 
->>>>>>> d1c94a5a1d2ce4017eb0729a9f69eae56da616ef
                 <option value="">Select User</option>
             </select> 
 
