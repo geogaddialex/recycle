@@ -8,6 +8,8 @@ exports.list = function( req, res ){
 
     User.find({ }, function( err, users ){
 
+    users = Object.values(users);
+
         if( err ){
             console.log( "error: " + err );
             return res.status( 500 );

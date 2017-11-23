@@ -4,7 +4,8 @@ var Item = require( './itemModel' );
 
 var exchangeSchema = mongoose.Schema({
 
-	items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }],
+	senderItems: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }],
+	recipientItems: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }],
 	recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 	sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     message: String,

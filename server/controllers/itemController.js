@@ -1,7 +1,6 @@
 var Item = require( '../models/itemModel' );
 var User = require( '../models/userModel' );
 var users = require('./userController');
-var async = require('async');
 
 exports.list = function( req, res ){
 
