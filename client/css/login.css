@@ -1,8 +1,7 @@
 .login {
 	text-align: center;
 	margin-top: 20px;
-	padding: 5px;
-	box-shadow: 0 0 5px #e4ceb4;
+	border-color: #e7e7e7;
 }
 
 .button{
@@ -31,4 +30,8 @@ input {
 
 :-ms-input-placeholder {  
    text-align: center; 
+}
+
+#login-form div{
+	padding:0;
 }

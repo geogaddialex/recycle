@@ -21,7 +21,7 @@
 	text-align: center;
 	padding: 5px;
 	overflow:hidden;
-	border: 2px solid #f2e7d9;
+	border: 1px solid #f2e7d9;
 }
 
 .itemImage{
@@ -40,8 +40,3 @@
 .content{
 	text-align: center;
 }
-
-span.glyphicon {
-    font-size: 150%;
-}
-

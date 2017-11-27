@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav ng-controller="profileController as ctrl" class="navbar navbar-default navbar-fixed-top">
 
 
 <div class="container-fluid">
@@ -11,60 +11,113 @@
 
     <div id="navbar" class="navbar-collapse collapse">
 
-        <ul class="nav navbar-nav">
+        <div id="whenLoggedIn" ng-if="ctrl.authService.isLoggedIn()">
 
-            <li class="dropdown">
-                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Items<span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="/items/add">List an item</a></li>
-                    <li><a href="/items">Browse items</a></li>
-                </ul>
-            </li><!-- dropdown -->
+            <ul class="nav navbar-nav">
 
-            <li class="dropdown">
-                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Exchanges<span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="/exchange">Start an exchange</a></li>
-                    <li><a href="/myExchanges">My exchanges</a></li>
-                </ul>
-            </li><!-- dropdown -->
+                <li class="dropdown">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Items<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/items/add">List an item</a></li>
+                        <li><a href="/items">Browse items</a></li>
+                    </ul>
+                </li><!-- dropdown -->
 
-            <li><input type="text" name="search" id="navSearch" class="form-control" placeholder="Find an item" value=""></li>
-        </ul>
+                <li class="dropdown">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Exchanges<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/exchange">Start an exchange</a></li>
+                        <li><a href="/myExchanges">My exchanges</a></li>
+                    </ul>
+                </li><!-- dropdown -->
+<!-- 
 
-        <ul ng-controller="profileController as ctrl" class="nav navbar-nav navbar-right">
+                <li>
+                    <div class="form-group" ng-controller="searchController">
+                        <div class="input-group">
+                          <span class="input-group-addon" id="search-icon"><span class="glyphicon glyphicon-search"></span></span>
+                          <input type="text" class="form-control" id="navSearch" placeholder="Find an item" aria-describedby="search-icon" value="">
+                        </div>
+                    </div>
+                </li>
+ -->
+            </ul>
 
-            <li ng-if="ctrl.user.isAdmin" class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
-                <ul class="dropdown-menu">
-                    <li><a href="/users">Browse users</a></li>
-                </ul>
-            </li>
+            <ul class="nav navbar-nav navbar-right">
 
-            <li><a href="/messages"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a></li>
+                <li ng-if="ctrl.user.isAdmin" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/users">Browse users</a></li>
+                    </ul>
+                </li>
 
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>
+                <li><a href="/messages"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a></li>
 
-                <ul class="dropdown-menu">
-                    <li><a href="/profile">Profile</a></li>
-                    <li><a href="/settings">Settings</a></li>
-                    <li ng-controller="logoutController"><a ng-click='logout()'>Log out</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="/myItems">My items</a></li>
-                </ul>
-            </li><!-- dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>
 
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/profile">Profile</a></li>
+                        <li><a href="/settings">Settings</a></li>
+                        <li ng-controller="logoutController"><a ng-click='logout()'>Log out</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/myItems">My items</a></li>
+                    </ul>
+                </li><!-- dropdown -->
 
-                <ul class="dropdown-menu">
-                    <li><a href="/faq">FAQ</a></li>
-                    <li><a href="/contact">Contact</a></li>
-                </ul>
-            </li><!-- dropdown -->
-        </ul>
-    </div><!--/.nav-collapse -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
+
+                    <ul class="dropdown-menu">
+                        <li><a href="/faq">FAQ</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </li><!-- dropdown -->
+            </ul>
+        </div><!-- whenLoggedIn -->
+
+
+
+        <div id="whenLoggedOut" class="row" ng-controller="loginController" ng-if="!ctrl.authService.isLoggedIn()">
+
+                <form id="login-form" ng-submit="login()" role="form" class="col-xs-8 col-xs-offset-3">
+                    <div class="row">
+
+                        <div class="col-xs-4">
+                            <div ng-show="error" class="alert alert-danger">{{errorMessage}}</div>
+                        </div>
+
+                        <div class="col-xs-3 form-group">
+                            <div class="input-group">
+                              <span class="input-group-addon" id="username-icon"><span class="glyphicon glyphicon-user"></span></span>
+                              <input type="text" class="form-control" id="username" placeholder="Username" aria-describedby="username-icon" ng-model="loginForm.username" value="">
+                            </div>
+                        </div>
+
+                        <div class="col-xs-3 form-group">
+                            <div class="input-group">
+                              <span class="input-group-addon" id="password-icon"><span class="glyphicon glyphicon-lock"></span></span>
+                              <input type="password" class="form-control" id="password" placeholder="Password" aria-describedby="password-icon" ng-model="loginForm.password" value="">
+                            </div>
+                        </div>
+
+                        <div class="col-xs-1">
+                            <input type="submit" name="login-submit" id="login-submit" class="form-control button" value="Log In" ng-disabled="disabled">
+                        </div>
+
+                        <div class="col-xs-1">
+                            <a href="/join" class="form-control button">Join</a>
+                        </div>
+                    </div>
+
+
+                    
+                </form>
+
+        </div><!-- whenLoggedOut -->
+
+    </div><!--navbar -->
 </div>
 
 

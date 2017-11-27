@@ -41,7 +41,11 @@ h2, h3{
 }
 
 .navbar-right li a{
-  padding-bottom: 10px; /* keeps icons centred vertically */
+  /*padding-bottom: 10px;  keeps icons centred vertically */
+}
+
+.form-group{
+  margin-bottom: 0;
 }
 
 .navbar-bottom{
@@ -71,6 +75,24 @@ h2, h3{
     font-size: 16px;
 }
 
+.dropdown-menu {
+  /*background-color: #f8f8f8;*/
+  /*border-top-width: 0;*/
+    border-radius: 8px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    padding-bottom: 10px;
+    border-color: #e7e7e7;
+}
+
+#whenLoggedOut{
+  margin-top:8px;
+}
+
+#navSearch{
+  margin-top:10px;
+}
+
 
 #menu-toggle{
   background-color: #f8f8f8;
@@ -91,18 +113,23 @@ h2, h3{
   text-align: center;
 }
 
-span.glyphicon{
+li a span.glyphicon{
     font-size: 150%;
+}
+
+.glyphicon-search{
+  font-size: 120% !important;
 }
 
 @media screen and (min-width: 768px) {
     #navSearch{
-  		margin-top: 8px;
-  		margin-left: 50px;
+  		margin-top: 11px;
   	}
 }
 
-
+.form-control.button{
+  text-align: center;
+}
 
 #wrapper {
   padding-left: 0;
@@ -152,6 +179,8 @@ span.glyphicon{
   padding: 0;
   list-style: none;
 }
+
+
 
 
 @media(min-width:768px) {

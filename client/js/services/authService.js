@@ -11,6 +11,7 @@ angular.module( 'myApp' ).factory( 'AuthService', [ '$q', '$timeout', '$http', f
       register: register
     });
 
+
     function isLoggedIn( ){
         if( user ){
           return true;

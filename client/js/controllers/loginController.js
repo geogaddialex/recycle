@@ -65,7 +65,7 @@ angular.module('myApp').controller('logoutController', ['$scope', '$location', '
 
     $scope.logout = function( ){
         AuthService.logout( ).then( function( ){
-            $location.path( '/login' );
+            $location.path( '/' );
         });
     };
 

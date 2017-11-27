@@ -2,8 +2,8 @@ var myApp = angular.module("myApp", ['ngRoute']);
 
 myApp.config( function( $routeProvider, $locationProvider ){
     $routeProvider
-        .when('/', { templateUrl: 'partials/home.html', controller: 'homeController', controllerAs: 'ctrl', access: { restricted: true } })
-        .when('/login', { templateUrl: 'partials/login.html', controller: 'loginController', access: { restricted: false } })
+        .when('/', { templateUrl: 'partials/home.html', controller: 'homeController', controllerAs: 'ctrl', access: { restricted: false } })
+        .when('/join', { templateUrl: 'partials/join.html', controller: 'loginController', access: { restricted: false } })
         .when('/items/add', { templateUrl: 'partials/addItem.html', controller: 'itemController', controllerAs: 'ctrl', access: { restricted: true } })
         .when('/users', { templateUrl: 'partials/users.html', controller: 'userController', controllerAs: 'ctrl', access: { restricted: true } })
         .when('/users/:username', { templateUrl: 'partials/user.html', controller: 'userController', controllerAs: 'ctrl', access: { restricted: true } })
@@ -26,7 +26,7 @@ myApp.run( function( $rootScope, $location, $route, AuthService ){
 
             if( next.access ){
                 if( next.access.restricted && !AuthService.isLoggedIn() ){
-                  $location.path( '/login' );
+                  $location.path( '/join' );
                   $route.reload();
                 }
             }
