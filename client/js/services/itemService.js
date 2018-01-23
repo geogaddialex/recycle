@@ -4,6 +4,7 @@ angular.module( 'myApp' ).factory( 'ItemService', [ '$q', '$timeout', '$http', f
       getItems: getItems,
       getItem: getItem,
       createItem: createItem,
+      deleteItem: deleteItem,
       getItemsBelongingTo: getItemsBelongingTo
     });
 
@@ -11,6 +12,11 @@ angular.module( 'myApp' ).factory( 'ItemService', [ '$q', '$timeout', '$http', f
     function createItem( item ){
       return $http({ method: 'POST', url: '/api/items', data: item });
     }
+
+    function deleteItem( ID ){
+      return $http({ method: 'DELETE', url: '/api/items/'+ID });
+    }
+
 
     function getItem( id ){
 
@@ -56,7 +62,6 @@ angular.module( 'myApp' ).factory( 'ItemService', [ '$q', '$timeout', '$http', f
 
       return deferred.promise;
     }
-
 
 
 

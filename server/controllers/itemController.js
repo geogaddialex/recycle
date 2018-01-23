@@ -32,26 +32,19 @@ exports.create = function( req, res ){
     });
 };
 
-exports.addToUser = function( user, item, callback ){
+exports.delete = function( req, res ){
 
-    User.findByIdAndUpdate(
-        user,               //id
-        {$push: {items: item}},
-        {safe: true, upsert: true},
-        function( err, model ){
-            if( err ){
-                console.log( "error adding item to user: " + err );
-            } else {
-                callback( 1 );
-            }
-        }
-    );
-}
+    var id = req.params.id;
 
-exports.findOwnerOfItem = function( id, callback ){
-    exports.findItemByID( id, function( item ){
-        users.findUserByID( item.owner, function( user ){
-            callback();
-        } )
+    Item.findByIdAndRemove(id, (err, item) => {  
+
+        if( err ){
+            console.log( "error: " + err );
+            return res.status(500).json({ errors: "Could not delete item" });
+        } 
+
+        console.log("item deleted: " + item);
+        res.status( 200 ).json( item );
     });
-}
+
+};

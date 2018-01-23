@@ -16,20 +16,35 @@
             <ul class="nav navbar-nav">
 
                 <li class="dropdown">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Items<span class="caret"></span></a>
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        Items<span class="caret"></span>
+                    </a>
                     <ul class="dropdown-menu">
                         <li><a href="/items/add">List an item</a></li>
                         <li><a href="/items">Browse items</a></li>
+                        <li><a href="/myItems">My items</a></li>
                     </ul>
                 </li><!-- dropdown -->
 
                 <li class="dropdown">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Exchanges<span class="caret"></span></a>
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        Exchanges<span class="caret"></span>
+                    </a>
                     <ul class="dropdown-menu">
-                        <li><a href="/exchange">Start an exchange</a></li>
+                        <li><a href="/newExchange">Start an exchange</a></li>
                         <li><a href="/myExchanges">My exchanges</a></li>
                     </ul>
                 </li><!-- dropdown -->
+
+                <li ng-if="ctrl.user.isAdmin" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        Admin<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/users">Browse users</a></li>
+                        <li><a href="/exchanges">Browse exchanges</a></li>
+                    </ul>
+                </li>
 <!-- 
 
                 <li>
@@ -45,13 +60,6 @@
 
             <ul class="nav navbar-nav navbar-right">
 
-                <li ng-if="ctrl.user.isAdmin" class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/users">Browse users</a></li>
-                    </ul>
-                </li>
-
                 <li><a href="/messages"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a></li>
 
                 <li class="dropdown">
@@ -61,8 +69,6 @@
                         <li><a href="/profile">Profile</a></li>
                         <li><a href="/settings">Settings</a></li>
                         <li ng-controller="logoutController"><a ng-click='logout()'>Log out</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/myItems">My items</a></li>
                     </ul>
                 </li><!-- dropdown -->
 

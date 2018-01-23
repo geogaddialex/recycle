@@ -14,9 +14,16 @@
 	box-shadow: 0 0 10px #dec2a1;
 }
 
-
 #exchange{
 	background-color:white;
+
+}
+
+
+.exchange{
+	background-color:white;
+	margin:10px;
+
 }
 
 #exchangeDecision{

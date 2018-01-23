@@ -1,14 +1,43 @@
-angular.module('myApp').controller('exchangeController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService ){
+angular.module('myApp').controller('exchangeController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', 'ExchangeService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, ExchangeService ){
     var vm = this;
     
     var item = $routeParams.item;
     var username = $routeParams.username;
-    vm.exchange = { myItems: [], otherUserItems: [] }
-    vm.options = { myItems: [], otherUserItems: [] }
 
+    vm.exchange = { 
+
+        items: { sender: [], recipient: [] },
+        messages: [],
+        accepted: { sender: 1, recipient: 0 },
+        feedback: []
+
+    }
+
+    if( $location.path() == "/exchanges" ){
+
+      ExchangeService.getExchanges( ).then( function( exchanges ){
+
+        vm.exchanges = exchanges;
+      });
+    }
+
+    if( $location.path() == "/myExchanges" ){
+      AuthService.getUser( ).then( function( user ){
+        ExchangeService.getExchangesInvolving( user._id ).then( function( exchanges ){
+          vm.myExchanges = exchanges;
+
+        }).catch( function( err ){
+          console.log( "error = " + err );
+          vm.myExchanges = {};
+        });
+      });
+    }
+
+    vm.options = { myItems: [], otherUserItems: [] }
 
     AuthService.getUser().then( function(user){
       vm.user = user;
+      vm.exchange.sender = user;
     });
 
     //initialise users dropdown
@@ -17,8 +46,12 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
       //initialise otherUser when url specifies one
       if( username ){
-          vm.otherUser = vm.users.find(user => user.username === username);
-          vm.selectedUser = vm.users.find(user => user.username === username);
+
+        var user = vm.users.find(user => user.username === username);
+          vm.otherUser = user
+          vm.selectedUser = user
+          vm.exchange.recipient = user;
+
       }
     })
     
@@ -49,15 +82,17 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
       if( !selected ){
 
         vm.options.otherUserItems = [];
-        vm.exchange.otherUserItems = [];
+        vm.exchange.items.recipient = [];
+        vm.exchange.recipient = "";
         vm.otherUser = {username:"No user selected"};
 
       }else{
 
         vm.options.otherUserItems = [];
-        vm.exchange.otherUserItems = [];
+        vm.exchange.items.recipient = [];
             
         vm.otherUser = vm.users.find( user => user.username === selected.username );
+        vm.exchange.recipient = vm.users.find( user => user.username === selected.username );
 
         ItemService.getItemsBelongingTo( vm.otherUser._id ).then( function( items ){
 
@@ -77,12 +112,12 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
       if( user == 'user' ){
 
-        vm.exchange.myItems.push( item );
+        vm.exchange.items.sender.push( item );
         var optionsArray = vm.options.myItems;
 
       }else{
 
-        vm.exchange.otherUserItems.push( item );
+        vm.exchange.items.recipient.push( item );
         var optionsArray = vm.options.otherUserItems;
       }
 
@@ -107,6 +142,17 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
       if( index > -1 ){
         array.splice( index, 1 );
       }
+
+    }
+
+    vm.sendOffer = function( exchange ){
+
+      ExchangeService.createExchange( exchange ).then( function( ){ 
+          alert( "Offer sent successfully" );
+          $location.path("/myExchanges");
+       }, function(){
+          alert( "Offer not sent" );
+       })
 
     }
 

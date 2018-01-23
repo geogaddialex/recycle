@@ -7,13 +7,14 @@ router.get('/', items.list );
 router.post('/', items.create );
 router.get('/:id', lookupItem, function( req, res ){ res.json( req.item ); });
 router.patch('/:id', lookupItem, function( req, res ){ });
-router.delete('/:id', lookupItem, function( req, res ){ });
+router.delete('/:id', items.delete );
 
 function lookupItem(req, res, next) {
 
   	var id = req.params.id;
 
   	Item.findOne({ '_id': id }).populate({ path: 'owner' }).exec( function( err, item ){
+
         if( err ){  
             console.log( err ); 
             return res.status(500).json({ errors: "Could not retrieve item" });

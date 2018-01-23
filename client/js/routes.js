@@ -10,6 +10,8 @@ myApp.config( function( $routeProvider, $locationProvider ){
         .when('/items', { templateUrl: 'partials/items.html', controller: 'itemController', controllerAs: 'ctrl', access: { restricted: true } })
         .when('/profile', { templateUrl: 'partials/profile.html', controller: 'profileController', controllerAs: 'ctrl', access: { restricted: true } })
         .when('/myItems', { templateUrl: 'partials/myItems.html', controller: 'itemController', controllerAs: 'ctrl', access: { restricted: true } })
+        .when('/myExchanges', { templateUrl: 'partials/myExchanges.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
+        .when('/exchanges', { templateUrl: 'partials/exchanges.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
         .when('/exchange', { templateUrl: 'partials/exchange.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
         .when('/exchange/:username', { templateUrl: 'partials/exchange.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
         .when('/exchange/:username/:item', { templateUrl: 'partials/exchange.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })

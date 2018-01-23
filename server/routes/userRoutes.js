@@ -8,6 +8,7 @@ router.post('/', users.create );
 router.get('/:id', lookupUser, function( req, res ){ res.json( req.user ); });
 router.get('/byUsername/:username', lookupUserByUsername, function( req, res ){ res.json( req.user ); });
 router.get('/:id/items', lookupUser, users.listItems );
+router.get('/:id/exchanges', lookupUser, users.listExchanges );
 router.patch('/:id', lookupUser, function( req, res ){ });
 router.delete('/:id', lookupUser, function( req, res ){ });
 

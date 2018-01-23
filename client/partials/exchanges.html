@@ -1,0 +1,55 @@
+<div class="container-fluid content">
+
+    <div class="row">
+        <div class="col-xs-1">
+            <a class="btn btn-secondary" id="menu-toggle" ng-click="ctrl.toggleFilters">Filter exchanges</a>
+        </div>         
+    </div>
+
+
+    <div id="wrapper">
+
+        <div class="row">
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    <li>
+                        Completed
+                    </li>
+                    <li>
+                        With feedback
+                    </li>
+                </ul>
+            </div><!-- sidebar wrapper -->
+        </div>
+
+        <div id="page-content-wrapper">
+
+            <div class="row">
+                <div ng-show="ctrl.exchanges">
+                        
+                    <div ng-repeat="exchange in ctrl.exchanges" class="col-xs-12 exchange">
+                       
+                            <div class="row"> <!-- exchange details -->
+                                <div class="col">
+                                    <a href="/exchanges/{{ exchange._id }}">User: <!-- {{ exchange.otherUser }} --></a><br>
+                                </div>
+                            </div>
+
+                            <div class="row items">
+                                <div class="col-xs-6">
+                                    <div ng-repeat="item in exchange.items.recipient" class="row"><div class="col-xs-12">item</div></div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div ng-repeat="item in exchange.items.sender" class="row"><div class="col-xs-12">item</div></div>
+                                </div>                                
+                            </div>
+                        
+                    </div>    
+                </div>
+
+            </div><!-- row -->
+        
+        </div><!-- page-content-wrapper -->
+
+    </div><!-- wrapper -->
+</div><!-- content -->

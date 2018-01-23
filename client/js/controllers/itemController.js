@@ -1,4 +1,4 @@
-angular.module('myApp').controller('itemController', [ '$routeParams', '$location', 'ItemService', 'AuthService', function( $routeParams, $location, ItemService, AuthService ){
+angular.module('myApp').controller('itemController', [ '$routeParams', '$location', '$route', 'ItemService', 'AuthService', function( $routeParams, $location, $route, ItemService, AuthService ){
     var vm = this;
     
     var itemId = $routeParams.id;
@@ -41,14 +41,20 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
     vm.createItem = function( item ){
 
       ItemService.createItem( item ).then( function( ){ 
-          alert( "Item created successfully" );
-          $location.path("/");
+          $location.path("/myItems");
        }, function(){
           alert( "Item not created" );
        })
     }
 
+    vm.deleteItem = function( ID ){
 
+      ItemService.deleteItem( ID ).then( function( ){ 
+          $route.reload();
+       }, function(){
+          alert( "Item not deleted" );
+       })
+    }
 
 
     vm.toggleFilters = function( ){

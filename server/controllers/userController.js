@@ -1,5 +1,6 @@
 var User = require( '../models/userModel' );
 var Item = require( '../models/itemModel' );
+var Exchange = require( '../models/exchangeModel' );
 var items = require('./itemController');
 var users = require('./userController');
 var async = require('async');
@@ -37,6 +38,22 @@ exports.listItems = function( req, res ){
         }
         
         res.json({ items: items });
+            
+    })
+}
+
+exports.listExchanges = function( req, res ){
+
+    var user = req.user;
+
+    Exchange.find({$or:[{recipient: user},{sender: user}]}).populate({ path: 'sender' }).exec( function( err, exchanges ){
+
+        if( err ){
+            console.log( "error: " + err );
+            return res.status( 500 );
+        }
+        
+        res.json({ exchanges: exchanges });
             
     })
 }
