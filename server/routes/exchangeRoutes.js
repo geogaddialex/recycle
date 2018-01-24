@@ -1,5 +1,5 @@
 var exchange = require('../controllers/exchangeController');
-var Item = require( '../models/exchangeModel' );
+var Exchange = require( '../models/exchangeModel' );
 var express = require('express');
 var router = express.Router();
 
@@ -13,7 +13,7 @@ function lookupExchange(req, res, next) {
 
   	var id = req.params.id;
 
-  	Exchange.findOne({ '_id': id }, function( err, exchange ){
+  	Exchange.findOne({ '_id': id }).populate('recipient sender items.sender items.recipient').exec( function( err, exchange ){
         if( err ){  
             console.log( err ); 
             return res.status(500).json({ errors: "Could not retrieve exchange" });

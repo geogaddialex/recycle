@@ -5,52 +5,11 @@ var router = express.Router();
 
 router.get('/', users.list );
 router.post('/', users.create );
-router.get('/:id', lookupUser, function( req, res ){ res.json( req.user ); });
-router.get('/byUsername/:username', lookupUserByUsername, function( req, res ){ res.json( req.user ); });
-router.get('/:id/items', lookupUser, users.listItems );
-router.get('/:id/exchanges', lookupUser, users.listExchanges );
-router.patch('/:id', lookupUser, function( req, res ){ });
-router.delete('/:id', lookupUser, function( req, res ){ });
-
-
-function lookupUser(req, res, next) {
-
-    var id = req.params.id;
-
-    User.findOne({ '_id': id }, function( err, user ){
-        if( err ){  
-            console.log( err ); 
-            return res.status(500).json({ errors: "Could not retrieve user" });
-        }
-
-        if( !user ){
-            console.log( "No user found" );
-            return res.status(404).json({ errors: "No such user" });
-        } 
-        
-        req.user = user;
-        next();
-    });
-}
-
-function lookupUserByUsername(req, res, next) {
-
-    var username = req.params.username;
-
-    User.findOne({ 'username':  username }, function( err, user ){
-        if( err ){  
-            console.log( err ); 
-            return res.status(500).json({ errors: "Could not retrieve user" });
-        }
-
-        if( !user ){
-            console.log( "No user found" );
-            return res.status(404).json({ errors: "No such user" });
-        }
-
-        req.user = user;
-        next();
-    });
-}
+router.get('/:id', users.lookupUser, function( req, res ){ res.json( req.user ); });
+router.get('/byUsername/:username', users.lookupUserByUsername, function( req, res ){ res.json( req.user ); });
+router.get('/:id/items', users.lookupUser, users.listItems );
+router.get('/:id/exchanges', users.lookupUser, users.listExchanges );
+router.patch('/:id', users.update );
+router.delete('/:id', users.lookupUser, function( req, res ){ });
 
 module.exports = router;

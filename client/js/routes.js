@@ -12,9 +12,10 @@ myApp.config( function( $routeProvider, $locationProvider ){
         .when('/myItems', { templateUrl: 'partials/myItems.html', controller: 'itemController', controllerAs: 'ctrl', access: { restricted: true } })
         .when('/myExchanges', { templateUrl: 'partials/myExchanges.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
         .when('/exchanges', { templateUrl: 'partials/exchanges.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
-        .when('/exchange', { templateUrl: 'partials/exchange.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
-        .when('/exchange/:username', { templateUrl: 'partials/exchange.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
-        .when('/exchange/:username/:item', { templateUrl: 'partials/exchange.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
+        .when('/exchange/:id', { templateUrl: 'partials/exchange.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
+        .when('/newExchange', { templateUrl: 'partials/newExchange.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
+        .when('/newExchange/:username', { templateUrl: 'partials/newExchange.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
+        .when('/newExchange/:username/:item', { templateUrl: 'partials/newExchange.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
         .when('/items/:id', { templateUrl: 'partials/item.html', controller: 'itemController', controllerAs: 'ctrl', access: { restricted: true } })
         .otherwise({ templateUrl: 'partials/404.html', access: { restricted: true } });
 
@@ -27,7 +28,7 @@ myApp.run( function( $rootScope, $location, $route, AuthService ){
         AuthService.getUserStatus( ).then( function( ){
 
             if( next.access ){
-                if( next.access.restricted && !AuthService.isLoggedIn() ){
+                if( next.access.restricted && !AuthService.isLoggedIn() ){ // next.access.adminOnly && !AuthService.getUser().isAdmin
                   $location.path( '/join' );
                   $route.reload();
                 }

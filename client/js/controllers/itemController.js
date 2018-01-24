@@ -1,5 +1,8 @@
 angular.module('myApp').controller('itemController', [ '$routeParams', '$location', '$route', 'ItemService', 'AuthService', function( $routeParams, $location, $route, ItemService, AuthService ){
     var vm = this;
+
+    vm.user = "";
+    vm.singleItem = "";
     
     var itemId = $routeParams.id;
 
@@ -7,9 +10,12 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
       vm.user = user;
     });
 
+    //if there is an item ID then user must be on a single item page
     if( itemId ){
+
       ItemService.getItem( itemId ).then( function( item ){
         vm.singleItem = item;
+        vm.viewingOwnItem = vm.user._id == item.owner._id
       }).catch( function( err ){
         console.log( "error = " + err );
       });
@@ -56,18 +62,17 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
        })
     }
 
+    vm.updateItem = function(){
 
-    vm.toggleFilters = function( ){
+      ItemService.updateItem( vm.singleItem ).then( function(){
 
-      if( $( "#menu-toggle:contains('Filter items')" ).length ){
+        $location.path("/myItems");
 
-          $('#menu-toggle').html("Hide filters");
+      }, function(){
+        alert( "Item not updated" );
+      })
 
-      } else {     
-          $('#menu-toggle').html("Filter items");
-      }
-
-      $("#wrapper").toggleClass("toggled");
     }
+
 
 }]);

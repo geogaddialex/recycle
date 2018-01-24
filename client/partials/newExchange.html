@@ -5,8 +5,8 @@
         <div class="col-xs-2" id="myItems">
             <h4> Your items </h4>
             
-            <div ng-repeat="item in ctrl.options.myItems">
-                <a ng-click="ctrl.addToExchange('user', item)"><div class="item">{{item.name}}</div></a>
+            <div ng-repeat="item in ctrl.options.sender">
+                <a ng-click="ctrl.addToExchange(item)"><div class="item">{{item.name}}</div></a>
             </div>
         </div>
 
@@ -19,7 +19,7 @@
                         <h3> {{ ctrl.user.username }} </h3>
 
                         <div ng-repeat="item in ctrl.exchange.items.sender">
-                            <a ng-click="ctrl.removeFromExchange('user', item)"><div class="item">{{ item.name }}</div></a> 
+                            <a ng-click="ctrl.removeFromExchange(item)"><div class="item">{{ item.name }}</div></a> 
                         </div>
                         <div ng-if="Object.keys(ctrl.exchange.items.sender).length == 0">No items added to exchange</div>
                 </div>
@@ -29,7 +29,7 @@
                         <h3> {{ ctrl.otherUser.username }} </h3>
 
                         <div ng-repeat="item in ctrl.exchange.items.recipient">
-                            <a ng-click="ctrl.removeFromExchange('other', item)"><div class="item">{{ item.name }}</div></a>    
+                            <a ng-click="ctrl.removeFromExchange(item)"><div class="item">{{ item.name }}</div></a>    
                         </div>
                         <div ng-if="Object.keys(ctrl.exchange.items.recipient).length == 0">No items added to exchange</div>
 
@@ -49,15 +49,14 @@
         </div><!-- exchange -->
 
         <div class="col-xs-2" id="theirItems">
-            <!-- <h4> {{ ctrl.otherUser.username }}'s items </h4> -->
 
             <select name="userSelect" id="userSelect" ng-model="ctrl.selectedUser"
             ng-options="user as user.username for user in ctrl.users | filter:{username: '!' + ctrl.user.username}"> 
                 <option value="">Select User</option>
             </select> 
 
-            <div ng-repeat="item in ctrl.options.otherUserItems">
-                <a ng-click="ctrl.addToExchange('other', item)"><div class="item">{{item.name}}</div></a>  
+            <div ng-repeat="item in ctrl.options.recipient">
+                <a ng-click="ctrl.addToExchange(item)"><div class="item">{{item.name}}</div></a>  
             </div>
         </div>
 

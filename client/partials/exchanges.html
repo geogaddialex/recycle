@@ -1,27 +1,5 @@
 <div class="container-fluid content">
 
-    <div class="row">
-        <div class="col-xs-1">
-            <a class="btn btn-secondary" id="menu-toggle" ng-click="ctrl.toggleFilters">Filter exchanges</a>
-        </div>         
-    </div>
-
-
-    <div id="wrapper">
-
-        <div class="row">
-            <div id="sidebar-wrapper">
-                <ul class="sidebar-nav">
-                    <li>
-                        Completed
-                    </li>
-                    <li>
-                        With feedback
-                    </li>
-                </ul>
-            </div><!-- sidebar wrapper -->
-        </div>
-
         <div id="page-content-wrapper">
 
             <div class="row">
@@ -31,7 +9,7 @@
                        
                             <div class="row"> <!-- exchange details -->
                                 <div class="col">
-                                    <a href="/exchanges/{{ exchange._id }}">User: <!-- {{ exchange.otherUser }} --></a><br>
+                                    <a href="/exchanges/{{ exchange._id }}">User: {{ exchange.recipient.username }}</a><br>
                                 </div>
                             </div>
 
@@ -51,5 +29,4 @@
         
         </div><!-- page-content-wrapper -->
 
-    </div><!-- wrapper -->
 </div><!-- content -->

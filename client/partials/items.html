@@ -1,29 +1,5 @@
 <div class="container-fluid content">
 
-    <div class="row">
-        <div class="col-xs-1">
-            <a class="btn btn-secondary" id="menu-toggle" ng-click="ctrl.toggleFilters">Filter items</a>
-        </div>         
-    </div>
-
-
-    <div id="wrapper">
-
-        <div class="row">
-            <div id="sidebar-wrapper">
-                <ul class="sidebar-nav">
-                    <li>
-                        Feedback
-                    </li>
-                    <li>
-                        Value
-                    </li>
-                </ul>
-            </div><!-- sidebar wrapper -->
-        </div>
-
-        <div id="page-content-wrapper">
-
             <div class="row">
                 <div ng-show="ctrl.items">
                         
@@ -39,7 +15,7 @@
                                 <div class="col itemName">
                                     <a href="/items/{{ item._id }}">{{ item.name }}</a><br>
                                     <a href="/users/{{ item.owner.username }}">{{ item.owner.username }}</a><br>
-                                    <a href="/exchange/{{ item.owner.username }}/{{ item._id }}">Make an offer</a>
+                                    <a href="/newExchange/{{ item.owner.username }}/{{ item._id }}">Make an offer</a>
                                     
                                 </div>
                             </div>
@@ -60,8 +36,5 @@
                 </div>
 
             </div><!-- row -->
-        
-        </div><!-- page-content-wrapper -->
 
-    </div><!-- wrapper -->
 </div><!-- content -->

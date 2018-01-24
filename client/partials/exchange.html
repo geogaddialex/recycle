@@ -4,34 +4,74 @@
 
         <div class="col-xs-2" id="myItems">
             <h4> Your items </h4>
-            
-            <div ng-repeat="item in ctrl.options.myItems">
-                <a ng-click="ctrl.addToExchange('user', item)"><div class="item">{{item.name}}</div></a>
+
+            <div ng-if="ctrl.userIsSender">
+                <div ng-repeat="item in ctrl.options.sender">
+                    <a ng-click="ctrl.addToExchange(item)"><div class="item">{{item.name}}</div></a>
+                </div>
             </div>
+
+            <div ng-if="!ctrl.userIsSender">
+                <div ng-repeat="item in ctrl.options.recipient">
+                    <a ng-click="ctrl.addToExchange(item)"><div class="item">{{item.name}}</div></a>
+                </div>
+            </div>
+
         </div>
 
         <div class="col-xs-8" id="exchange">
-            <div class="row"><h2>Exchange</h2></div>
+            <div class="row"><h5>Exchange: {{ctrl.exchange._id}}</h5></div>
             <div class="row">
 
                 <div class="col-xs-6" id="myExchangeItems">
 
-                        <h3> {{ ctrl.user.username }} </h3>
+                        <div ng-if="ctrl.userIsSender">
 
-                        <div ng-repeat="item in ctrl.exchange.items.sender">
-                            <a ng-click="ctrl.removeFromExchange('user', item)"><div class="item">{{ item.name }}</div></a> 
+                            <h3> {{ ctrl.exchange.sender.username }} </h3>
+
+                            <div ng-repeat="item in ctrl.exchange.items.sender">
+                                <a ng-click="ctrl.removeFromExchange(item)"><div class="item">{{ item.name }}</div></a> 
+                            </div>
+                            <div ng-if="Object.keys(ctrl.exchange.items.sender).length == 0">No items added to exchange</div>
+
                         </div>
-                        <div ng-if="Object.keys(ctrl.exchange.items.sender).length == 0">No items added to exchange</div>
+
+                        <div ng-if="!ctrl.userIsSender">
+
+                            <h3> {{ ctrl.exchange.recipient.username }} </h3>
+
+                            <div ng-repeat="item in ctrl.exchange.items.recipient">
+                                <a ng-click="ctrl.removeFromExchange(item)"><div class="item">{{ item.name }}</div></a>    
+                            </div>
+                            <div ng-if="Object.keys(ctrl.exchange.items.recipient).length == 0">No items added to exchange</div>
+
+                        </div>
                 </div>
 
                 <div class="col-xs-6" id="theirExchangeItems">
 
-                        <h3> {{ ctrl.otherUser.username }} </h3>
 
-                        <div ng-repeat="item in ctrl.exchange.items.recipient">
-                            <a ng-click="ctrl.removeFromExchange('other', item)"><div class="item">{{ item.name }}</div></a>    
+                        <div ng-if="!ctrl.userIsSender">
+
+                            <h3> {{ ctrl.exchange.sender.username }} </h3>
+
+                            <div ng-repeat="item in ctrl.exchange.items.sender">
+                                <a ng-click="ctrl.removeFromExchange(item)"><div class="item">{{ item.name }}</div></a> 
+                            </div>
+                            <div ng-if="Object.keys(ctrl.exchange.items.sender).length == 0">No items added to exchange</div>
+
                         </div>
-                        <div ng-if="Object.keys(ctrl.exchange.items.recipient).length == 0">No items added to exchange</div>
+
+                        <div ng-if="ctrl.userIsSender">
+
+                            <h3> {{ ctrl.exchange.recipient.username }} </h3>
+
+                            <div ng-repeat="item in ctrl.exchange.items.recipient">
+                                <a ng-click="ctrl.removeFromExchange(item)"><div class="item">{{ item.name }}</div></a>    
+                            </div>
+                            <div ng-if="Object.keys(ctrl.exchange.items.recipient).length == 0">No items added to exchange</div>
+
+                        </div>
 
                 </div>
 
@@ -39,25 +79,30 @@
 
             <div class="row" id="exchangeDecision">
                 <div class="col-xs-6">
-                    <button type="button" class="btn btn-outline-primary" ng-click="ctrl.sendOffer( ctrl.exchange )">Send offer</button>
+                    <button type="button" class="btn btn-outline-primary" ng-click="ctrl.sendOffer( ctrl.exchange )">Accept offer</button>
                 </div>
                 <div class="col-xs-6">
-                    <button type="button" class="btn btn-outline-danger" ng-click="ctrl.cancelOffer()">Cancel offer</button>
+                    <button type="button" class="btn btn-outline-danger" ng-click="ctrl.cancelOffer()">Reject offer</button>
                 </div>
             </div>
 
         </div><!-- exchange -->
 
         <div class="col-xs-2" id="theirItems">
-            <!-- <h4> {{ ctrl.otherUser.username }}'s items </h4> -->
 
-            <select name="userSelect" id="userSelect" ng-model="ctrl.selectedUser"
-            ng-options="user as user.username for user in ctrl.users | filter:{username: '!' + ctrl.user.username}"> 
-                <option value="">Select User</option>
-            </select> 
+                <h4> {{ ctrl.otherUser.username }}'s items</h4>
 
-            <div ng-repeat="item in ctrl.options.otherUserItems">
-                <a ng-click="ctrl.addToExchange('other', item)"><div class="item">{{item.name}}</div></a>  
+                <div ng-if="ctrl.userIsSender">
+                    <div ng-repeat="item in ctrl.options.recipient">
+                        <a ng-click="ctrl.addToExchange(item)"><div class="item">{{item.name}}</div></a>
+                    </div>
+                </div>
+
+                <div ng-if="!ctrl.userIsSender">
+                    <div ng-repeat="item in ctrl.options.sender">
+                        <a ng-click="ctrl.addToExchange(item)"><div class="item">{{item.name}}</div></a>
+                    </div>
+                </div>
             </div>
         </div>
 

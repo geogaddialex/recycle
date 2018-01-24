@@ -3,9 +3,10 @@
         <div class="col">
 
                 <h3 ng-bind="ctrl.user.username">Loading user...</h3>
-                <img src="/images/noPhoto.png"><br>
-                <span ng-bind="ctrl.user.email"></span><br>
+                <img src="/images/noPhoto.png" height="200px"><br>
+                <input type="text" ng-model="ctrl.user.email" /><br>
                 Admin: <span ng-bind="ctrl.user.isAdmin"></span><br>
+                <button ng-click="ctrl.updateProfile()">Save</button>
 
         </div>
     </div>

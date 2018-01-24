@@ -2,7 +2,7 @@ angular.module( 'myApp' ).factory( 'ExchangeService', [ '$q', '$timeout', '$http
 
     return ({
       getExchanges: getExchanges,
-      // getExchange: getExchange,
+      getExchange: getExchange,
       getExchangesInvolving: getExchangesInvolving,
       createExchange: createExchange
 
@@ -13,27 +13,27 @@ angular.module( 'myApp' ).factory( 'ExchangeService', [ '$q', '$timeout', '$http
       return $http({ method: 'POST', url: '/api/exchanges', data: exchange });
     }
 
-    // function getExchange( id ){
+    function getExchange( id ){
 
-    //   var deferred = $q.defer();
+      var deferred = $q.defer();
 
-    //   $http.get( '/api/exchanges/'+id ).then(
-    //     function successCallback( res ) {
+      $http.get( '/api/exchanges/'+id ).then(
+        function successCallback( res ) {
 
-    //         if( res.data ){
-    //           deferred.resolve( res.data );
-    //         } else {
-    //           deferred.reject();
-    //         }
+            if( res.data ){
+              deferred.resolve( res.data );
+            } else {
+              deferred.reject();
+            }
 
-    //     }, function errorCallback( res ){
+        }, function errorCallback( res ){
 
-    //       deferred.reject();
-    //     }
-    //   );
+          deferred.reject();
+        }
+      );
 
-    //   return deferred.promise;
-    // }
+      return deferred.promise;
+    }
 
 
     function getExchanges(){

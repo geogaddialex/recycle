@@ -4,6 +4,7 @@ angular.module( 'myApp' ).factory( 'UserService', [ '$q', '$timeout', '$http', f
     getUsers: getUsers,
     getUser: getUser,
     createUser: createUser,
+    updateUser: updateUser,
     getUserByName: getUserByName
   });
 
@@ -11,6 +12,11 @@ angular.module( 'myApp' ).factory( 'UserService', [ '$q', '$timeout', '$http', f
   function createUser( user ){
     return $http({ method: 'POST', url: '/api/users', data: user }); //check API link (all in service)
   }
+
+  function updateUser( user ){
+      return $http({ method: 'PATCH', url: '/api/users/'+user._id, data: user });
+  }
+
 
   function getUser( id ){
 

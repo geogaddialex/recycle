@@ -10,20 +10,25 @@
 	box-shadow: 0 0 5px #e4ceb4;
 }
 
-.exchangeItem:hover{
-	box-shadow: 0 0 10px #dec2a1;
-}
-
 #exchange{
 	background-color:white;
-
+	border-radius: 5px;
+	border: 1px solid #f2e7d9;
 }
-
 
 .exchange{
 	background-color:white;
-	margin:10px;
+	text-align: left;
+	padding: 5px;
+	padding-left:50px;
+	margin:2px;
+	overflow:hidden;
+	border-radius: 5px;
+	border: 2px solid #f2e7d9;
+}
 
+.exchange:hover{
+	border: 2px solid #d9e4f2;
 }
 
 #exchangeDecision{

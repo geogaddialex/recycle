@@ -5,6 +5,7 @@ angular.module( 'myApp' ).factory( 'ItemService', [ '$q', '$timeout', '$http', f
       getItem: getItem,
       createItem: createItem,
       deleteItem: deleteItem,
+      updateItem: updateItem,
       getItemsBelongingTo: getItemsBelongingTo
     });
 
@@ -15,6 +16,10 @@ angular.module( 'myApp' ).factory( 'ItemService', [ '$q', '$timeout', '$http', f
 
     function deleteItem( ID ){
       return $http({ method: 'DELETE', url: '/api/items/'+ID });
+    }
+
+    function updateItem( item ){
+      return $http({ method: 'PATCH', url: '/api/items/'+item._id, data: item });
     }
 
 
