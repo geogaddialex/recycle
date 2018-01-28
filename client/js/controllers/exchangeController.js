@@ -18,8 +18,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
       vm.user = user;
 
     
-        //when initialising a new exchange
-
+        //starting a new exchange
         if (path.split('/').indexOf('newExchange') > -1){
 
             vm.exchange = { 
@@ -98,7 +97,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
         }
 
-        //when on one exchange
+        //viewing one existing exchange
         if (path.split('/').indexOf('exchange') > -1){
 
             if( exchangeID ){
