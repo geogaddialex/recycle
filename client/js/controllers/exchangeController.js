@@ -296,7 +296,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
             vm.exchange = exchange;    
 
-        }    
+        })
 
     }
 
