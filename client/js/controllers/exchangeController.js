@@ -1,4 +1,4 @@
-angular.module('myApp').controller('exchangeController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', 'ExchangeService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, ExchangeService ){
+angular.module('myApp').controller('exchangeController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', 'ExchangeService', 'MessageService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, ExchangeService, MessageService ){
     var vm = this;
 
     var item = $routeParams.item;
@@ -108,60 +108,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
                     vm.userIsSender = vm.user._id == exchange.sender._id
                     vm.otherUser = vm.userIsSender ? exchange.recipient : exchange.sender
 
-                    //initialise my items 
-                    ItemService.getItemsBelongingTo( vm.user._id ).then( function( items ){
-
-                        for( x in items ){
-
-                            var recipientHasIt = vm.exchange.items.recipient.find(item => item._id === items[x]._id)
-                            var senderHasIt = vm.exchange.items.sender.find(item => item._id === items[x]._id)
-
-                            if( !recipientHasIt && !senderHasIt ){
-
-                                if(vm.userIsSender){
-
-                                    vm.options.sender.push( items[x] );
-                                }else{
-
-                                    vm.options.recipient.push( items[x] );                                    
-                                }
-
-                            }
-                        }
-
-                    }).catch( function( err ){
-
-                        console.log( "error = " + err );
-                    });
-
-                    //initialise other users items
-                    ItemService.getItemsBelongingTo( vm.otherUser._id ).then( function( items ){
-
-                        for( x in items ){
-
-                            var recipientHasIt = vm.exchange.items.recipient.find(item => item._id === items[x]._id)
-                            var senderHasIt = vm.exchange.items.sender.find(item => item._id === items[x]._id)
-
-                            //add item to options array as long as its not already part of the exchange
-                            if( !recipientHasIt && !senderHasIt ){
-
-                                if(vm.userIsSender){
-
-                                    vm.options.recipient.push( items[x] );
-                                }else{
-
-                                    vm.options.sender.push( items[x] );                                    
-                                }
-
-                            }
-                        }
-
-                    }).catch( function( err ){
-
-                        console.log( "error = " + err );
-                    });  
-
-
+                    vm.initialiseItems();
 
                 }).catch( function( err ){
                     console.log( "error = " + err );
@@ -296,10 +243,98 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
         ExchangeService.getExchange( exchangeID ).then( function( exchange ){
 
-            vm.exchange = exchange;    
+            vm.exchange = exchange;
+            vm.initialiseItems();
 
         })
 
+    }
+
+    vm.sendMessage = function( ){
+
+        var messageToCreate = {
+
+            recipient: vm.otherUser,
+            sender: vm.user,
+            content: vm.message
+        }
+
+        MessageService.createMessage( messageToCreate ).then( function( createdMessage ){ 
+
+
+            //createdMessage doesnt have sender populated, so username isnt filled in until page refresh...
+            vm.exchange.messages.push( createdMessage.data )
+
+            ExchangeService.addMessageToExchange( vm.exchange ).then( function(){
+            
+                vm.message = ""
+
+            })
+
+        })
+
+    }
+
+    vm.initialiseItems = function(){
+
+        vm.options = { 
+
+            sender: [],
+            recipient: []
+        }
+
+        //initialise my items 
+        ItemService.getItemsBelongingTo( vm.user._id ).then( function( items ){
+
+            for( x in items ){
+
+                var recipientHasIt = vm.exchange.items.recipient.find(item => item._id === items[x]._id)
+                var senderHasIt = vm.exchange.items.sender.find(item => item._id === items[x]._id)
+
+                if( !recipientHasIt && !senderHasIt ){
+
+                    if(vm.userIsSender){
+
+                        vm.options.sender.push( items[x] );
+                    }else{
+
+                        vm.options.recipient.push( items[x] );                                    
+                    }
+
+                }
+            }
+
+        }).catch( function( err ){
+
+            console.log( "error = " + err );
+        });
+
+        //initialise other users items
+        ItemService.getItemsBelongingTo( vm.otherUser._id ).then( function( items ){
+
+            for( x in items ){
+
+                var recipientHasIt = vm.exchange.items.recipient.find(item => item._id === items[x]._id)
+                var senderHasIt = vm.exchange.items.sender.find(item => item._id === items[x]._id)
+
+                //add item to options array as long as its not already part of the exchange
+                if( !recipientHasIt && !senderHasIt ){
+
+                    if(vm.userIsSender){
+
+                        vm.options.recipient.push( items[x] );
+                    }else{
+
+                        vm.options.sender.push( items[x] );                                    
+                    }
+
+                }
+            }
+
+        }).catch( function( err ){
+
+            console.log( "error = " + err );
+        });  
     }
 
 

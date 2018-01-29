@@ -5,7 +5,7 @@ var Exchange = require( '../models/exchangeModel' );
 
 exports.list = function( req, res ){
 
-    Exchange.find({ }, function( err, exchanges ){
+    Exchange.find({ }).populate('messages').exec( function( err, exchanges ){
 
         if( err ){
             console.log( "error: " + err );
@@ -47,5 +47,23 @@ exports.update = function( req, res ){
 
         console.log("exchange updated: " + exchange);
         res.status( 200 ).json( exchange );
+    });
+};
+
+exports.addMessage = function( req, res ){
+
+    var id = req.params.id;
+
+    console.log("messages = " + JSON.stringify( req.body ) )
+
+    Exchange.findByIdAndUpdate(id, { $set: { messages: req.body } }, (err, exchange) => {  
+
+        if( err ){
+            console.log( "error: " + err );
+            return res.status(500).json({ errors: "Could not update messages" });
+        } 
+
+        console.log("messages updated: " + exchange.messages);
+        res.status( 200 ).json( exchange.messages );
     });
 };

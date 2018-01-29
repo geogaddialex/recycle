@@ -7,13 +7,14 @@ router.get('/', exchange.list );
 router.post('/', exchange.create );
 router.get('/:id', lookupExchange, function( req, res ){ res.json( req.exchange ); });
 router.patch('/:id', exchange.update );
+router.patch('/:id/addMessage', exchange.addMessage );
 router.delete('/:id', lookupExchange, function( req, res ){ });
 
 function lookupExchange(req, res, next) {
 
   	var id = req.params.id;
 
-  	Exchange.findOne({ '_id': id }).populate('recipient sender items.sender items.recipient').exec( function( err, exchange ){
+  	Exchange.findOne({ '_id': id }).populate('recipient sender items.sender items.recipient').populate({path: 'messages', populate: { path: 'sender' }}).exec( function( err, exchange ){
         if( err ){  
             console.log( err ); 
             return res.status(500).json({ errors: "Could not retrieve exchange" });

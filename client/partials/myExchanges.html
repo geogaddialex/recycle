@@ -17,19 +17,38 @@
                                 </div>
                             </div>
 
+                            <br>
+
                             <div class="row items">
+
                                 <div class="col-xs-6">
 
-                                    <div ng-repeat="item in exchange.items.recipient" class="row">
+                                    My items<br><br>
+
+                                    <div ng-if="ctrl.user._id != exchange.sender._id" ng-repeat="item in exchange.items.recipient" class="row">
+                                        <div class="col-xs-12"><a href="/items/{{ item._id }}">{{ item.name }}</a></div>
+                                    </div>
+
+                                    <div ng-if="ctrl.user._id == exchange.sender._id" ng-repeat="item in exchange.items.sender" class="row">
                                         <div class="col-xs-12"><a href="/items/{{ item._id }}">{{ item.name }}</a></div>
                                     </div>
 
                                 </div>
+
                                 <div class="col-xs-6">
-                                    <div ng-repeat="item in exchange.items.sender" class="row">
+
+                                    <a href="/users/{{ exchange.recipient.username }}" ng-if="ctrl.user._id == exchange.sender._id">{{ exchange.recipient.username }}</a>
+                                    <a href="/users/{{ exchange.sender.username }}" ng-if="ctrl.user._id != exchange.sender._id">{{ exchange.recipient.username }}</a>'s items<br><br>
+
+                                    <div ng-if="ctrl.user._id == exchange.sender._id" ng-repeat="item in exchange.items.recipient" class="row">
                                         <div class="col-xs-12"><a href="/items/{{ item._id }}">{{ item.name }}</a></div>
                                     </div>
-                                </div>                                
+
+                                    <div ng-if="ctrl.user._id != exchange.sender._id" ng-repeat="item in exchange.items.sender" class="row">
+                                        <div class="col-xs-12"><a href="/items/{{ item._id }}">{{ item.name }}</a></div>
+                                    </div>
+                                </div>    
+
                             </div>
                         
                     </div>    

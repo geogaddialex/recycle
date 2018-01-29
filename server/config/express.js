@@ -38,10 +38,12 @@
 	var itemRoutes = require( '../routes/itemRoutes.js' );
 	var userRoutes = require( '../routes/userRoutes.js' );
 	var exchangeRoutes = require( '../routes/exchangeRoutes.js' );
+	var messageRoutes = require( '../routes/messageRoutes.js' );
 	app.use('/api/login', loginRoutes);
 	app.use('/api/items', itemRoutes);
 	app.use('/api/users', userRoutes);
 	app.use('/api/exchanges', exchangeRoutes);
+	app.use('/api/messages', messageRoutes);
 
 	// app.use('*', express.static('client'));
 	app.get('*', function(req, res) {

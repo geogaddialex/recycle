@@ -5,7 +5,8 @@ angular.module( 'myApp' ).factory( 'ExchangeService', [ '$q', '$timeout', '$http
       getExchange: getExchange,
       getExchangesInvolving: getExchangesInvolving,
       createExchange: createExchange,
-      amendExchange: amendExchange
+      amendExchange: amendExchange,
+      addMessageToExchange: addMessageToExchange
 
     });
 
@@ -16,6 +17,10 @@ angular.module( 'myApp' ).factory( 'ExchangeService', [ '$q', '$timeout', '$http
 
     function amendExchange( exchange ){
       return $http({ method: 'PATCH', url: '/api/exchanges/'+exchange._id, data: exchange });
+    }
+
+    function addMessageToExchange( exchange ){
+      return $http({ method: 'PATCH', url: '/api/exchanges/'+exchange._id+'/addMessage', data: exchange.messages });
     }
 
     function getExchange( id ){
