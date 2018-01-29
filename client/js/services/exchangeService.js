@@ -4,7 +4,8 @@ angular.module( 'myApp' ).factory( 'ExchangeService', [ '$q', '$timeout', '$http
       getExchanges: getExchanges,
       getExchange: getExchange,
       getExchangesInvolving: getExchangesInvolving,
-      createExchange: createExchange
+      createExchange: createExchange,
+      amendExchange: amendExchange
 
     });
 

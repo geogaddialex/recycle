@@ -270,6 +270,8 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     vm.amendExchange = function( exchange ){
 
+        //must also reset both users options
+
         if ( vm.userIsSender ){
 
             exchange.accepted.recipient = 0
