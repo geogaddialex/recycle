@@ -13,6 +13,10 @@ angular.module( 'myApp' ).factory( 'ExchangeService', [ '$q', '$timeout', '$http
       return $http({ method: 'POST', url: '/api/exchanges', data: exchange });
     }
 
+    function amendExchange( exchange ){
+      return $http({ method: 'PATCH', url: '/api/exchanges/'+exchange._id, data: exchange });
+    }
+
     function getExchange( id ){
 
       var deferred = $q.defer();

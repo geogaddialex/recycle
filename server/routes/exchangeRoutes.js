@@ -6,7 +6,7 @@ var router = express.Router();
 router.get('/', exchange.list );
 router.post('/', exchange.create );
 router.get('/:id', lookupExchange, function( req, res ){ res.json( req.exchange ); });
-router.patch('/:id', lookupExchange, function( req, res ){ });
+router.patch('/:id', exchange.update );
 router.delete('/:id', lookupExchange, function( req, res ){ });
 
 function lookupExchange(req, res, next) {

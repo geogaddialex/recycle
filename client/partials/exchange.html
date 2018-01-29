@@ -78,12 +78,19 @@
             </div><!-- row -->
 
             <div class="row" id="exchangeDecision">
+
                 <div class="col-xs-6">
-                    <button type="button" class="btn btn-outline-primary" ng-click="ctrl.sendOffer( ctrl.exchange )">Accept offer</button>
+                    <button type="button" class="btn btn-outline-primary" ng-click="ctrl.amendExchange( ctrl.exchange )">Amend exchange</button>
                 </div>
+
+                <div class="col-xs-6">
+                    <button type="button" class="btn btn-outline-primary" ng-click="ctrl.resetExchange( )">Reset exchange</button>
+                </div>
+
                 <div class="col-xs-6">
                     <button type="button" class="btn btn-outline-danger" ng-click="ctrl.cancelOffer()">Reject offer</button>
                 </div>
+
             </div>
 
         </div><!-- exchange -->
@@ -103,6 +110,7 @@
                         <a ng-click="ctrl.addToExchange(item)"><div class="item">{{item.name}}</div></a>
                     </div>
                 </div>
+
             </div>
         </div>
 

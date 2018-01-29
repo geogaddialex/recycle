@@ -268,4 +268,37 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     }
 
+    vm.amendExchange = function( exchange ){
+
+        if ( vm.userIsSender ){
+
+            exchange.accepted.recipient = 0
+
+        }else{
+
+            exchange.accepted.sender = 0
+        }
+
+        ExchangeService.amendExchange( exchange ).then( function( ){ 
+
+            alert( "Exchange successfully amended" );
+            $location.path("/myExchanges");
+
+        }, function(){
+            alert( "Exchange not amended" );
+        })
+
+    }
+
+    vm.resetExchange = function( ){
+
+        ExchangeService.getExchange( exchangeID ).then( function( exchange ){
+
+            vm.exchange = exchange;    
+
+        }    
+
+    }
+
+
 }]);

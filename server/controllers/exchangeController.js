@@ -33,3 +33,19 @@ exports.create = function( req, res ){
 
     });
 };
+
+exports.update = function( req, res ){
+
+    var id = req.params.id;
+
+    Exchange.findByIdAndUpdate(id, { $set: req.body }, (err, exchange) => {  
+
+        if( err ){
+            console.log( "error: " + err );
+            return res.status(500).json({ errors: "Could not update exchange" });
+        } 
+
+        console.log("exchange updated: " + exchange);
+        res.status( 200 ).json( exchange );
+    });
+};
