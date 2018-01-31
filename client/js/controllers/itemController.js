@@ -1,48 +1,68 @@
-angular.module('myApp').controller('itemController', [ '$routeParams', '$location', '$route', 'ItemService', 'AuthService', function( $routeParams, $location, $route, ItemService, AuthService ){
+angular.module('myApp').controller('itemController', [ '$routeParams', '$location', '$route', '$scope', 'SocketService', 'ItemService', 'AuthService', function( $routeParams, $location, $route, $scope, SocketService, ItemService, AuthService ){
     var vm = this;
-
-    vm.user = "";
-    vm.singleItem = "";
     
     var itemId = $routeParams.id;
 
     AuthService.getUser().then( function(user){
       vm.user = user;
-    });
-
-    //if there is an item ID then user must be on a single item page
-    if( itemId ){
-
-      ItemService.getItem( itemId ).then( function( item ){
-        vm.singleItem = item;
-        vm.viewingOwnItem = vm.user._id == item.owner._id
-      }).catch( function( err ){
-        console.log( "error = " + err );
-      });
-    }
-
-    if( $location.path() == "/items" ){
-      ItemService.getItems( ).then( function( items ){
-        vm.items = items;
-      }).catch( function( err ){
-          console.log( "error = " + err );
-      });
-    }
     
 
-    if( $location.path() == "/myItems" ){
-      AuthService.getUser( ).then( function( user ){
-        ItemService.getItemsBelongingTo( user._id ).then( function( items ){
-          vm.myItems = items;
+        //initialising different item pages
 
-        }).catch( function( err ){
-          console.log( "error = " + err );
-          vm.myItems = {};
-        });
-      });
-    }
+        if( itemId ){
+
+          ItemService.getItem( itemId ).then( function( item ){
+
+            vm.singleItem = item;
+            vm.viewingOwnItem = vm.user._id == item.owner._id
+
+          }).catch( function( err ){
+            console.log( "error = " + err );
+          });
+        }
+
+        if( $location.path() == "/items" ){
+
+          ItemService.getItems( ).then( function( items ){
+
+            vm.items = items;
+
+          }).catch( function( err ){
+              console.log( "error = " + err );
+          });
+        }
+
+        if( $location.path() == "/myItems" ){
+
+            ItemService.getItemsBelongingTo( vm.user._id ).then( function( items ){
+              
+              vm.myItems = items;
+
+            }).catch( function( err ){
+              console.log( "error = " + err );
+              vm.myItems = {};
+            });
+        }
+
+
+    });
+
+
+
+    //Socket events
+
+    SocketService.on('item.created', function( item ){
+        // alert( "New item added: " + item.name );
+    });
    
+    $scope.$on( '$destroy', function( event ){
 
+      SocketService.getSocket().removeAllListeners();
+    });
+
+
+
+    //Functions for browser use
 
     vm.createItem = function( item ){
 

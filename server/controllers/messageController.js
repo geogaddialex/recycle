@@ -25,7 +25,12 @@ exports.create = function( req, res ){
             console.log( "error: " + err );
             return res.status(500).json({ errors: "Could not create message" });
         } 
-        res.status( 201 ).json( message );
+
+        message.populate("sender", function(err, message) {
+
+            res.status( 201 ).json( message );
+
+        });
 
     });
 };

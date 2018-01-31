@@ -27,6 +27,11 @@ exports.create = function( req, res ){
         } 
 
         console.log("item added: " + item);
+
+        //should "modularize the socket transmission and abstract it into a factory", this is quick and dirty way
+        var socketio = req.app.get('socketio'); // take socket instance from the app container
+        socketio.sockets.emit('item.created', item);
+
         res.status( 201 ).json( item );
 
     });

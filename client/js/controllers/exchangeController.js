@@ -1,4 +1,4 @@
-angular.module('myApp').controller('exchangeController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', 'ExchangeService', 'MessageService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, ExchangeService, MessageService ){
+angular.module('myApp').controller('exchangeController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', 'ExchangeService', 'MessageService', 'SocketService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, ExchangeService, MessageService, SocketService ){
     var vm = this;
 
     var item = $routeParams.item;
@@ -104,6 +104,8 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
                 ExchangeService.getExchange( exchangeID ).then( function( exchange ){
 
+
+                    $scope.exchange = exchange;
                     vm.exchange = exchange;
                     vm.userIsSender = vm.user._id == exchange.sender._id
                     vm.otherUser = vm.userIsSender ? exchange.recipient : exchange.sender
@@ -145,7 +147,29 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     });
 
+
+    // Socket events -------------------------------------------------------------------------------------------
+
+    SocketService.on('messages.updated', function( exchange ){
+
+        if( exchange._id == exchangeID ){
+
+            $scope.$apply( function(){
+                $scope.exchange.messages = exchange.messages;
+            });
+
+        }
+    });
+   
+    $scope.$on( '$destroy', function( event ){
+
+      SocketService.getSocket().removeAllListeners();
+    });
+
     
+
+
+    // Functions for browser use -------------------------------------------------------------------------------------------
 
     vm.addToExchange = function( itemToAdd ){
 
@@ -261,12 +285,10 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
         MessageService.createMessage( messageToCreate ).then( function( createdMessage ){ 
 
-
-            //createdMessage doesnt have sender populated, so username isnt filled in until page refresh...
             vm.exchange.messages.push( createdMessage.data )
 
             ExchangeService.addMessageToExchange( vm.exchange ).then( function(){
-            
+        
                 vm.message = ""
 
             })
