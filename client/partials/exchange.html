@@ -37,19 +37,17 @@
 
                         <div ng-if="ctrl.userIsSender">
 
-                            <div ng-repeat="item in ctrl.exchange.items.sender">
+                            <div ng-repeat="item in exchange.items.sender">
                                 <a ng-click="ctrl.removeFromExchange(item)"><div class="exchangeItem">{{ item.name }}</div></a> 
                             </div>
-                            <div ng-if="Object.keys(ctrl.exchange.items.sender).length == 0">No items added to exchange</div>
 
                         </div>
 
                         <div ng-if="!ctrl.userIsSender">
 
-                            <div ng-repeat="item in ctrl.exchange.items.recipient">
+                            <div ng-repeat="item in exchange.items.recipient">
                                 <a ng-click="ctrl.removeFromExchange(item)"><div class="exchangeItem">{{ item.name }}</div></a>    
                             </div>
-                            <div ng-if="Object.keys(ctrl.exchange.items.recipient).length == 0">No items added to exchange</div>
 
                         </div>
                 </div>
@@ -60,19 +58,17 @@
 
                         <div ng-if="!ctrl.userIsSender">
 
-                            <div ng-repeat="item in ctrl.exchange.items.sender">
+                            <div ng-repeat="item in exchange.items.sender">
                                 <a ng-click="ctrl.removeFromExchange(item)"><div class="exchangeItem">{{ item.name }}</div></a> 
                             </div>
-                            <div ng-if="Object.keys(ctrl.exchange.items.sender).length == 0">No items added to exchange</div>
 
                         </div>
 
                         <div ng-if="ctrl.userIsSender">
 
-                            <div ng-repeat="item in ctrl.exchange.items.recipient">
+                            <div ng-repeat="item in exchange.items.recipient">
                                 <a ng-click="ctrl.removeFromExchange(item)"><div class="exchangeItem">{{ item.name }}</div></a>    
                             </div>
-                            <div ng-if="Object.keys(ctrl.exchange.items.recipient).length == 0">No items added to exchange</div>
 
                         </div>
 
@@ -82,21 +78,45 @@
 
 
 
-            <div class="row" id="exchangeDecision">
+        <div class="row" id="exchangeDecision">
+
+            <div ng-if="ctrl.userIsSender">
 
                 <div class="col-xs-6">
-                    <button type="button" class="btn btn-outline-primary" ng-click="ctrl.amendExchange( ctrl.exchange )">Amend exchange</button>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" name="senderAccepted" ng-model="exchange.accepted.sender" ng-click="ctrl.toggleAcceptance()">
+                    </label>
                 </div>
 
                 <div class="col-xs-6">
-                    <button type="button" class="btn btn-outline-warning" ng-click="ctrl.resetExchange( )">Reset exchange</button>
-                </div>
-
-                <div class="col-xs-6">
-                    <button type="button" class="btn btn-outline-danger" ng-click="ctrl.cancelOffer()">Reject offer</button>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" name="recipientAccepted" ng-model="exchange.accepted.recipient" disabled="disabled">
+                    </label>
                 </div>
 
             </div>
+
+            <div ng-if="!ctrl.userIsSender">
+
+                <div class="col-xs-6">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" name="recipientAccepted" ng-model="exchange.accepted.recipient" ng-click="ctrl.toggleAcceptance()">
+                    </label>
+                </div>
+
+                <div class="col-xs-6">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" name="senderAccepted" ng-model="exchange.accepted.sender" disabled="disabled">
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="col-xs-12">
+                <button type="button" class="btn btn-outline-danger" ng-click="ctrl.cancelOffer()">Cancel exchange</button>
+            </div>
+
+        </div>
 
 
 
@@ -117,7 +137,7 @@
 
                         <div class="col-xs-12" id="displayMessages">
 
-                            <div ng-repeat="message in ctrl.exchange.messages">
+                            <div ng-repeat="message in exchange.messages">
 
                                 <div class="row">
                                     <div class="col-xs-2">{{ message.sender.username }}: </div>

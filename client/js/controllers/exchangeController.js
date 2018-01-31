@@ -110,7 +110,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
                     vm.userIsSender = vm.user._id == exchange.sender._id
                     vm.otherUser = vm.userIsSender ? exchange.recipient : exchange.sender
 
-                    vm.initialiseItems();
+                    initialiseItems();
 
                 }).catch( function( err ){
                     console.log( "error = " + err );
@@ -160,6 +160,17 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
         }
     });
+
+    SocketService.on('exchange.updated', function( exchange ){
+
+        if( exchange._id == exchangeID ){
+
+            $scope.$apply( function(){
+                $scope.exchange = exchange;
+            });
+
+        }
+    });
    
     $scope.$on( '$destroy', function( event ){
 
@@ -196,6 +207,13 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
         }
 
+        //viewing one existing exchange
+        if (path.split('/').indexOf('exchange') > -1){
+
+            amendExchange()
+
+        }
+
     }
 
     vm.removeFromExchange = function( itemToRemove ){
@@ -224,6 +242,13 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
         } 
 
+        //viewing one existing exchange
+        if (path.split('/').indexOf('exchange') > -1){
+
+            amendExchange()
+
+        }
+
     }
 
     vm.sendOffer = function( exchange ){
@@ -235,41 +260,6 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
         }, function(){
             alert( "Offer not sent" );
-        })
-
-    }
-
-    vm.amendExchange = function( exchange ){
-
-        //must also reset both users options
-
-        if ( vm.userIsSender ){
-
-            exchange.accepted.recipient = 0
-
-        }else{
-
-            exchange.accepted.sender = 0
-        }
-
-        ExchangeService.amendExchange( exchange ).then( function( ){ 
-
-            alert( "Exchange successfully amended" );
-            $location.path("/myExchanges");
-
-        }, function(){
-            alert( "Exchange not amended" );
-        })
-
-    }
-
-    vm.resetExchange = function( ){
-
-        ExchangeService.getExchange( exchangeID ).then( function( exchange ){
-
-            vm.exchange = exchange;
-            vm.initialiseItems();
-
         })
 
     }
@@ -297,7 +287,43 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     }
 
-    vm.initialiseItems = function(){
+    vm.toggleAcceptance = function(){
+
+        if( $scope.exchange.accepted.recipient && $scope.exchange.accepted.sender ){
+
+            //do something to make everything uneditable
+
+        }
+
+        ExchangeService.amendExchange( $scope.exchange )
+
+    }
+
+
+
+    // Private functions -------------------------------------------------------------------------------------------
+
+    var amendExchange = function( ){
+
+        if ( vm.userIsSender ){
+
+            vm.exchange.accepted.recipient = 0
+
+        }else{
+
+            vm.exchange.accepted.sender = 0
+        }
+
+        ExchangeService.amendExchange( vm.exchange ).then( function( ){  //should this pass $scope.exchange instead?
+
+
+        }, function(){
+            alert( "Exchange not amended" );
+        })
+
+    }
+
+    var initialiseItems = function(){
 
         vm.options = { 
 

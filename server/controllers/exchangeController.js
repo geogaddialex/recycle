@@ -28,8 +28,18 @@ exports.create = function( req, res ){
             return res.status(500).json({ errors: "Could not create exchange" });
         } 
 
-        console.log("exchange added: " + exchange);
-        res.status( 201 ).json( exchange );
+        exchange.populate("recipient", function(err, exchange) {
+
+            //should "modularize the socket transmission and abstract it into a factory", this is quick and dirty way
+            var socketio = req.app.get('socketio'); // take socket instance from the app container
+            socketio.sockets.emit('exchange.created', exchange);
+
+            console.log("exchange added: " + exchange);
+            res.status( 201 ).json( exchange );
+
+        });
+
+        
 
     });
 };
@@ -38,14 +48,20 @@ exports.update = function( req, res ){
 
     var id = req.params.id;
 
-    Exchange.findByIdAndUpdate(id, { $set: req.body }, (err, exchange) => {  
+    Exchange.findByIdAndUpdate(id, { $set: req.body }, {new: true}) 
+    .populate({path: 'messages', populate: { path: 'sender' }})
+    .populate('recipient sender items.sender items.recipient')
+    .exec(function(err, exchange){  
 
         if( err ){
             console.log( "error: " + err );
             return res.status(500).json({ errors: "Could not update exchange" });
         } 
 
-        console.log("exchange updated: " + exchange);
+        //should "modularize the socket transmission and abstract it into a factory", this is quick and dirty way
+        var socketio = req.app.get('socketio'); // take socket instance from the app container
+        socketio.sockets.emit('exchange.updated', exchange);
+
         res.status( 200 ).json( exchange );
     });
 };
