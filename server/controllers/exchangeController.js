@@ -5,7 +5,10 @@ var Exchange = require( '../models/exchangeModel' );
 
 exports.list = function( req, res ){
 
-    Exchange.find({ }).populate('messages').exec( function( err, exchanges ){
+    Exchange.find({ })
+        .populate('recipient sender items.sender items.recipient')
+        .populate({path: 'messages', populate: { path: 'sender' }})
+        .exec( function( err, exchanges ){
 
         if( err ){
             console.log( "error: " + err );
@@ -49,40 +52,19 @@ exports.update = function( req, res ){
     var id = req.params.id;
 
     Exchange.findByIdAndUpdate(id, { $set: req.body }, {new: true}) 
-    .populate({path: 'messages', populate: { path: 'sender' }})
-    .populate('recipient sender items.sender items.recipient')
-    .exec(function(err, exchange){  
+        .populate({path: 'messages', populate: { path: 'sender' }})
+        .populate('recipient sender items.sender items.recipient')
+        .exec( function( err, exchange ){  
 
-        if( err ){
-            console.log( "error: " + err );
-            return res.status(500).json({ errors: "Could not update exchange" });
-        } 
+            if( err ){
+                console.log( "error: " + err );
+                return res.status(500).json({ errors: "Could not update exchange" });
+            } 
 
-        //should "modularize the socket transmission and abstract it into a factory", this is quick and dirty way
-        var socketio = req.app.get('socketio'); // take socket instance from the app container
-        socketio.sockets.emit('exchange.updated', exchange);
+            //should "modularize the socket transmission and abstract it into a factory", this is quick and dirty way
+            var socketio = req.app.get('socketio'); // take socket instance from the app container
+            socketio.sockets.emit('exchange.updated', exchange);
 
-        res.status( 200 ).json( exchange );
-    });
-};
-
-exports.addMessage = function( req, res ){
-
-    var id = req.params.id;
-
-    Exchange.findByIdAndUpdate(id, { messages: req.body }, {new: true})
-    .populate( {path: 'messages', populate: { path: 'sender' }} )
-    .exec( function(err, exchange){
-
-        if( err ){
-            console.log( "error: " + err );
-            return res.status(500).json({ errors: "Could not update messages" });
-        } 
-
-        //should "modularize the socket transmission and abstract it into a factory", this is quick and dirty way
-        var socketio = req.app.get('socketio'); // take socket instance from the app container
-        socketio.sockets.emit('messages.updated', exchange);
-
-        res.status( 200 ).json( exchange.messages );
+            res.status( 200 ).json( exchange );
     });
 };

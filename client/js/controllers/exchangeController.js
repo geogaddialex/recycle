@@ -7,12 +7,6 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     var path = $location.path();
 
-    vm.options = { 
-
-        sender: [],
-        recipient: []
-    }
-
     //initialise user
     AuthService.getUser().then( function( user ){
       vm.user = user;
@@ -21,15 +15,23 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
         //starting a new exchange
         if (path.split('/').indexOf('newExchange') > -1){
 
-            vm.exchange = { 
+            $scope.exchange = { 
 
                 sender: vm.user,
+                lastUpdatedBy: vm.user,
                 items: { sender: [], recipient: [] },
                 messages: [],
                 accepted: { sender: 1, recipient: 0 },
                 feedback: []
 
             }  
+
+            vm.options = {
+                
+                sender: [],
+                recipient: []
+
+            }
 
             //initialise my items 
             ItemService.getItemsBelongingTo( vm.user._id ).then( function( items ){
@@ -54,7 +56,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
                     var user = vm.users.find(user => user.username === username);
                     vm.otherUser = user
                     vm.selectedUser = user
-                    vm.exchange.recipient = user;
+                    $scope.exchange.recipient = user;
                 }
 
             })
@@ -70,17 +72,17 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
                 if( !selected ){
 
                     vm.options.recipient = [];
-                    vm.exchange.items.recipient = [];
-                    vm.exchange.recipient = "";
+                    $scope.exchange.items.recipient = [];
+                    $scope.exchange.recipient = "";
                     vm.otherUser = {username:"No user selected"};
 
                 } else {
 
                     vm.options.recipient = [];
-                    vm.exchange.items.recipient = [];
+                    $scope.exchange.items.recipient = [];
 
                     vm.otherUser = vm.users.find( user => user.username === selected.username );
-                    vm.exchange.recipient = vm.users.find( user => user.username === selected.username );
+                    $scope.exchange.recipient = vm.users.find( user => user.username === selected.username );
 
                     ItemService.getItemsBelongingTo( vm.otherUser._id ).then( function( items ){
 
@@ -97,28 +99,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
         }
 
-        //viewing one existing exchange
-        if (path.split('/').indexOf('exchange') > -1){
-
-            if( exchangeID ){
-
-                ExchangeService.getExchange( exchangeID ).then( function( exchange ){
-
-
-                    $scope.exchange = exchange;
-                    vm.exchange = exchange;
-                    vm.userIsSender = vm.user._id == exchange.sender._id
-                    vm.otherUser = vm.userIsSender ? exchange.recipient : exchange.sender
-
-                    initialiseItems();
-
-                }).catch( function( err ){
-                    console.log( "error = " + err );
-                });
-            }
-        }
-
-        //viewing all exchanges (admin functionality)
+        // viewing all exchanges (admin functionality) --------------------------------
         if( $location.path() == "/exchanges" ){
 
             ExchangeService.getExchanges( ).then( function( exchanges ){
@@ -130,7 +111,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
             });
         }
 
-        //viewing my exchanges
+        // viewing my exchanges ------------------------------------------------
         if( $location.path() == "/myExchanges" ){
 
             ExchangeService.getExchangesInvolving( vm.user._id ).then( function( exchanges ){
@@ -145,29 +126,44 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
             });
         }
 
-    });
+
+        // viewing one existing exchange --------------------------------------- 
+        if (path.split('/').indexOf('exchange') > -1){
+
+            if( exchangeID ){
+
+                ExchangeService.getExchange( exchangeID ).then( function( exchange ){
 
 
-    // Socket events -------------------------------------------------------------------------------------------
+                    $scope.exchange = exchange;
+                    vm.userIsSender = vm.user._id == exchange.sender._id
+                    vm.otherUser = vm.userIsSender ? exchange.recipient : exchange.sender
 
-    SocketService.on('messages.updated', function( exchange ){
+                    updateOptions()
 
-        if( exchange._id == exchangeID ){
-
-            $scope.$apply( function(){
-                $scope.exchange.messages = exchange.messages;
-            });
-
+                }).catch( function( err ){
+                    console.log( "error = " + err );
+                });
+            }
         }
+
+
     });
+
+
+    // Socket events ----------------------------------------------------------------------------------------------------
+
 
     SocketService.on('exchange.updated', function( exchange ){
 
         if( exchange._id == exchangeID ){
 
-            $scope.$apply( function(){
-                $scope.exchange = exchange;
-            });
+                $scope.$applyAsync( function(){
+
+                    $scope.exchange = exchange;                    
+                });
+                
+                updateOptions()
 
         }
     });
@@ -182,74 +178,6 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     // Functions for browser use -------------------------------------------------------------------------------------------
 
-    vm.addToExchange = function( itemToAdd ){
-
-        var recipientHasIt = vm.options.recipient.find(item => item._id === itemToAdd._id)
-        var senderHasIt = vm.options.sender.find(item => item._id === itemToAdd._id)
-
-        if( senderHasIt ){
-
-            var array = vm.options.sender
-            array.splice( array.indexOf(senderHasIt), 1 ) 
-
-            vm.exchange.items.sender.push( itemToAdd );
-
-        }else if( recipientHasIt ){
-
-            var array = vm.options.recipient
-            array.splice( array.indexOf(recipientHasIt), 1 ) 
-
-            vm.exchange.items.recipient.push( itemToAdd );
-
-        }else{
-
-            console.log("cant find item: " + itemToRemove )
-
-        }
-
-        //viewing one existing exchange
-        if (path.split('/').indexOf('exchange') > -1){
-
-            amendExchange()
-
-        }
-
-    }
-
-    vm.removeFromExchange = function( itemToRemove ){
-
-        var recipientHasIt = vm.exchange.items.recipient.find(item => item._id === itemToRemove._id)
-        var senderHasIt = vm.exchange.items.sender.find(item => item._id === itemToRemove._id)
-
-        if( senderHasIt ){
-
-            var array = vm.exchange.items.sender
-            array.splice( array.indexOf(senderHasIt), 1 ) 
-
-            vm.options.sender.push( itemToRemove );
-            
-
-        }else if( recipientHasIt) {
-
-            var array = vm.exchange.items.recipient
-            array.splice( array.indexOf(recipientHasIt), 1 ) 
-
-            vm.options.recipient.push( itemToRemove );
-
-        } else{
-
-            console.log("cant find item: " + itemToRemove )
-
-        } 
-
-        //viewing one existing exchange
-        if (path.split('/').indexOf('exchange') > -1){
-
-            amendExchange()
-
-        }
-
-    }
 
     vm.sendOffer = function( exchange ){
 
@@ -264,24 +192,91 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     }
 
+    vm.addToExchange = function( itemToAdd ){
+
+        var recipientHasIt = vm.options.recipient.find(item => item._id === itemToAdd._id)
+        var senderHasIt = vm.options.sender.find(item => item._id === itemToAdd._id)
+
+        if( senderHasIt ){
+
+            var array = vm.options.sender
+            array.splice( array.indexOf(senderHasIt), 1 ) 
+
+            $scope.exchange.items.sender.push( itemToAdd );
+
+        }else if( recipientHasIt ){
+
+            var array = vm.options.recipient
+            array.splice( array.indexOf(recipientHasIt), 1 ) 
+
+            $scope.exchange.items.recipient.push( itemToAdd );
+
+        }else{
+
+            console.log("cant find item: " + itemToRemove )
+
+        }
+
+        //viewing one existing exchange
+        if (path.split('/').indexOf('exchange') > -1){
+
+            $scope.exchange.accepted = { sender: 0, recipient: 0 };
+            amendExchange()
+
+        }
+
+    }
+
+    vm.removeFromExchange = function( itemToRemove ){
+
+        var recipientHasIt = $scope.exchange.items.recipient.find(item => item._id === itemToRemove._id)
+        var senderHasIt = $scope.exchange.items.sender.find(item => item._id === itemToRemove._id)
+
+        if( senderHasIt ){
+
+            var array = $scope.exchange.items.sender
+            array.splice( array.indexOf(senderHasIt), 1 ) 
+
+            vm.options.sender.push( itemToRemove );
+            
+
+        }else if( recipientHasIt) {
+
+            var array = $scope.exchange.items.recipient
+            array.splice( array.indexOf(recipientHasIt), 1 ) 
+
+            vm.options.recipient.push( itemToRemove );
+
+        } else{
+
+            console.log("cant find item: " + itemToRemove )
+
+        } 
+
+        //viewing one existing exchange
+        if (path.split('/').indexOf('exchange') > -1){
+
+            $scope.exchange.accepted = { sender: 0, recipient: 0 };
+            amendExchange()
+
+        }
+
+    }
+
+
     vm.sendMessage = function( ){
 
         var messageToCreate = {
 
             recipient: vm.otherUser,
             sender: vm.user,
-            content: vm.message
+            content: $scope.message
         }
 
         MessageService.createMessage( messageToCreate ).then( function( createdMessage ){ 
 
-            vm.exchange.messages.push( createdMessage.data )
-
-            ExchangeService.addMessageToExchange( vm.exchange ).then( function(){
-        
-                vm.message = ""
-
-            })
+            $scope.exchange.messages.push( createdMessage.data )
+            amendExchange()
 
         })
 
@@ -291,11 +286,19 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
         if( $scope.exchange.accepted.recipient && $scope.exchange.accepted.sender ){
 
-            //do something to make everything uneditable
+            $scope.exchange.status = "Agreed"
 
         }
 
-        ExchangeService.amendExchange( $scope.exchange )
+        amendExchange()
+
+    }
+
+    vm.cancelExchange = function(){
+
+        $scope.exchange.status = "Cancelled"
+
+        amendExchange()
 
     }
 
@@ -305,16 +308,10 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     var amendExchange = function( ){
 
-        if ( vm.userIsSender ){
+        $scope.exchange.lastUpdatedBy = vm.user
+        $scope.exchange.lastModified = Date.now()
 
-            vm.exchange.accepted.recipient = 0
-
-        }else{
-
-            vm.exchange.accepted.sender = 0
-        }
-
-        ExchangeService.amendExchange( vm.exchange ).then( function( ){  //should this pass $scope.exchange instead?
+        ExchangeService.amendExchange( $scope.exchange ).then( function( ){
 
 
         }, function(){
@@ -323,7 +320,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     }
 
-    var initialiseItems = function(){
+    var updateOptions = function(){
 
         vm.options = { 
 
@@ -336,8 +333,8 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
             for( x in items ){
 
-                var recipientHasIt = vm.exchange.items.recipient.find(item => item._id === items[x]._id)
-                var senderHasIt = vm.exchange.items.sender.find(item => item._id === items[x]._id)
+                var recipientHasIt = $scope.exchange.items.recipient.find(item => item._id === items[x]._id)
+                var senderHasIt = $scope.exchange.items.sender.find(item => item._id === items[x]._id)
 
                 if( !recipientHasIt && !senderHasIt ){
 
@@ -362,8 +359,8 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
             for( x in items ){
 
-                var recipientHasIt = vm.exchange.items.recipient.find(item => item._id === items[x]._id)
-                var senderHasIt = vm.exchange.items.sender.find(item => item._id === items[x]._id)
+                var recipientHasIt = $scope.exchange.items.recipient.find(item => item._id === items[x]._id)
+                var senderHasIt = $scope.exchange.items.sender.find(item => item._id === items[x]._id)
 
                 //add item to options array as long as its not already part of the exchange
                 if( !recipientHasIt && !senderHasIt ){

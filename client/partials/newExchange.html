@@ -18,20 +18,18 @@
 
                         <h3> {{ ctrl.user.username }} </h3>
 
-                        <div ng-repeat="item in ctrl.exchange.items.sender">
+                        <div ng-repeat="item in exchange.items.sender">
                             <a ng-click="ctrl.removeFromExchange(item)"><div class="item">{{ item.name }}</div></a> 
                         </div>
-                        <div ng-if="Object.keys(ctrl.exchange.items.sender).length == 0">No items added to exchange</div>
                 </div>
 
                 <div class="col-xs-6" id="theirExchangeItems">
 
                         <h3> {{ ctrl.otherUser.username }} </h3>
 
-                        <div ng-repeat="item in ctrl.exchange.items.recipient">
+                        <div ng-repeat="item in exchange.items.recipient">
                             <a ng-click="ctrl.removeFromExchange(item)"><div class="item">{{ item.name }}</div></a>    
                         </div>
-                        <div ng-if="Object.keys(ctrl.exchange.items.recipient).length == 0">No items added to exchange</div>
 
                 </div>
 
@@ -39,7 +37,7 @@
 
             <div class="row" id="exchangeDecision">
                 <div class="col-xs-6">
-                    <button type="button" class="btn btn-outline-primary" ng-click="ctrl.sendOffer( ctrl.exchange )">Send offer</button>
+                    <button type="button" class="btn btn-outline-primary" ng-click="ctrl.sendOffer( exchange )">Send offer</button>
                 </div>
                 <div class="col-xs-6">
                     <button type="button" class="btn btn-outline-danger" ng-click="ctrl.cancelOffer()">Cancel offer</button>

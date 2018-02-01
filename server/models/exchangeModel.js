@@ -9,6 +9,10 @@ var exchangeSchema = mongoose.Schema({
 
 	recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 	sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+	lastUpdatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+	created: { type: Date, default: Date.now },
+	lastModified: { type: Date, default: Date.now },
+
 
 	items: { 
 		sender: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }],
@@ -17,9 +21,9 @@ var exchangeSchema = mongoose.Schema({
 	
     messages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Message' }],
 
-    //if either party edits items list then other party's accepted resets to 0, when user presses send theirs is 1
     accepted: { recipient:0, sender:0 },
-    
+    status: {type: String, default: 'In progress'},
+
     feedback:  { 
 		// sender: { type: mongoose.Schema.Types.ObjectId, ref: 'Feedback' },
 		// recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'Feedback' }

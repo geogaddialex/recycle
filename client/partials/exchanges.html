@@ -1,3 +1,4 @@
+
 <div class="container-fluid content">
 
         <div id="page-content-wrapper">
@@ -5,23 +6,24 @@
             <div class="row">
                 <div ng-show="ctrl.exchanges">
                         
-                    <div ng-repeat="exchange in ctrl.exchanges" class="col-xs-12 exchange">
+                    <div ng-repeat="exchange in ctrl.exchanges | orderBy : '-created'" class="col-xs-12 exchange">
                        
                             <div class="row"> <!-- exchange details -->
                                 <div class="col">
-                                    <a href="/exchanges/{{ exchange._id }}">User: {{ exchange.recipient.username }}</a><br>
-                                </div>
-                            </div>
 
-                            <div class="row items">
-                                <div class="col-xs-6">
-                                    <div ng-repeat="item in exchange.items.recipient" class="row"><div class="col-xs-12">item</div></div>
+            Reference: <a href="/exchange/{{ exchange._id }}">{{ exchange._id }}</a><br>
+
+            Sender: <a href="/users/{{ exchange.sender.username }}">{{ exchange.sender.username }}</a><br>
+            Recipient: <a href="/users/{{ exchange.recipient.username }}">{{ exchange.recipient.username }}</a><br>
+            
+            Status: {{ exchange.status }}<br>
+
+            <!-- use installed datejs to format -->
+            Created: {{ exchange.created }}<br>
+            Last modified: {{ exchange.lastModified }}<br>
+
                                 </div>
-                                <div class="col-xs-6">
-                                    <div ng-repeat="item in exchange.items.sender" class="row"><div class="col-xs-12">item</div></div>
-                                </div>                                
-                            </div>
-                        
+                            </div><!-- exchange details end -->
                     </div>    
                 </div>
 

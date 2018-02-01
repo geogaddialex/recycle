@@ -7,7 +7,6 @@ router.get('/', exchange.list );
 router.post('/', exchange.create );
 router.get('/:id', lookupExchange, function( req, res ){ res.json( req.exchange ); });
 router.patch('/:id', exchange.update );
-router.patch('/:id/addMessage', exchange.addMessage );
 router.delete('/:id', lookupExchange, function( req, res ){ });
 
 function lookupExchange(req, res, next) {

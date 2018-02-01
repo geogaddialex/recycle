@@ -6,51 +6,22 @@
             <div class="row">
                 <div ng-show="ctrl.myExchanges">
                         
-                    <div ng-repeat="exchange in ctrl.myExchanges" class="col-xs-12 exchange">
+                    <div ng-repeat="exchange in ctrl.myExchanges | orderBy : '-created'" class="col-xs-12 exchange">
                        
                             <div class="row"> <!-- exchange details -->
                                 <div class="col">
             Reference: <a href="/exchange/{{ exchange._id }}">{{ exchange._id }}</a><br>
-            User: <a href="/users/{{ exchange.recipient.username }}" ng-if="ctrl.user._id == exchange.sender._id">{{ exchange.recipient.username }}</a>
-            <a href="/users/{{ exchange.sender.username }}" ng-if="ctrl.user._id != exchange.sender._id">{{ exchange.sender.username }}</a>
+
+            User: <a href="/users/{{ exchange.recipient.username }}" ng-if="ctrl.user._id == exchange.sender._id">
+            {{ exchange.recipient.username }}</a>
+            <a href="/users/{{ exchange.sender.username }}" ng-if="ctrl.user._id != exchange.sender._id">
+            {{ exchange.sender.username }}</a>
+            <br>
+            
+            Status: {{ exchange.status }}
 
                                 </div>
-                            </div>
-
-                            <br>
-
-                            <div class="row items">
-
-                                <div class="col-xs-6">
-
-                                    My items<br><br>
-
-                                    <div ng-if="ctrl.user._id != exchange.sender._id" ng-repeat="item in exchange.items.recipient" class="row">
-                                        <div class="col-xs-12"><a href="/items/{{ item._id }}">{{ item.name }}</a></div>
-                                    </div>
-
-                                    <div ng-if="ctrl.user._id == exchange.sender._id" ng-repeat="item in exchange.items.sender" class="row">
-                                        <div class="col-xs-12"><a href="/items/{{ item._id }}">{{ item.name }}</a></div>
-                                    </div>
-
-                                </div>
-
-                                <div class="col-xs-6">
-
-                                    <a href="/users/{{ exchange.recipient.username }}" ng-if="ctrl.user._id == exchange.sender._id">{{ exchange.recipient.username }}</a>
-                                    <a href="/users/{{ exchange.sender.username }}" ng-if="ctrl.user._id != exchange.sender._id">{{ exchange.recipient.username }}</a>'s items<br><br>
-
-                                    <div ng-if="ctrl.user._id == exchange.sender._id" ng-repeat="item in exchange.items.recipient" class="row">
-                                        <div class="col-xs-12"><a href="/items/{{ item._id }}">{{ item.name }}</a></div>
-                                    </div>
-
-                                    <div ng-if="ctrl.user._id != exchange.sender._id" ng-repeat="item in exchange.items.sender" class="row">
-                                        <div class="col-xs-12"><a href="/items/{{ item._id }}">{{ item.name }}</a></div>
-                                    </div>
-                                </div>    
-
-                            </div>
-                        
+                            </div><!-- exchange details end -->
                     </div>    
                 </div>
 
