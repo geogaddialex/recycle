@@ -29,7 +29,6 @@ exports.update = function( req, res ){
             return res.status(500).json({ errors: "Could not update user" });
         } 
 
-        console.log("user updated: " + user);
         res.status( 200 ).json( user );
     });
 };

@@ -6,7 +6,7 @@ angular.module('myApp').controller('feedbackController', [ '$routeParams', '$loc
 
     //initialise user
     AuthService.getUser().then( function( user ){
-      vm.user = user;
+      $scope.user = user;
 
 
         // viewing one existing exchange --------------------------------------- 
@@ -16,18 +16,24 @@ angular.module('myApp').controller('feedbackController', [ '$routeParams', '$loc
 
                 ExchangeService.getExchange( exchangeID ).then( function( exchange ){
 
-
+                    $scope.userIsSender = $scope.user._id == exchange.sender._id
+                    $scope.otherUser = $scope.userIsSender ? exchange.recipient : exchange.sender
                     $scope.exchange = exchange;
 
                     $scope.feedback = {
 
                         rating: null,
                         comment: null,
-                        author: vm.user
+                        author: $scope.user
                     }
 
-                    vm.userIsSender = vm.user._id == exchange.sender._id
-                    vm.otherUser = vm.userIsSender ? exchange.recipient : exchange.sender
+                    if( $scope.userIsSender ){
+                        $scope.feedbackSubmitted = exchange.feedback.sender
+                    }else{
+                        $scope.feedbackSubmitted = exchange.feedback.recipient
+
+                    }
+                    
 
                 }).catch( function( err ){
                     console.log( "error = " + err );
@@ -67,13 +73,9 @@ angular.module('myApp').controller('feedbackController', [ '$routeParams', '$loc
 
     vm.submitFeedback = function( ){
 
-        console.log("feedback is: \n" + JSON.stringify($scope.feedback) )
-
         FeedbackService.createFeedback( $scope.feedback ).then( function( createdFeedback ){ 
 
-            console.log("created feedback is: \n" + JSON.stringify(createdFeedback.data) )
-
-            if( vm.userIsSender ){
+            if( $scope.userIsSender ){
 
                 $scope.exchange.feedback.sender = createdFeedback.data
 
@@ -83,6 +85,10 @@ angular.module('myApp').controller('feedbackController', [ '$routeParams', '$loc
             }
 
             amendExchange()
+            updateFeedbackScore()
+
+            $scope.feedbackSubmitted = createdFeedback.data
+
 
         })
 
@@ -112,7 +118,7 @@ angular.module('myApp').controller('feedbackController', [ '$routeParams', '$loc
 
     var amendExchange = function( ){
 
-        $scope.exchange.lastUpdatedBy = vm.user
+        $scope.exchange.lastUpdatedBy = $scope.user
         $scope.exchange.lastModified = Date.now()
 
         ExchangeService.amendExchange( $scope.exchange ).then( function( ){
@@ -120,6 +126,31 @@ angular.module('myApp').controller('feedbackController', [ '$routeParams', '$loc
 
         }, function(){
             alert( "Exchange not amended" );
+        })
+
+    }
+
+    var updateFeedbackScore = function( ){
+
+        UserService.getUser( $scope.otherUser._id ).then(function( user ){
+
+            console.log( "otherUser = " + JSON.stringify( user ) )
+
+            user.feedback.count += 1
+            user.feedback.total += $scope.feedback.rating
+            user.feedback.score = user.feedback.total/user.feedback.count*50
+
+            console.log( "otherUser = " + JSON.stringify( user ) )
+
+            UserService.updateUser( user ).then(function(){
+
+                console.log("user updated: " + user._id)
+
+            }, function(){
+
+                alert( "User not updated" );
+            })
+
         })
 
     }

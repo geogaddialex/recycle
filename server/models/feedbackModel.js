@@ -8,6 +8,7 @@ var feedbackSchema = mongoose.Schema({
 	rating: Number,
 	timestamp: { type: Date, default: Date.now }
 
-});
+}, 
+{ collection: 'feedback' });
 
 module.exports = mongoose.model( 'Feedback', feedbackSchema );

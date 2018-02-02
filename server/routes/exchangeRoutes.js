@@ -13,7 +13,10 @@ function lookupExchange(req, res, next) {
 
   	var id = req.params.id;
 
-  	Exchange.findOne({ '_id': id }).populate('recipient sender items.sender items.recipient').populate({path: 'messages', populate: { path: 'sender' }}).exec( function( err, exchange ){
+  	Exchange.findOne({ '_id': id })
+    .populate('recipient sender items.sender items.recipient feedback.sender feedback.recipient')
+    .populate({path: 'messages', populate: { path: 'sender' }})
+    .exec( function( err, exchange ){
         if( err ){  
             console.log( err ); 
             return res.status(500).json({ errors: "Could not retrieve exchange" });

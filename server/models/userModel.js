@@ -6,7 +6,12 @@ var userSchema = mongoose.Schema({
 	    username: String,
 	    password: String,
         email: String,
-       	isAdmin: Boolean
+       	isAdmin: { type: Boolean, default: false },
+       	feedback: { 
+   			total: { type: Number, default: 0 }, 
+   			count: { type: Number, default: 0 },
+   			score: { type: Number, default: 100 }
+       	}
 });
 
 userSchema.plugin( passportLocalMongoose );

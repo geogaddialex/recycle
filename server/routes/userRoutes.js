@@ -4,7 +4,6 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', users.list );
-router.post('/', users.create );
 router.get('/:id', users.lookupUser, function( req, res ){ res.json( req.user ); });
 router.get('/byUsername/:username', users.lookupUserByUsername, function( req, res ){ res.json( req.user ); });
 router.get('/:id/items', users.lookupUser, users.listItems );
