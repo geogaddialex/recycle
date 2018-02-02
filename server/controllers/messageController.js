@@ -1,6 +1,4 @@
 var Message = require( '../models/messageModel' );
-var User = require( '../models/userModel' );
-var users = require('./userController');
 
 exports.list = function( req, res ){
 

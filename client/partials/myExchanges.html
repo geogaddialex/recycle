@@ -1,27 +1,85 @@
-
 <div class="container-fluid content">
 
         <div id="page-content-wrapper">
 
             <div class="row">
-                <div ng-show="ctrl.myExchanges">
+                <div ng-show="myExchanges">
                         
-                    <div ng-repeat="exchange in ctrl.myExchanges | orderBy : '-created'" class="col-xs-12 exchange">
+                    <div ng-repeat="exchange in myExchanges | orderBy : '-created'" class="col-xs-12 exchange">
                        
-                            <div class="row"> <!-- exchange details -->
-                                <div class="col">
+                            <div class="row"> 
+
+                                <div class="col-xs-6"><!-- exchange details -->
+
+
             Reference: <a href="/exchange/{{ exchange._id }}">{{ exchange._id }}</a><br>
+            Status: {{ exchange.status }}<br>
+            <br>
 
             User: <a href="/users/{{ exchange.recipient.username }}" ng-if="ctrl.user._id == exchange.sender._id">
             {{ exchange.recipient.username }}</a>
             <a href="/users/{{ exchange.sender.username }}" ng-if="ctrl.user._id != exchange.sender._id">
             {{ exchange.sender.username }}</a>
-            <br>
-            
-            Status: {{ exchange.status }}
+            <br><br>
 
-                                </div>
-                            </div><!-- exchange details end -->
+            Created: {{ ctrl.formatTimestamp(exchange.created, 'long') }}<br>
+            Last modified: {{ ctrl.formatTimestamp(exchange.lastModified, 'long') }}<br>
+            <br>
+
+            Feedback: <br><br>
+
+            <div ng-if="exchange.sender._id == ctrl.user._id">
+                <div ng-if="exchange.feedback.sender">
+                    Your rating: {{ exchange.feedback.sender.rating}}<br>
+                    Your comment: {{ exchange.feedback.sender.comment}}
+                </div>
+                <div ng-if="!exchange.feedback.sender">
+                    You haven't left any feedback yet
+                </div>
+                <div ng-if="exchange.feedback.recipient">
+                    Their rating: {{ exchange.feedback.recipient.rating}}<br>
+                    Their comment: {{ exchange.feedback.recipient.comment}}
+                </div>
+                <div ng-if="!exchange.feedback.recipient">
+                    They haven't left any feedback yet
+                </div>
+            </div>
+
+            <div ng-if="exchange.sender._id != ctrl.user._id">
+                <div ng-if="exchange.feedback.recipient">
+                    Your rating: {{ exchange.feedback.recipient.rating}}<br>
+                    Your comment: {{ exchange.feedback.recipient.comment}}
+                </div>
+                <div ng-if="!exchange.feedback.recipient">
+                    You haven't left any feedback yet
+                </div>
+                <div ng-if="exchange.feedback.sender">
+                    Their rating: {{ exchange.feedback.sender.rating}}<br>
+                    Their comment: {{ exchange.feedback.sender.comment}}
+                </div>
+                <div ng-if="!exchange.feedback.sender">
+                    They haven't left any feedback yet
+                </div>
+            </div>
+
+
+                                </div><!-- exchange details end -->
+
+                                <div class="col-xs-2"><!-- exchange actions -->
+
+            <a href="/exchange/{{ exchange._id }}"><button class="btn">View</button></a><br>
+            <button class="btn" ng-if="exchange.status=='In progress'" ng-click="exchange.status='Cancelled'">Cancel</button>
+
+
+            <a ng-if="exchange.sender._id == ctrl.user._id && !exchange.feedback.sender" href="/feedback/{{ exchange._id }}">
+                <button class="btn" ng-if="exchange.status=='Agreed'">Leave Feedback</button>
+            </a>
+            <a ng-if="exchange.sender._id != ctrl.user._id && !exchange.feedback.recipient" href="/feedback/{{ exchange._id }}">
+                <button class="btn" ng-if="exchange.status=='Agreed'">Leave Feedback</button>
+            </a>
+
+                                </div><!-- exchange actions end -->
+                            </div>
                     </div>    
                 </div>
 

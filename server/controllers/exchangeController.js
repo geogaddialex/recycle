@@ -6,7 +6,7 @@ var Exchange = require( '../models/exchangeModel' );
 exports.list = function( req, res ){
 
     Exchange.find({ })
-        .populate('recipient sender items.sender items.recipient')
+        .populate('recipient sender items.sender items.recipient feedback')
         .populate({path: 'messages', populate: { path: 'sender' }})
         .exec( function( err, exchanges ){
 

@@ -25,9 +25,10 @@ var exchangeSchema = mongoose.Schema({
     status: {type: String, default: 'In progress'},
 
     feedback:  { 
-		// sender: { type: mongoose.Schema.Types.ObjectId, ref: 'Feedback' },
-		// recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'Feedback' }
+		sender: { type: mongoose.Schema.Types.ObjectId, ref: 'Feedback' },
+		recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'Feedback' }
 	}
-});
+}, 
+{ minimize: false });
 
 module.exports = mongoose.model( 'Exchange', exchangeSchema );

@@ -2,6 +2,44 @@
 	padding:5px;
 }
 
+#exchangeFooter, #feedbackFooter {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left:0;
+}
+
+#messenger, #otherUserInfo, #feedback{
+	background-color: white;
+	border-radius: 5px;
+	border: 1px solid #f2e7d9;
+	height: 250px;
+}
+
+#displayMessages{
+	overflow-y: auto;
+	overflow-x: hidden;
+	height:170px;
+	border: 1px solid #f2e7d9;
+	padding: 2px;
+}
+
+#feedbackTable{
+	margin: 0 auto;
+}
+#feedbackTable tr th{
+	padding:0 15px;
+	font-weight: normal;
+}
+
+.messageContent, .messageInfo{
+	text-align: left;
+}
+
+.message{
+	margin: 2px;
+}
+
 .oneExchange{
 	background-color:white;
 	text-align: center;
@@ -24,13 +62,6 @@
 	border-radius: 5px;
 	border: 1px solid #f2e7d9;
 	overflow: hidden;
-}
-
-#exchangeMessages{
-	background-color:white;
-	border-radius: 0;
-	border-width-top: 1px;
-	border-color: #f2e7d9;
 }
 
 .exchange{
@@ -74,5 +105,4 @@ input{
 
 #messageButton{
 	width:20%;
-	margin:0;
 }

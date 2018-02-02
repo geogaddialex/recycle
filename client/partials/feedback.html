@@ -1,0 +1,95 @@
+<div class="container-fluid content">
+
+    <div class="row" id="exchangeItems">
+
+        <div class="col-xs-8 col-xs-offset-2" id="exchange">
+            <div class="row"><h5>Exchange - {{exchange.status}}</h5></div>
+            <div class="row">
+
+                <div class="col-xs-6" id="myExchangeItems">
+
+                        <h3><a href="/profile">{{ ctrl.user.username }}</a></h3>
+
+                        <div ng-if="ctrl.userIsSender">
+
+                            <div ng-repeat="item in exchange.items.sender">
+                                <div class="exchangeItem">{{ item.name }}</div>
+                            </div>
+
+                        </div>
+
+                        <div ng-if="!ctrl.userIsSender">
+
+                            <div ng-repeat="item in exchange.items.recipient">
+                                <div class="exchangeItem">{{ item.name }}</div>  
+                            </div>
+
+                        </div>
+                </div>
+
+                <div class="col-xs-6" id="theirExchangeItems">
+
+                        <h3><a href="/users/{{ ctrl.otherUser.username }}">{{ ctrl.otherUser.username }}</a></h3>
+
+                        <div ng-if="!ctrl.userIsSender">
+
+                            <div ng-repeat="item in exchange.items.sender">
+                                <div class="exchangeItem">{{ item.name }}</div>
+                            </div>
+
+                        </div>
+
+                        <div ng-if="ctrl.userIsSender">
+
+                            <div ng-repeat="item in exchange.items.recipient">
+                                <div class="exchangeItem">{{ item.name }}</div>
+                            </div>
+
+                        </div>
+
+                </div>
+
+            </div><!-- row -->
+
+
+        </div><!-- exchange -->
+
+</div>
+
+
+
+
+<div id="feedbackFooter" class="row">
+
+
+    <div class="col-xs-6" id="feedback">
+
+        <div class="row"><h5>Feedback</h5></div>
+    
+        <div id="feedbackForm" class="row">
+
+            <table id="feedbackTable">
+                <tr><th>0 - Bad</th><th>1 - Neutral</th><th>2 - Good</th></tr>
+                <tr>
+                    <td><input type="radio" name="feedbackRating" value="0" ng-model="feedback.rating"></td>
+                    <td><input type="radio" name="feedbackRating" value="1" ng-model="feedback.rating"></td>
+                    <td><input type="radio" name="feedbackRating" value="2" ng-model="feedback.rating"></td>
+                </tr>
+            </table>
+
+            <input type="text" id="messageInput" placeholder="Type a message" ng-model="feedback.comment"/><br>
+            <button class="btn" id="messageButton" ng-click="ctrl.submitFeedback( )">Submit Feedback</button>
+        </div>
+
+    </div><!-- end feedback -->
+
+
+
+    <div class="col-xs-6" id="otherUserInfo">
+
+        <div class="row"><h5><a href="/users/{{ ctrl.otherUser.username }}">{{ ctrl.otherUser.username }}'s details</a></h5></div>
+
+    </div>
+
+
+</div>

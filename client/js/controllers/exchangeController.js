@@ -4,8 +4,9 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
     var item = $routeParams.item;
     var username = $routeParams.username;
     var exchangeID = $routeParams.id;
-
     var path = $location.path();
+
+
 
     //initialise user
     AuthService.getUser().then( function( user ){
@@ -22,8 +23,6 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
                 items: { sender: [], recipient: [] },
                 messages: [],
                 accepted: { sender: 1, recipient: 0 },
-                feedback: []
-
             }  
 
             vm.options = {
@@ -100,7 +99,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
         }
 
         // viewing all exchanges (admin functionality) --------------------------------
-        if( $location.path() == "/exchanges" ){
+        if( path == "/exchanges" ){
 
             ExchangeService.getExchanges( ).then( function( exchanges ){
 
@@ -112,16 +111,16 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
         }
 
         // viewing my exchanges ------------------------------------------------
-        if( $location.path() == "/myExchanges" ){
+        if( path == "/myExchanges" ){
 
             ExchangeService.getExchangesInvolving( vm.user._id ).then( function( exchanges ){
-                
-                vm.myExchanges = exchanges;
+
+                $scope.myExchanges = exchanges;
 
             }).catch( function( err ){
                 
                 console.log( "error = " + err );
-                vm.myExchanges = {};
+                $scope.myExchanges = {};
 
             });
         }
@@ -276,6 +275,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
         MessageService.createMessage( messageToCreate ).then( function( createdMessage ){ 
 
             $scope.exchange.messages.push( createdMessage.data )
+            $scope.message = ""
             amendExchange()
 
         })
@@ -300,6 +300,23 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
         amendExchange()
 
+    }
+
+    vm.formatTimestamp = function( date, format ){
+
+        var formattedTimestamp
+
+        if(format == "short"){
+
+            formattedTimestamp = Date.parse(date).toString('dd/MM HH:mm')
+        
+        }else if(format == "long"){
+
+            formattedTimestamp = Date.parse(date).toString('dd MMMM yyyy, HH:mm')
+        }
+
+
+        return formattedTimestamp
     }
 
 

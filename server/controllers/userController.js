@@ -1,9 +1,6 @@
 var User = require( '../models/userModel' );
 var Item = require( '../models/itemModel' );
 var Exchange = require( '../models/exchangeModel' );
-var items = require('./itemController');
-var users = require('./userController');
-var async = require('async');
 
 exports.list = function( req, res ){
 
@@ -19,11 +16,6 @@ exports.list = function( req, res ){
         res.json({ users: users });
             
     })
-}
-
-
-exports.create = function( ){
-    
 }
 
 exports.update = function( req, res ){
@@ -62,7 +54,7 @@ exports.listExchanges = function( req, res ){
 
     var user = req.user;
 
-    Exchange.find({$or:[{recipient: user},{sender: user}]}).populate('sender recipient items.recipient items.sender').exec( function( err, exchanges ){
+    Exchange.find({$or:[{recipient: user},{sender: user}]}).populate('sender recipient items.recipient items.sender feedback.sender feedback.recipient').exec( function( err, exchanges ){
 
         if( err ){
             console.log( "error: " + err );
@@ -89,63 +81,6 @@ exports.findUserByID = function( id, callback ){
             callback( user );
         }
     });
-}
-
-exports.showProfile = function( req, res ){
-
-	//find all items for req.user
-
-    Item.find({ }, function( err, items ){
-        newItems = [];
-        async.each( items, ofUser, whenDone );
-            
-    });
-
-    function ofUser( item, callback ){
-        items.findItemByID( item, function( item ){
-
-        		if( item.owner.toString().trim() === req.user._id.toString().trim() ){
-        			
-        			newItems.push({ name: item.name });
-        		}
-                callback();
-        }); 
-    }
-
-    function whenDone( err ){
-        if( err ){
-            console.log( "error: " + err );
-        } else {
-            res.render('profile', {
-		        user: req.user,
-		        items: newItems
-		    });
-        }        
-    }
-}
-
-exports.goToUser = function( req, res ){
-    users.findUserByName( req.params.user, function( userToView ){
-
-        items.findItemsBelongingTo( userToView, function( items ){
-            res.render('user', {
-                user: req.user,
-                userToView: userToView,
-                items: items
-            });
-        })
-
-    });
-}
-
-exports.showMyItems = function( req, res ){
-    items.findItemsBelongingTo( req.user, function( items ){
-        res.render('myItems', {
-            user: req.user,
-            items: items
-        });
-    })
-
 }
 
 exports.validEmail = function( email ){

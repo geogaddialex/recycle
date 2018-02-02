@@ -36,17 +36,18 @@ passport.use( new localStrategy( User.authenticate() ) );
 passport.serializeUser( User.serializeUser() );
 passport.deserializeUser( User.deserializeUser() );
 
-
 var loginRoutes = require( '../routes/loginRoutes.js' );
 var itemRoutes = require( '../routes/itemRoutes.js' );
 var userRoutes = require( '../routes/userRoutes.js' );
 var exchangeRoutes = require( '../routes/exchangeRoutes.js' );
 var messageRoutes = require( '../routes/messageRoutes.js' );
+var feedbackRoutes = require( '../routes/feedbackRoutes.js' );
 app.use('/api/login', loginRoutes);
 app.use('/api/items', itemRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/exchanges', exchangeRoutes);
 app.use('/api/messages', messageRoutes);
+app.use('/api/feedback', feedbackRoutes);
 
 // app.use('*', express.static('client'));
 app.get('*', function(req, res) {

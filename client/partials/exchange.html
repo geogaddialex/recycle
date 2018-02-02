@@ -28,7 +28,7 @@
 
 
         <div class="col-xs-8" id="exchange">
-            <div class="row"><h5>Exchange: {{ctrl.exchange._id}}</h5></div>
+            <div class="row"><h5>Exchange - {{exchange.status}}</h5></div>
             <div class="row">
 
                 <div class="col-xs-6" id="myExchangeItems">
@@ -120,43 +120,6 @@
 
 
 
-            <div class="row" id="exchangeMessages">
-                <div class="col">
-
-                    <div class="row">
-                        Messages
-                    </div>
-
-                    <div class="row">
-
-                        <input type="text" id="messageInput" placeholder="Type a message" ng-model="message"/>
-                        <button class="btn" id="messageButton" ng-click="ctrl.sendMessage( )">Send</button>
-                    </div>
-
-                    <div class="row">
-
-                        <div class="col-xs-12" id="displayMessages">
-
-                            <div ng-repeat="messageToDisplay in exchange.messages">
-
-                                <div class="row">
-                                    <div class="col-xs-2">{{ messageToDisplay.sender.username }}: </div>
-                                    <div class="col-xs-10">{{ messageToDisplay.content }}</div>  
-                                </div>
-
-                            </div>
-
-                        </div>
-                        
-                    </div>
-                </div>
-                
-                
-
-                
-
-            </div>
-
 
 
         </div><!-- exchange -->
@@ -186,5 +149,44 @@
         </div>
 
 
+
+</div>
+
+
+
+
+<div id="exchangeFooter" class="row">
+
+    <div class="col-xs-6" id="messenger">
+
+        <div class="row"><h5>Messages</h5></div>
+
+        <div id="displayMessages">
+
+            <div class="row message" ng-repeat="messageToDisplay in exchange.messages  | orderBy : '-timestamp'">
+
+                    <div class="col-xs-4 messageInfo">[{{ ctrl.formatTimestamp(messageToDisplay.timestamp, 'short') }}] <b>{{ messageToDisplay.sender.username }}:</b> </div>
+                    <div class="col-xs-8 messageContent">{{ messageToDisplay.content }}</div>  
+
+            </div>
+
+        </div>
+    
+
+        <div id="messageForm" class="row">
+            <input type="text" id="messageInput" placeholder="Type a message" 
+            ng-model="message" ng-keydown="$event.keyCode === 13 && ctrl.sendMessage()" />
+
+            <button class="btn" id="messageButton" ng-click="ctrl.sendMessage( )">Send</button>
+        </div>
+
+    </div>
+
+
+    <div class="col-xs-6" id="otherUserInfo">
+
+        <div class="row"><h5><a href="/users/{{ ctrl.otherUser.username }}">{{ ctrl.otherUser.username }}'s details</a></h5></div>
+
+    </div>
 
 </div>
