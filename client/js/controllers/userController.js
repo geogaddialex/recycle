@@ -1,9 +1,8 @@
 angular.module('myApp').controller('userController', [ '$routeParams', '$location', 'ItemService', 'AuthService', 'UserService', function( $routeParams, $location, ItemService, AuthService, UserService ){
-    var vm = this;
 
     if( $location.path() == "/users" ){
       UserService.getUsers( ).then( function( users ){
-        vm.users = users;
+        $scope.users = users;
       });
     }
 
@@ -12,14 +11,14 @@ angular.module('myApp').controller('userController', [ '$routeParams', '$locatio
       var username = $routeParams.username;
 
       UserService.getUserByName( username ).then( function( user ){
-        vm.singleUser = user;
+        $scope.user = user;
 
-        ItemService.getItemsBelongingTo( vm.singleUser._id ).then( function( items ){
-          vm.singleUser.items = items;
+        ItemService.getItemsBelongingTo( $scope.user._id ).then( function( items ){
+          $scope.user.items = items;
 
         }).catch( function( err ){
           console.log( "error = " + err );
-          vm.singleUser.items = {};
+          $scope.user.items = {};
         });  
 
       }).catch(function( err ){

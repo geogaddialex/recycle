@@ -10,17 +10,17 @@ myApp.config( function( $routeProvider, $locationProvider ){
         .when('/users', { templateUrl: 'partials/users.html', controller: 'userController', controllerAs: 'ctrl', access: { restricted: true } })
         .when('/users/:username', { templateUrl: 'partials/user.html', controller: 'userController', controllerAs: 'ctrl', access: { restricted: true } })
 
-        .when('/items', { templateUrl: 'partials/items.html', controller: 'itemController', controllerAs: 'ctrl', access: { restricted: true } })
-        .when('/items/add', { templateUrl: 'partials/addItem.html', controller: 'itemController', controllerAs: 'ctrl', access: { restricted: true } })
+        .when('/items', { templateUrl: 'partials/items_browse.html', controller: 'itemController', controllerAs: 'ctrl', access: { restricted: true } })
+        .when('/items/add', { templateUrl: 'partials/items_new.html', controller: 'itemController', controllerAs: 'ctrl', access: { restricted: true } })
         .when('/items/:id', { templateUrl: 'partials/item.html', controller: 'itemController', controllerAs: 'ctrl', access: { restricted: true } })
-        .when('/myItems', { templateUrl: 'partials/myItems.html', controller: 'itemController', controllerAs: 'ctrl', access: { restricted: true } })
+        .when('/myItems', { templateUrl: 'partials/items_my.html', controller: 'itemController', controllerAs: 'ctrl', access: { restricted: true } })
 
-        .when('/myExchanges', { templateUrl: 'partials/myExchanges.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
+        .when('/myExchanges', { templateUrl: 'partials/exchanges_my.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
         .when('/exchanges', { templateUrl: 'partials/exchanges.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
         .when('/exchange/:id', { templateUrl: 'partials/exchange.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
-        .when('/newExchange', { templateUrl: 'partials/newExchange.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
-        .when('/newExchange/:username', { templateUrl: 'partials/newExchange.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
-        .when('/newExchange/:username/:item', { templateUrl: 'partials/newExchange.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
+        .when('/newExchange', { templateUrl: 'partials/exchanges_new.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
+        .when('/newExchange/:username', { templateUrl: 'partials/exchanges_new.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
+        .when('/newExchange/:username/:item', { templateUrl: 'partials/exchanges_new.html', controller: 'exchangeController', controllerAs: 'ctrl', access: { restricted: true } })
 
         .when('/feedback/:id', { templateUrl: 'partials/feedback.html', controller: 'feedbackController', controllerAs: 'ctrl', access: { restricted: true } })
         
@@ -30,6 +30,8 @@ myApp.config( function( $routeProvider, $locationProvider ){
 });
 
 myApp.run( function( $rootScope, $location, $route, AuthService ){
+
+    $rootScope.location = $location
 
     $rootScope.$on( '$routeChangeStart', function( event, next, current ){
         AuthService.getUserStatus( ).then( function( ){

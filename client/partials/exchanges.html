@@ -4,9 +4,9 @@
         <div id="page-content-wrapper">
 
             <div class="row">
-                <div ng-show="ctrl.exchanges">
+                <div ng-show="exchanges">
                         
-                    <div ng-repeat="exchange in ctrl.exchanges | orderBy : '-created'" class="col-xs-12 exchange">
+                    <div ng-repeat="exchange in exchanges | orderBy : '-created'" class="col-xs-12 exchange">
                        
                             <div class="row"> <!-- exchange details -->
                                 <div class="col">
@@ -18,8 +18,8 @@
             
             Status: {{ exchange.status }}<br>
 
-            Created: {{ ctrl.formatTimestamp(exchange.created, 'long') }}<br>
-            Last modified: {{ ctrl.formatTimestamp(exchange.lastModified, 'long') }}<br>
+            Created: {{ formatTimestamp(exchange.created, 'long') }}<br>
+            Last modified: {{ formatTimestamp(exchange.lastModified, 'long') }}<br>
 
                                 </div>
                             </div><!-- exchange details end -->

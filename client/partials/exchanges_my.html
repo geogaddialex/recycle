@@ -16,19 +16,19 @@
             Status: {{ exchange.status }}<br>
             <br>
 
-            User: <a href="/users/{{ exchange.recipient.username }}" ng-if="ctrl.user._id == exchange.sender._id">
+            User: <a href="/users/{{ exchange.recipient.username }}" ng-if="user._id == exchange.sender._id">
             {{ exchange.recipient.username }}</a>
-            <a href="/users/{{ exchange.sender.username }}" ng-if="ctrl.user._id != exchange.sender._id">
+            <a href="/users/{{ exchange.sender.username }}" ng-if="user._id != exchange.sender._id">
             {{ exchange.sender.username }}</a>
             <br><br>
 
-            Created: {{ ctrl.formatTimestamp(exchange.created, 'long') }}<br>
-            Last modified: {{ ctrl.formatTimestamp(exchange.lastModified, 'long') }}<br>
+            Created: {{ formatTimestamp(exchange.created, 'long') }}<br>
+            Last modified: {{ formatTimestamp(exchange.lastModified, 'long') }}<br>
             <br>
 
             Feedback: <br><br>
 
-            <div ng-if="exchange.sender._id == ctrl.user._id">
+            <div ng-if="exchange.sender._id == user._id">
                 <div ng-if="exchange.feedback.sender">
                     Your rating: {{ exchange.feedback.sender.rating}}<br>
                     Your comment: {{ exchange.feedback.sender.comment}}
@@ -45,7 +45,7 @@
                 </div>
             </div>
 
-            <div ng-if="exchange.sender._id != ctrl.user._id">
+            <div ng-if="exchange.sender._id != user._id">
                 <div ng-if="exchange.feedback.recipient">
                     Your rating: {{ exchange.feedback.recipient.rating}}<br>
                     Your comment: {{ exchange.feedback.recipient.comment}}
@@ -71,10 +71,10 @@
             <button class="btn" ng-if="exchange.status=='In progress'" ng-click="exchange.status='Cancelled'">Cancel</button>
 
 
-            <a ng-if="exchange.sender._id == ctrl.user._id && !exchange.feedback.sender" href="/feedback/{{ exchange._id }}">
+            <a ng-if="exchange.sender._id == user._id && !exchange.feedback.sender" href="/feedback/{{ exchange._id }}">
                 <button class="btn" ng-if="exchange.status=='Agreed'">Leave Feedback</button>
             </a>
-            <a ng-if="exchange.sender._id != ctrl.user._id && !exchange.feedback.recipient" href="/feedback/{{ exchange._id }}">
+            <a ng-if="exchange.sender._id != user._id && !exchange.feedback.recipient" href="/feedback/{{ exchange._id }}">
                 <button class="btn" ng-if="exchange.status=='Agreed'">Leave Feedback</button>
             </a>
 

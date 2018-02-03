@@ -5,8 +5,8 @@
         <div class="col-xs-2" id="myItems">
             <h4> Your items </h4>
             
-            <div ng-repeat="item in ctrl.options.sender">
-                <a ng-click="ctrl.addToExchange(item)"><div class="item">{{item.name}}</div></a>
+            <div ng-repeat="item in options.sender">
+                <a ng-click="addToExchange(item)"><div class="item">{{item.name}}</div></a>
             </div>
         </div>
 
@@ -16,19 +16,19 @@
 
                 <div class="col-xs-6" id="myExchangeItems">
 
-                        <h3> {{ ctrl.user.username }} </h3>
+                        <h3> {{ user.username }} </h3>
 
                         <div ng-repeat="item in exchange.items.sender">
-                            <a ng-click="ctrl.removeFromExchange(item)"><div class="item">{{ item.name }}</div></a> 
+                            <a ng-click="removeFromExchange(item)"><div class="item">{{ item.name }}</div></a> 
                         </div>
                 </div>
 
                 <div class="col-xs-6" id="theirExchangeItems">
 
-                        <h3> {{ ctrl.otherUser.username }} </h3>
+                        <h3> {{ otherUser.username }} </h3>
 
                         <div ng-repeat="item in exchange.items.recipient">
-                            <a ng-click="ctrl.removeFromExchange(item)"><div class="item">{{ item.name }}</div></a>    
+                            <a ng-click="removeFromExchange(item)"><div class="item">{{ item.name }}</div></a>    
                         </div>
 
                 </div>
@@ -37,10 +37,10 @@
 
             <div class="row" id="exchangeDecision">
                 <div class="col-xs-6">
-                    <button type="button" class="btn btn-outline-primary" ng-click="ctrl.sendOffer( exchange )">Send offer</button>
+                    <button type="button" class="btn btn-outline-primary" ng-click="sendOffer( exchange )">Send offer</button>
                 </div>
                 <div class="col-xs-6">
-                    <button type="button" class="btn btn-outline-danger" ng-click="ctrl.cancelOffer()">Cancel offer</button>
+                    <button type="button" class="btn btn-outline-danger" ng-click="cancelOffer()">Cancel offer</button>
                 </div>
             </div>
 
@@ -48,13 +48,13 @@
 
         <div class="col-xs-2" id="theirItems">
 
-            <select name="userSelect" id="userSelect" ng-model="ctrl.selectedUser"
-            ng-options="user as user.username for user in ctrl.users | filter:{username: '!' + ctrl.user.username}"> 
+            <select name="userSelect" id="userSelect" ng-model="selectedUser"
+            ng-options="user as user.username for user in users | filter:{username: '!' + user.username}"> 
                 <option value="">Select User</option>
             </select> 
 
-            <div ng-repeat="item in ctrl.options.recipient">
-                <a ng-click="ctrl.addToExchange(item)"><div class="item">{{item.name}}</div></a>  
+            <div ng-repeat="item in options.recipient">
+                <a ng-click="addToExchange(item)"><div class="item">{{item.name}}</div></a>  
             </div>
         </div>
 

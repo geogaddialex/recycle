@@ -1,15 +1,15 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-12">
-            <div ng-if="ctrl.message">{{ctrl.message}}</div>
+            <div ng-if="message">{{message}}</div>
         </div>
     </div>
     <div class="row addItem">
         <div class="col-xs-12">
 
             <form name="itemForm">
-                Item Name: <input type="text" ng-model="ctrl.item.name">
-                <button ng-click="ctrl.createItem( ctrl.item )">Add this item</button>
+                Item Name: <input type="text" ng-model="item.name">
+                <button ng-click="createItem( item )">Add this item</button>
             </form>
 
         </div>

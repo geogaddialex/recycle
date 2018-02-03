@@ -1,5 +1,4 @@
 angular.module('myApp').controller('exchangeController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', 'ExchangeService', 'MessageService', 'SocketService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, ExchangeService, MessageService, SocketService ){
-    var vm = this;
 
     var item = $routeParams.item;
     var username = $routeParams.username;
@@ -10,7 +9,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     //initialise user
     AuthService.getUser().then( function( user ){
-      vm.user = user;
+      $scope.user = user;
 
     
         //starting a new exchange
@@ -18,14 +17,14 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
             $scope.exchange = { 
 
-                sender: vm.user,
-                lastUpdatedBy: vm.user,
+                sender: $scope.user,
+                lastUpdatedBy: $scope.user,
                 items: { sender: [], recipient: [] },
                 messages: [],
                 accepted: { sender: 1, recipient: 0 },
             }  
 
-            vm.options = {
+            $scope.options = {
                 
                 sender: [],
                 recipient: []
@@ -33,11 +32,11 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
             }
 
             //initialise my items 
-            ItemService.getItemsBelongingTo( vm.user._id ).then( function( items ){
+            ItemService.getItemsBelongingTo( $scope.user._id ).then( function( items ){
 
                 for( x in items ){
 
-                    vm.options.sender.push( items[x] );
+                    $scope.options.sender.push( items[x] );
                 }
 
             }).catch( function( err ){
@@ -47,14 +46,14 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
             //initialise users dropdown
             UserService.getUsers( ).then( function( users ){
-                vm.users = users;
+                $scope.users = users;
 
                 //initialise otherUser when url specifies one
                 if( username ){
 
-                    var user = vm.users.find(user => user.username === username);
-                    vm.otherUser = user
-                    vm.selectedUser = user
+                    var user = $scope.users.find(user => user.username === username);
+                    $scope.otherUser = user
+                    $scope.selectedUser = user
                     $scope.exchange.recipient = user;
                 }
 
@@ -64,29 +63,29 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
             $scope.$watch( angular.bind( this, function(){
 
-                return vm.selectedUser;
+                return $scope.selectedUser;
 
             }), function( selected ){
 
                 if( !selected ){
 
-                    vm.options.recipient = [];
+                    $scope.options.recipient = [];
                     $scope.exchange.items.recipient = [];
                     $scope.exchange.recipient = "";
-                    vm.otherUser = {username:"No user selected"};
+                    $scope.otherUser = {username:"No user selected"};
 
                 } else {
 
-                    vm.options.recipient = [];
+                    $scope.options.recipient = [];
                     $scope.exchange.items.recipient = [];
 
-                    vm.otherUser = vm.users.find( user => user.username === selected.username );
-                    $scope.exchange.recipient = vm.users.find( user => user.username === selected.username );
+                    $scope.otherUser = $scope.users.find( user => user.username === selected.username );
+                    $scope.exchange.recipient = $scope.users.find( user => user.username === selected.username );
 
-                    ItemService.getItemsBelongingTo( vm.otherUser._id ).then( function( items ){
+                    ItemService.getItemsBelongingTo( $scope.otherUser._id ).then( function( items ){
 
                         for( x in items ){
-                            vm.options.recipient.push( items[x] );
+                            $scope.options.recipient.push( items[x] );
                         }
 
                     }).catch( function( err ){
@@ -103,7 +102,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
             ExchangeService.getExchanges( ).then( function( exchanges ){
 
-                vm.exchanges = exchanges;
+                $scope.exchanges = exchanges;
 
             }).catch( function( err ){
                 console.log( "error = " + err );
@@ -113,7 +112,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
         // viewing my exchanges ------------------------------------------------
         if( path == "/myExchanges" ){
 
-            ExchangeService.getExchangesInvolving( vm.user._id ).then( function( exchanges ){
+            ExchangeService.getExchangesInvolving( $scope.user._id ).then( function( exchanges ){
 
                 $scope.myExchanges = exchanges;
 
@@ -135,8 +134,8 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
 
                     $scope.exchange = exchange;
-                    vm.userIsSender = vm.user._id == exchange.sender._id
-                    vm.otherUser = vm.userIsSender ? exchange.recipient : exchange.sender
+                    $scope.userIsSender = $scope.user._id == exchange.sender._id
+                    $scope.otherUser = $scope.userIsSender ? exchange.recipient : exchange.sender
 
                     updateOptions()
 
@@ -178,7 +177,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
     // Functions for browser use -------------------------------------------------------------------------------------------
 
 
-    vm.sendOffer = function( exchange ){
+    $scope.sendOffer = function( exchange ){
 
         ExchangeService.createExchange( exchange ).then( function( ){ 
 
@@ -191,21 +190,21 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     }
 
-    vm.addToExchange = function( itemToAdd ){
+    $scope.addToExchange = function( itemToAdd ){
 
-        var recipientHasIt = vm.options.recipient.find(item => item._id === itemToAdd._id)
-        var senderHasIt = vm.options.sender.find(item => item._id === itemToAdd._id)
+        var recipientHasIt = $scope.options.recipient.find(item => item._id === itemToAdd._id)
+        var senderHasIt = $scope.options.sender.find(item => item._id === itemToAdd._id)
 
         if( senderHasIt ){
 
-            var array = vm.options.sender
+            var array = $scope.options.sender
             array.splice( array.indexOf(senderHasIt), 1 ) 
 
             $scope.exchange.items.sender.push( itemToAdd );
 
         }else if( recipientHasIt ){
 
-            var array = vm.options.recipient
+            var array = $scope.options.recipient
             array.splice( array.indexOf(recipientHasIt), 1 ) 
 
             $scope.exchange.items.recipient.push( itemToAdd );
@@ -226,7 +225,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     }
 
-    vm.removeFromExchange = function( itemToRemove ){
+    $scope.removeFromExchange = function( itemToRemove ){
 
         var recipientHasIt = $scope.exchange.items.recipient.find(item => item._id === itemToRemove._id)
         var senderHasIt = $scope.exchange.items.sender.find(item => item._id === itemToRemove._id)
@@ -236,7 +235,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
             var array = $scope.exchange.items.sender
             array.splice( array.indexOf(senderHasIt), 1 ) 
 
-            vm.options.sender.push( itemToRemove );
+            $scope.options.sender.push( itemToRemove );
             
 
         }else if( recipientHasIt) {
@@ -244,7 +243,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
             var array = $scope.exchange.items.recipient
             array.splice( array.indexOf(recipientHasIt), 1 ) 
 
-            vm.options.recipient.push( itemToRemove );
+            $scope.options.recipient.push( itemToRemove );
 
         } else{
 
@@ -263,12 +262,12 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
     }
 
 
-    vm.sendMessage = function( ){
+    $scope.sendMessage = function( ){
 
         var messageToCreate = {
 
-            recipient: vm.otherUser,
-            sender: vm.user,
+            recipient: $scope.otherUser,
+            sender: $scope.user,
             content: $scope.message
         }
 
@@ -282,7 +281,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     }
 
-    vm.toggleAcceptance = function(){
+    $scope.toggleAcceptance = function(){
 
         if( $scope.exchange.accepted.recipient && $scope.exchange.accepted.sender ){
 
@@ -294,7 +293,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     }
 
-    vm.cancelExchange = function(){
+    $scope.cancelExchange = function(){
 
         $scope.exchange.status = "Cancelled"
 
@@ -302,7 +301,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     }
 
-    vm.formatTimestamp = function( date, format ){
+    $scope.formatTimestamp = function( date, format ){
 
         var formattedTimestamp
 
@@ -325,7 +324,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     var amendExchange = function( ){
 
-        $scope.exchange.lastUpdatedBy = vm.user
+        $scope.exchange.lastUpdatedBy = $scope.user
         $scope.exchange.lastModified = Date.now()
 
         ExchangeService.amendExchange( $scope.exchange ).then( function( ){
@@ -339,14 +338,14 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     var updateOptions = function(){
 
-        vm.options = { 
+        $scope.options = { 
 
             sender: [],
             recipient: []
         }
 
         //initialise my items 
-        ItemService.getItemsBelongingTo( vm.user._id ).then( function( items ){
+        ItemService.getItemsBelongingTo( $scope.user._id ).then( function( items ){
 
             for( x in items ){
 
@@ -355,12 +354,12 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
                 if( !recipientHasIt && !senderHasIt ){
 
-                    if(vm.userIsSender){
+                    if($scope.userIsSender){
 
-                        vm.options.sender.push( items[x] );
+                        $scope.options.sender.push( items[x] );
                     }else{
 
-                        vm.options.recipient.push( items[x] );                                    
+                        $scope.options.recipient.push( items[x] );                                    
                     }
 
                 }
@@ -372,7 +371,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
         });
 
         //initialise other users items
-        ItemService.getItemsBelongingTo( vm.otherUser._id ).then( function( items ){
+        ItemService.getItemsBelongingTo( $scope.otherUser._id ).then( function( items ){
 
             for( x in items ){
 
@@ -382,12 +381,12 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
                 //add item to options array as long as its not already part of the exchange
                 if( !recipientHasIt && !senderHasIt ){
 
-                    if(vm.userIsSender){
+                    if($scope.userIsSender){
 
-                        vm.options.recipient.push( items[x] );
+                        $scope.options.recipient.push( items[x] );
                     }else{
 
-                        vm.options.sender.push( items[x] );                                    
+                        $scope.options.sender.push( items[x] );                                    
                     }
 
                 }

@@ -1,9 +1,9 @@
 <div class="container-fluid content">
 
             <div class="row">
-                <div ng-show="ctrl.items">
+                <div ng-show="items">
                         
-                    <div ng-repeat="item in ctrl.items" ng-if="item.owner.username!=ctrl.user.username" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 itemContainer">
+                    <div ng-repeat="item in items" ng-if="item.owner.username != user.username" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 itemContainer">
                         <div class="item">
 
                             <div class="row">

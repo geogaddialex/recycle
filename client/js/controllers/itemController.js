@@ -1,10 +1,9 @@
 angular.module('myApp').controller('itemController', [ '$routeParams', '$location', '$route', '$scope', 'SocketService', 'ItemService', 'AuthService', function( $routeParams, $location, $route, $scope, SocketService, ItemService, AuthService ){
-    var vm = this;
     
     var itemId = $routeParams.id;
 
     AuthService.getUser().then( function(user){
-      vm.user = user;
+      $scope.user = user;
     
 
         //initialising different item pages
@@ -13,8 +12,8 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
           ItemService.getItem( itemId ).then( function( item ){
 
-            vm.singleItem = item;
-            vm.viewingOwnItem = vm.user._id == item.owner._id
+            $scope.singleItem = item;
+            $scope.viewingOwnItem = $scope.user._id == item.owner._id
 
           }).catch( function( err ){
             console.log( "error = " + err );
@@ -25,7 +24,7 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
           ItemService.getItems( ).then( function( items ){
 
-            vm.items = items;
+            $scope.items = items;
 
           }).catch( function( err ){
               console.log( "error = " + err );
@@ -34,13 +33,13 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
         if( $location.path() == "/myItems" ){
 
-            ItemService.getItemsBelongingTo( vm.user._id ).then( function( items ){
+            ItemService.getItemsBelongingTo( $scope.user._id ).then( function( items ){
               
-              vm.myItems = items;
+              $scope.myItems = items;
 
             }).catch( function( err ){
               console.log( "error = " + err );
-              vm.myItems = {};
+              $scope.myItems = {};
             });
         }
 
@@ -64,7 +63,7 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
     //Functions for browser use
 
-    vm.createItem = function( item ){
+    $scope.createItem = function( item ){
 
       ItemService.createItem( item ).then( function( ){ 
           $location.path("/myItems");
@@ -73,7 +72,7 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
        })
     }
 
-    vm.deleteItem = function( ID ){
+    $scope.deleteItem = function( ID ){
 
       ItemService.deleteItem( ID ).then( function( ){ 
           $route.reload();
@@ -82,9 +81,9 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
        })
     }
 
-    vm.updateItem = function(){
+    $scope.updateItem = function(){
 
-      ItemService.updateItem( vm.singleItem ).then( function(){
+      ItemService.updateItem( $scope.singleItem ).then( function(){
 
         $location.path("/myItems");
 

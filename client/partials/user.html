@@ -1,13 +1,13 @@
-<div class="container-fluid content" ng-if="ctrl.singleUser">
+<div class="container-fluid content" ng-if="user">
     <div class="row">
         <div class="col">
 
-            <h3>{{ctrl.singleUser.username}}</h3>
-            email: {{ctrl.singleUser.email}}<br>
+            <h3>{{user.username}}</h3>
+            email: {{user.email}}<br>
             <br>
             
-            <div ng-if="ctrl.singleUser.items">
-                <div ng-repeat="item in ctrl.singleUser.items" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 itemContainer">
+            <div ng-if="user.items">
+                <div ng-repeat="item in user.items" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 itemContainer">
                     <div class="item">
 
                         <div class="row">

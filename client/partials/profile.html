@@ -1,12 +1,12 @@
-<div class="container-fluid content" ng-if="ctrl.user">
+<div class="container-fluid content" ng-if="user">
     <div class="row">
         <div class="col">
 
-                <h3 ng-bind="ctrl.user.username">Loading user...</h3>
+                <h3 ng-bind="user.username">Loading user...</h3>
                 <img src="/images/noPhoto.png" height="200px"><br>
-                <input type="text" ng-model="ctrl.user.email" /><br>
-                Admin: <span ng-bind="ctrl.user.isAdmin"></span><br>
-                <button ng-click="ctrl.updateProfile()">Save</button>
+                <input type="text" ng-model="user.email" /><br>
+                Admin: <span ng-bind="user.isAdmin"></span><br>
+                <button ng-click="updateProfile()">Save</button>
 
         </div>
     </div>

@@ -7,6 +7,7 @@ angular.module( 'myApp' ).factory( 'AuthService', [ '$q', '$timeout', '$http', f
       getUserStatus: getUserStatus,
       getUser: getUser,
       login: login,
+      facebookLogin: facebookLogin,
       logout: logout,
       register: register
     });
@@ -75,6 +76,22 @@ angular.module( 'myApp' ).factory( 'AuthService', [ '$q', '$timeout', '$http', f
         var deferred = $q.defer();
 
         $http.post('/api/login/login', { username: username, password: password }).then( 
+            function successCallback( res ){
+                user = true;
+                deferred.resolve();
+        }, function errorCallback( res ){
+                user = false;
+                deferred.reject();
+        });
+
+        return deferred.promise;
+    }
+
+    function facebookLogin( ){
+
+        var deferred = $q.defer();
+
+        $http.get('/api/login/facebook').then( 
             function successCallback( res ){
                 user = true;
                 deferred.resolve();

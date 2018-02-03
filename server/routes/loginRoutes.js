@@ -24,27 +24,31 @@ var passport = require('passport');
 
 
   router.post('/login', function( req, res, next ){
-    passport.authenticate('local', function( err, user, info ){
-      if( err ){
-        return next( err );
-      }
-      if( !user ){
-        return res.status(401).json({
-          err: info
-        });
-      }
 
-      req.logIn( user, function( err ){
-        if( err ){
-          return res.status( 500 ).json({
-            err: 'Could not log in user'
+      passport.authenticate('local', function( err, user, info ){
+
+          if( err ){
+            return next( err );
+          }
+          if( !user ){
+            return res.status(401).json({
+              err: info
+            });
+          }
+
+          req.logIn( user, function( err ){
+
+            if( err ){
+              return res.status( 500 ).json({
+                err: 'Could not log in user'
+              });
+            }
+            res.status( 200 ).json({
+              status: 'Login successful!'
+            });
           });
-        }
-        res.status( 200 ).json({
-          status: 'Login successful!'
-        });
-      });
-    })( req, res, next );
+
+      })( req, res, next );
   });
 
 
@@ -79,6 +83,21 @@ var passport = require('passport');
       status: 'Bye!'
     });
   })
+
+
+    // route for facebook authentication and login
+    router.get('/facebook', passport.authenticate('facebook', { 
+        
+        scope : ['public_profile', 'email']
+    }));
+
+    // handle the callback after facebook has authenticated the user
+    router.get('/auth/facebook/callback', passport.authenticate('facebook', {
+        
+        successRedirect : '/profile',
+        failureRedirect : '/'
+    }));
+
 
 
 module.exports = router;

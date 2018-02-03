@@ -4,60 +4,48 @@ angular.module('myApp').controller('loginController', ['$scope', '$location', 'A
     $scope.registerForm = {};
 
     $scope.login = function( ){
-      $scope.error = false;
-      $scope.disabled = true;
 
-      AuthService.login( $scope.loginForm.username, $scope.loginForm.password )
-        .then( function( ){
+      AuthService.login( $scope.loginForm.username, $scope.loginForm.password ).then( function( ){
+
           $location.path('/');
-          $scope.disabled = false;
-          $scope.loginForm = {};
-        })
-        // handle error
-        .catch(function () {
-          $scope.error = true;
+        
+        }).catch(function () {
+
           $scope.errorMessage = "Invalid username and/or password";
-          $scope.disabled = false;
           $scope.loginForm = {};
+
+        });
+
+    };
+
+    $scope.facebookLogin = function( ){
+
+      AuthService.facebookLogin( ).then( function( ){
+
+          $location.path('/');
+
+        }).catch(function () {
+
+          $scope.errorMessage = "Cannot login via Facebook, try another method";
+
         });
 
     };
 
 
     $scope.register = function( ){
-      $scope.error = false;
-      $scope.disabled = true;
 
-      AuthService.register( $scope.registerForm.username, $scope.registerForm.password, $scope.registerForm.email )
-        .then( function( ){
+      AuthService.register( $scope.registerForm.username, $scope.registerForm.password, $scope.registerForm.email ).then( function( ){
+
           $location.path( '/login' );
-          $scope.disabled = false;
-          $scope.registerForm = {};
-        })
-        .catch( function( ){
-          $scope.error = true;
+
+        }).catch( function( ){
+          
           $scope.errorMessage = "Something went wrong!";
-          $scope.disabled = false;
           $scope.registerForm = {};
+
         });
     };
-
-    $scope.switch = function( to ){
-
-      var fadeTime = 0;
-
-      if( to === "register" ){
-        $( "#register-form" ).delay( fadeTime ).fadeIn( fadeTime );
-        $( "#login-form" ).fadeOut( fadeTime );
-        $( '#login-form-link' ).removeClass( 'active' );
-        $( '#register-form-link' ).addClass( 'active' );
-      }else{
-        $( "#login-form" ).delay( fadeTime ).fadeIn( fadeTime );
-        $( "#register-form" ).fadeOut( fadeTime );
-        $( '#register-form-link' ).removeClass( 'active' );
-        $( '#login-form-link' ).addClass( 'active' );
-      }
-    }
 
 }]);
 

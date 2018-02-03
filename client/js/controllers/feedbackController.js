@@ -1,5 +1,4 @@
 angular.module('myApp').controller('feedbackController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', 'ExchangeService', 'MessageService', 'FeedbackService', 'SocketService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, ExchangeService, MessageService, FeedbackService, SocketService ){
-    var vm = this;
 
     var exchangeID = $routeParams.id;
     var path = $location.path();
@@ -71,7 +70,7 @@ angular.module('myApp').controller('feedbackController', [ '$routeParams', '$loc
     // Functions for browser use -------------------------------------------------------------------------------------------
 
 
-    vm.submitFeedback = function( ){
+    $scope.submitFeedback = function( ){
 
         FeedbackService.createFeedback( $scope.feedback ).then( function( createdFeedback ){ 
 
@@ -95,7 +94,7 @@ angular.module('myApp').controller('feedbackController', [ '$routeParams', '$loc
     }
 
 
-    vm.formatTimestamp = function( date, format ){
+    $scope.formatTimestamp = function( date, format ){
 
         var formattedTimestamp
 
