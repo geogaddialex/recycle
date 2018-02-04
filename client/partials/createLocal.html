@@ -10,7 +10,7 @@
 
                     <div ng-show="error" class="alert alert-danger">{{errorMessage}}</div>
 
-                    <form id="register-form" ng-submit="register()" role="form">
+                    <form id="register-form" ng-submit="createLocal()" role="form">
                         <div class="form-group">
                             <input type="text" name="name" id="joinName" class="form-control" placeholder="Full name" value="" ng-model="registerForm.name">
                         </div>
@@ -25,7 +25,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col">
-                                <input type="submit" name="register-submit" id="register-submit" class="form-control button" value="Join" ng-disabled="disabled">
+                                <input type="submit" name="register-submit" id="register-submit" class="form-control button" value="Join">
                             </div>
                         </div>
                     </form>
@@ -36,3 +36,5 @@
         </div><!-- col -->
     </div><!-- row -->
 </div><!-- container -->
+</body>
+</html>

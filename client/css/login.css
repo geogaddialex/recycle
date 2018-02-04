@@ -1,6 +1,6 @@
 .login {
 	text-align: center;
-	margin-top: 20px;
+	margin-top: 60px;
 	border-color: #e7e7e7;
 }
 
@@ -10,6 +10,10 @@
 
 .panel-heading {
 	margin-bottom: 10px;
+}
+
+.form-group{
+  margin: 10px;
 }
 
 input {
@@ -34,4 +38,8 @@ input {
 
 #login-form div{
 	padding:0;
+}
+
+.form-control.button{
+	border:0;
 }

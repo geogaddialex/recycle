@@ -2,6 +2,7 @@
 
 
 <div class="container-fluid">
+
     <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
@@ -72,60 +73,6 @@
                 </li><!-- dropdown -->
             </ul>
         </div><!-- whenLoggedIn -->
-
-
-
-        <div id="whenLoggedOut" class="row" ng-controller="loginController" ng-if="!authService.isLoggedIn()">
-
-                <form id="login-form" ng-submit="login()" role="form" class="col-xs-8 col-xs-offset-3">
-                    <div class="row">
-
-                        <div class="col-xs-4">
-                            <div ng-if="errorMessage" class="alert alert-danger">{{errorMessage}}</div>
-                        </div>
-
-                        
-
-                        <!-- username -->
-
-                        <div class="col-xs-2 form-group">
-                            <div class="input-group">
-                              <span class="input-group-addon" id="username-icon"><span class="glyphicon glyphicon-user"></span></span>
-                              <input type="text" class="form-control" id="username" placeholder="Username" aria-describedby="username-icon" ng-model="loginForm.username" value="">
-                            </div>
-                        </div>
-
-                        <!-- password -->
-
-                        <div class="col-xs-2 form-group">
-                            <div class="input-group">
-                              <span class="input-group-addon" id="password-icon"><span class="glyphicon glyphicon-lock"></span></span>
-                              <input type="password" class="form-control" id="password" placeholder="Password" aria-describedby="password-icon" ng-model="loginForm.password" value="">
-                            </div>
-                        </div>
-
-                        <!-- buttons -->
-
-                        <div class="col-xs-1">
-                            <input type="submit" name="login-submit" id="login-submit" class="form-control button" value="Log In">
-                        </div>
-
-                        <div class="col-xs-1">
-                            <a href="/join" class="form-control button">Join</a>
-                        </div>
-
-                        <!-- facebook login -->
-
-                        <div class="col-xs-1 form-group">
-                            <a ng-click="facebookLogin()" class="btn btn-primary"><span class="fa fa-facebook"></span> Facebook</a>
-                        </div>
-                    </div>
-
-
-                    
-                </form>
-
-        </div><!-- whenLoggedOut -->
 
     </div><!--navbar -->
 </div>

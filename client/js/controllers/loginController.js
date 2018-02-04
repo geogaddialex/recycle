@@ -2,49 +2,65 @@ angular.module('myApp').controller('loginController', ['$scope', '$location', 'A
 
     $scope.loginForm = {};
     $scope.registerForm = {};
+    $scope.formToShow = "Join"
+    $scope.formToggleText = "Log in"
+
 
     $scope.login = function( ){
 
-      AuthService.login( $scope.loginForm.username, $scope.loginForm.password ).then( function( ){
+      AuthService.login( $scope.loginForm.email, $scope.loginForm.password ).then( function( ){
 
           $location.path('/');
         
         }).catch(function () {
 
-          $scope.errorMessage = "Invalid username and/or password";
-          $scope.loginForm = {};
+          $scope.errorMessage = "Invalid email and/or password";
 
         });
 
     };
-
-    $scope.facebookLogin = function( ){
-
-      AuthService.facebookLogin( ).then( function( ){
-
-          $location.path('/');
-
-        }).catch(function () {
-
-          $scope.errorMessage = "Cannot login via Facebook, try another method";
-
-        });
-
-    };
-
 
     $scope.register = function( ){
 
-      AuthService.register( $scope.registerForm.username, $scope.registerForm.password, $scope.registerForm.email ).then( function( ){
+      AuthService.register( $scope.registerForm.email, $scope.registerForm.password, $scope.registerForm.name ).then( function( ){
 
-          $location.path( '/login' );
+          $location.path( '/' );
 
         }).catch( function( ){
           
           $scope.errorMessage = "Something went wrong!";
-          $scope.registerForm = {};
 
         });
+    };
+
+    $scope.createLocal = function( ){
+
+      AuthService.createLocal( $scope.registerForm.email, $scope.registerForm.password, $scope.registerForm.name ).then( function( ){
+
+          $location.path( '/profile' );
+
+        }).catch( function( ){
+          
+          $scope.errorMessage = "Something went wrong!";
+
+        });
+    };
+
+    $scope.switchForm = function( ){
+
+          if( $scope.formToShow == "Join" ){
+
+              $scope.formToShow = "Log in"
+              $scope.formToggleText = "Join"
+          
+          }else{
+
+              $scope.formToShow = "Join"
+              $scope.formToggleText = "Log in"
+
+          }
+          
+      
     };
 
 }]);

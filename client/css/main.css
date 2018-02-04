@@ -4,6 +4,8 @@ html, body {
   margin:0;
 }
 
+/*# BD081C  = COOL RED */
+
 body{
 	overflow-x:hidden;
 	background-color: #F9F4EE;
@@ -40,10 +42,6 @@ h2, h3{
 
 .navbar-right li a{
   /*padding-bottom: 10px;  keeps icons centred vertically */
-}
-
-.form-group{
-  margin-bottom: 0;
 }
 
 .navbar-bottom{
@@ -187,10 +185,7 @@ li a span.glyphicon{
   border: 1px solid #d9e4f2;
 }
 
-.glyphicon-envelope{
-  color:red;
-  
-}
+
 
 
 @media(min-width:768px) {
