@@ -8,7 +8,7 @@ var bodyParser        = require( 'body-parser' )
 var session           = require( 'express-session' )
 var flash  		        = require( 'connect-flash' )				//not in use
 var passport 	        = require( 'passport' )
-var User 		          = require( '../models/userModel' )
+var User 		          = require( '../models/user.server.model' )
                         require('datejs')
                         require( './passport' )( passport );
 
@@ -31,16 +31,18 @@ app.use( session({
 app.use( passport.initialize() );
 app.use( passport.session() );
 
-var itemRoutes = require( '../routes/itemRoutes.js' );
-var userRoutes = require( '../routes/userRoutes.js' );
-var exchangeRoutes = require( '../routes/exchangeRoutes.js' );
-var messageRoutes = require( '../routes/messageRoutes.js' );
-var feedbackRoutes = require( '../routes/feedbackRoutes.js' );
-var authRoutes = require( '../routes/authRoutes.js' )( passport )
+var itemRoutes = require( '../routes/item.server.routes.js' );
+var userRoutes = require( '../routes/user.server.routes.js' );
+var exchangeRoutes = require( '../routes/exchange.server.routes.js' );
+var messageRoutes = require( '../routes/message.server.routes.js' );
+var conversationRoutes = require( '../routes/conversation.server.routes.js' );
+var feedbackRoutes = require( '../routes/feedback.server.routes.js' );
+var authRoutes = require( '../routes/authentication.server.routes.js' )( passport )
 app.use('/api/items', itemRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/exchanges', exchangeRoutes);
 app.use('/api/messages', messageRoutes);
+app.use('/api/conversations', conversationRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/auth', authRoutes);
 

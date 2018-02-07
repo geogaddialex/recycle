@@ -1,4 +1,4 @@
-angular.module('myApp').controller('userController', [ '$routeParams', '$location', 'ItemService', 'AuthService', 'UserService', function( $routeParams, $location, ItemService, AuthService, UserService ){
+angular.module('myApp').controller('userController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService ){
 
     if( $location.path() == "/users" ){
       UserService.getUsers( ).then( function( users ){
@@ -8,9 +8,9 @@ angular.module('myApp').controller('userController', [ '$routeParams', '$locatio
 
     if( $location.path().indexOf( "/users/" ) > -1 ){ //better way to see if there are items after the slash?
 
-      var username = $routeParams.username;
+      var userID = $routeParams.user;
 
-      UserService.getUserByName( username ).then( function( user ){
+      UserService.getUser( userID ).then( function( user ){
         $scope.user = user;
 
         ItemService.getItemsBelongingTo( $scope.user._id ).then( function( items ){

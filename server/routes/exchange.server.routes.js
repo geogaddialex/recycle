@@ -1,5 +1,5 @@
-var exchange = require('../controllers/exchangeController');
-var Exchange = require( '../models/exchangeModel' );
+var exchange = require('../controllers/exchange.server.controller');
+var Exchange = require( '../models/exchange.server.model' );
 var express = require('express');
 var router = express.Router();
 
@@ -14,8 +14,7 @@ function lookupExchange(req, res, next) {
   	var id = req.params.id;
 
   	Exchange.findOne({ '_id': id })
-    .populate('recipient sender items.sender items.recipient feedback.sender feedback.recipient')
-    .populate({path: 'messages', populate: { path: 'sender' }})
+    .populate('recipient sender items.sender items.recipient feedback.sender feedback.recipient conversation')
     .exec( function( err, exchange ){
         if( err ){  
             console.log( err ); 

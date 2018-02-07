@@ -1,5 +1,5 @@
-var messages = require('../controllers/messageController');
-var Message = require( '../models/messageModel' );
+var messages = require('../controllers/message.server.controller');
+var Message = require( '../models/message.server.model' );
 var express = require('express');
 var router = express.Router();
 

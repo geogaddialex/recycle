@@ -1,4 +1,4 @@
-var Feedback = require( '../models/feedbackModel' );
+var Feedback = require( '../models/feedback.server.model' );
 
 exports.list = function( req, res ){
 

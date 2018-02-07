@@ -1,4 +1,4 @@
-var Exchange = require( '../models/exchangeModel' );
+var Exchange = require( '../models/exchange.server.model' );
 
 //list exchanges for one user
 //edit an exchange (accept, reject, modify, comment)
@@ -7,7 +7,6 @@ exports.list = function( req, res ){
 
     Exchange.find({ })
         .populate('recipient sender items.sender items.recipient feedback feedback.sender feedback.recipient')
-        .populate({path: 'messages', populate: { path: 'sender' }})
         .exec( function( err, exchanges ){
 
         if( err ){
@@ -37,7 +36,6 @@ exports.create = function( req, res ){
             var socketio = req.app.get('socketio'); // take socket instance from the app container
             socketio.sockets.emit('exchange.created', exchange);
 
-            console.log("exchange added: " + exchange);
             res.status( 201 ).json( exchange );
 
         });
@@ -49,11 +47,8 @@ exports.create = function( req, res ){
 
 exports.update = function( req, res ){
 
-    var id = req.params.id;
-
-    Exchange.findByIdAndUpdate(id, { $set: req.body }, {new: true}) 
-        .populate({path: 'messages', populate: { path: 'sender' }})
-        .populate('recipient sender items.sender items.recipient')
+    Exchange.findByIdAndUpdate(req.params.id, { $set: req.body }, {new: true}) 
+        .populate('recipient sender items.sender items.recipient conversation conversation.messages')
         .exec( function( err, exchange ){  
 
             if( err ){

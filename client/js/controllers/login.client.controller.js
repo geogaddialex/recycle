@@ -2,15 +2,15 @@ angular.module('myApp').controller('loginController', ['$scope', '$location', 'A
 
     $scope.loginForm = {};
     $scope.registerForm = {};
-    $scope.formToShow = "Join"
-    $scope.formToggleText = "Log in"
+    $scope.formToShow = "Log in"
+    $scope.formToggleText = "Join"
 
 
     $scope.login = function( ){
 
       AuthService.login( $scope.loginForm.email, $scope.loginForm.password ).then( function( ){
 
-          $location.path('/');
+          $location.path('/profile');
         
         }).catch(function () {
 
@@ -24,7 +24,7 @@ angular.module('myApp').controller('loginController', ['$scope', '$location', 'A
 
       AuthService.register( $scope.registerForm.email, $scope.registerForm.password, $scope.registerForm.name ).then( function( ){
 
-          $location.path( '/' );
+          $location.path( '/profile' );
 
         }).catch( function( ){
           
@@ -69,7 +69,7 @@ angular.module('myApp').controller('logoutController', ['$scope', '$location', '
 
     $scope.logout = function( ){
         AuthService.logout( ).then( function( ){
-            $location.path( '/' );
+            $location.path( '/enter' );
         });
     };
 

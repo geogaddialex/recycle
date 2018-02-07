@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var User = require( './userModel' );
+var User = require( './user.server.model' );
 
 var feedbackSchema = mongoose.Schema({
 

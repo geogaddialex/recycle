@@ -1,4 +1,4 @@
-var Message = require( '../models/messageModel' );
+var Message = require( '../models/message.server.model' );
 
 exports.list = function( req, res ){
 

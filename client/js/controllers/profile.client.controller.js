@@ -1,6 +1,3 @@
-angular.module('myApp').controller('homeController', function(  ){
-})
-
 angular.module('myApp').controller('profileController', [ 'AuthService', 'UserService', 'SocketService', '$scope', '$location', function( AuthService, UserService, SocketService, $scope, $location ){
 
     var path = $location.path()

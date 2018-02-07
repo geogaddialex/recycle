@@ -1,5 +1,5 @@
-var feedback = require('../controllers/feedbackController');
-var Feedback = require( '../models/feedbackModel' );
+var feedback = require('../controllers/feedback.server.controller');
+var Feedback = require( '../models/feedback.server.model' );
 var express = require('express');
 var router = express.Router();
 

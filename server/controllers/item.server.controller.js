@@ -1,6 +1,5 @@
-var Item = require( '../models/itemModel' );
-var User = require( '../models/userModel' );
-var users = require('./userController');
+var Item = require( '../models/item.server.model' );
+var User = require( '../models/user.server.model' );
 
 exports.list = function( req, res ){
 

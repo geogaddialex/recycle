@@ -1,5 +1,5 @@
-var User = require( '../models/userModel' );
-var users = require('../controllers/userController');
+var User = require( '../models/user.server.model' );
+var users = require('../controllers/user.server.controller');
 var express = require('express');
 var router = express.Router();
 

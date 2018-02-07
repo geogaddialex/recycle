@@ -1,6 +1,6 @@
-var User = require( '../models/userModel' );
-var Item = require( '../models/itemModel' );
-var Exchange = require( '../models/exchangeModel' );
+var User = require( '../models/user.server.model' );
+var Item = require( '../models/item.server.model' );
+var Exchange = require( '../models/exchange.server.model' );
 
 exports.list = function( req, res ){
 
@@ -53,7 +53,7 @@ exports.listExchanges = function( req, res ){
 
     var user = req.user;
 
-    Exchange.find({$or:[{recipient: user},{sender: user}]}).populate('sender recipient items.recipient items.sender feedback.sender feedback.recipient').exec( function( err, exchanges ){
+    Exchange.find({$or:[{recipient: user},{sender: user}]}).populate('sender recipient items.recipient items.sender feedback.sender feedback.recipient conversation conversation.messages').exec( function( err, exchanges ){
 
         if( err ){
             console.log( "error: " + err );

@@ -1,9 +1,8 @@
 var mongoose = require('mongoose');
-var User = require( './userModel' );
-var Item = require( './itemModel' );
-
-var Message = require( './messageModel' );
-// var Feedback = require( './feedbackModel' );
+var User = require( './user.server.model' );
+var Item = require( './item.server.model' );
+var Message = require( './conversation.server.model' );
+var Feedback = require( './feedback.server.model' );
 
 var exchangeSchema = mongoose.Schema({
 
@@ -13,13 +12,12 @@ var exchangeSchema = mongoose.Schema({
 	created: { type: Date, default: Date.now },
 	lastModified: { type: Date, default: Date.now },
 
-
 	items: { 
 		sender: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }],
 		recipient: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }]
 	},
 	
-    messages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Message' }],
+    conversation: { type: mongoose.Schema.Types.ObjectId, ref: 'Conversation' },
 
     accepted: { recipient:0, sender:0 },
     status: {type: String, default: 'In progress'},

@@ -4,8 +4,7 @@ angular.module( 'myApp' ).factory( 'UserService', [ '$q', '$timeout', '$http', f
     getUsers: getUsers,
     getUser: getUser,
     createUser: createUser,
-    updateUser: updateUser,
-    getUserByName: getUserByName
+    updateUser: updateUser
   });
 
 
@@ -38,28 +37,6 @@ angular.module( 'myApp' ).factory( 'UserService', [ '$q', '$timeout', '$http', f
     );
 
     return deferred.promise;
-  }
-
-  function getUserByName( username ){
-
-    var deferred = $q.defer();
-
-      $http.get( '/api/users/byUsername/'+username ).then(
-        function successCallback( res ) {
-
-            if( res.data ){
-              deferred.resolve( res.data );
-            } else {
-              deferred.reject();
-            }
-
-        }, function errorCallback( res ){
-
-          deferred.reject();
-        }
-      );
-
-      return deferred.promise;
   }
 
 

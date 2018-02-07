@@ -1,5 +1,5 @@
-var items = require('../controllers/itemController');
-var Item = require( '../models/itemModel' );
+var items = require('../controllers/item.server.controller');
+var Item = require( '../models/item.server.model' );
 var express = require('express');
 var router = express.Router();
 

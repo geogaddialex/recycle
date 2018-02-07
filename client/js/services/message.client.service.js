@@ -5,8 +5,7 @@ angular.module( 'myApp' ).factory( 'MessageService', [ '$q', '$timeout', '$http'
       getMessage: getMessage,
       createMessage: createMessage,
       deleteMessage: deleteMessage,
-      updateMessage: updateMessage,
-      getMessagesBelongingTo: getMessagesBelongingTo
+      updateMessage: updateMessage
     });
 
 

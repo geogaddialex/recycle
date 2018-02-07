@@ -111,6 +111,18 @@ angular.module('myApp').controller('feedbackController', [ '$routeParams', '$loc
         return formattedTimestamp
     }
 
+    $scope.getUserName = function( user ){
+
+        var name = ""
+
+        if( user ){
+            name = user.local ? user.local.name : user.google ? user.google.name : user.facebook.name
+        }
+
+        return name
+
+    }
+
 
 
     // Private functions -------------------------------------------------------------------------------------------

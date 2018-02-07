@@ -1,7 +1,7 @@
-angular.module('myApp').controller('exchangeController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', 'ExchangeService', 'MessageService', 'SocketService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, ExchangeService, MessageService, SocketService ){
+angular.module('myApp').controller('exchangeController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', 'ExchangeService', 'MessageService', 'ConversationService', 'SocketService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, ExchangeService, MessageService, ConversationService, SocketService ){
 
     var item = $routeParams.item;
-    var username = $routeParams.username;
+    var userID = $routeParams.user;
     var exchangeID = $routeParams.id;
     var path = $location.path();
 
@@ -20,7 +20,6 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
                 sender: $scope.user,
                 lastUpdatedBy: $scope.user,
                 items: { sender: [], recipient: [] },
-                messages: [],
                 accepted: { sender: 1, recipient: 0 },
             }  
 
@@ -49,9 +48,9 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
                 $scope.users = users;
 
                 //initialise otherUser when url specifies one
-                if( username ){
+                if( userID ){
 
-                    var user = $scope.users.find(user => user.username === username);
+                    var user = $scope.users.find(user => user._id === userID);
                     $scope.otherUser = user
                     $scope.selectedUser = user
                     $scope.exchange.recipient = user;
@@ -132,15 +131,17 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
                 ExchangeService.getExchange( exchangeID ).then( function( exchange ){
 
-
                     $scope.exchange = exchange;
+
+                    updateConversation( )
+
                     $scope.userIsSender = $scope.user._id == exchange.sender._id
                     $scope.otherUser = $scope.userIsSender ? exchange.recipient : exchange.sender
 
                     updateOptions()
 
                 }).catch( function( err ){
-                    console.log( "error = " + err );
+                    console.log( "couldn't get exchange = " + err );
                 });
             }
         }
@@ -156,13 +157,29 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
         if( exchange._id == exchangeID ){
 
+            $scope.$applyAsync( function(){
+
+                $scope.exchange = exchange;  
+
+                updateConversation( )
+              
+            });
+            
+            updateOptions()
+
+        }
+    });
+
+    SocketService.on('conversation.updated', function( conversation ){
+
+        if( conversation._id == $scope.exchange.conversation._id ){
+
                 $scope.$applyAsync( function(){
 
-                    $scope.exchange = exchange;                    
+                    $scope.exchange.conversation = conversation;
+                  
                 });
                 
-                updateOptions()
-
         }
     });
    
@@ -179,14 +196,28 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     $scope.sendOffer = function( exchange ){
 
-        ExchangeService.createExchange( exchange ).then( function( ){ 
 
-            alert( "Offer sent successfully" );
-            $location.path("/myExchanges");
+        var conversationToCreate = {
 
-        }, function(){
-            alert( "Offer not sent" );
+            users: [ exchange.sender, exchange.recipient ]
+        }
+
+        ConversationService.createConversation( conversationToCreate ).then(function( createdConversation ){
+
+            exchange.conversation = createdConversation.data;
+
+            ExchangeService.createExchange( exchange ).then( function( ){ 
+
+                alert( "Offer sent successfully" );
+                $location.path("/myExchanges");
+
+            }, function(){
+                alert( "Offer not sent" );
+            })
+
         })
+
+       
 
     }
 
@@ -266,16 +297,16 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
         var messageToCreate = {
 
-            recipient: $scope.otherUser,
             sender: $scope.user,
             content: $scope.message
         }
 
         MessageService.createMessage( messageToCreate ).then( function( createdMessage ){ 
 
-            $scope.exchange.messages.push( createdMessage.data )
+            $scope.exchange.conversation.messages.push( createdMessage.data )
+
             $scope.message = ""
-            amendExchange()
+            amendConversation()
 
         })
 
@@ -318,6 +349,18 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
         return formattedTimestamp
     }
 
+    $scope.getUserName = function( user ){
+
+        var name = ""
+
+        if( user ){
+            name = user.local ? user.local.name : user.google ? user.google.name : user.facebook.name
+        }
+
+        return name
+
+    }
+
 
 
     // Private functions -------------------------------------------------------------------------------------------
@@ -332,6 +375,29 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
         }, function(){
             alert( "Exchange not amended" );
+        })
+
+    }
+
+    var amendConversation = function( ){
+
+        ConversationService.updateConversation( $scope.exchange.conversation ).then( function( ){
+
+
+        }, function(){
+            alert( "Exchange not amended" );
+        })
+
+    }
+
+    var updateConversation = function( ){
+
+        ConversationService.getConversation( $scope.exchange.conversation._id ).then( function( retrievedConversation ){
+
+            $scope.exchange.conversation = retrievedConversation
+
+        }).catch( function( err ){
+            console.log( "couldn't get conversation = " + err );
         })
 
     }

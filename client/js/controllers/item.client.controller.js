@@ -12,8 +12,9 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
           ItemService.getItem( itemId ).then( function( item ){
 
-            $scope.singleItem = item;
+            $scope.item = item;
             $scope.viewingOwnItem = $scope.user._id == item.owner._id
+            $scope.ownerName = $scope.getOwnerName( item.owner )
 
           }).catch( function( err ){
             console.log( "error = " + err );
@@ -83,13 +84,18 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
     $scope.updateItem = function(){
 
-      ItemService.updateItem( $scope.singleItem ).then( function(){
+      ItemService.updateItem( $scope.item ).then( function(){
 
         $location.path("/myItems");
 
       }, function(){
         alert( "Item not updated" );
       })
+
+    }
+
+    $scope.getOwnerName = function( owner ){
+      return owner.local.name ? owner.local.name : owner.google.name ? owner.google.name : owner.facebook.name
 
     }
 

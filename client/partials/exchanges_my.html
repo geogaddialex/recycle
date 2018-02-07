@@ -16,10 +16,10 @@
             Status: {{ exchange.status }}<br>
             <br>
 
-            User: <a href="/users/{{ exchange.recipient.username }}" ng-if="user._id == exchange.sender._id">
-            {{ exchange.recipient.username }}</a>
-            <a href="/users/{{ exchange.sender.username }}" ng-if="user._id != exchange.sender._id">
-            {{ exchange.sender.username }}</a>
+            User: <a href="/users/{{ exchange.recipient._id }}" ng-if="user._id == exchange.sender._id">
+            {{ getUserName( exchange.recipient ) }}</a>
+            <a href="/users/{{ exchange.sender._id }}" ng-if="user._id != exchange.sender._id">
+            {{ getUserName( exchange.sender.username ) }}</a>
             <br><br>
 
             Created: {{ formatTimestamp(exchange.created, 'long') }}<br>
