@@ -1,7 +1,8 @@
-angular.module('myApp').controller('feedbackController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', 'ExchangeService', 'MessageService', 'FeedbackService', 'SocketService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, ExchangeService, MessageService, FeedbackService, SocketService ){
+angular.module('myApp').controller('feedbackController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', 'ExchangeService', 'MessageService', 'FeedbackService', 'UtilityService', 'SocketService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, ExchangeService, MessageService, FeedbackService, UtilityService, SocketService ){
 
     var exchangeID = $routeParams.id;
     var path = $location.path();
+    $scope.UtilityService = UtilityService
 
     //initialise user
     AuthService.getUser().then( function( user ){
@@ -94,37 +95,6 @@ angular.module('myApp').controller('feedbackController', [ '$routeParams', '$loc
     }
 
 
-    $scope.formatTimestamp = function( date, format ){
-
-        var formattedTimestamp
-
-        if(format == "short"){
-
-            formattedTimestamp = Date.parse(date).toString('dd/MM HH:mm')
-        
-        }else if(format == "long"){
-
-            formattedTimestamp = Date.parse(date).toString('dd MMMM yyyy, HH:mm')
-        }
-
-
-        return formattedTimestamp
-    }
-
-    $scope.getUserName = function( user ){
-
-        var name = ""
-
-        if( user ){
-            name = user.local ? user.local.name : user.google ? user.google.name : user.facebook.name
-        }
-
-        return name
-
-    }
-
-
-
     // Private functions -------------------------------------------------------------------------------------------
 
     var amendExchange = function( ){
@@ -145,17 +115,12 @@ angular.module('myApp').controller('feedbackController', [ '$routeParams', '$loc
 
         UserService.getUser( $scope.otherUser._id ).then(function( user ){
 
-            console.log( "otherUser = " + JSON.stringify( user ) )
-
             user.feedback.count += 1
-            user.feedback.total += $scope.feedback.rating
-            user.feedback.score = user.feedback.total/user.feedback.count*50
-
-            console.log( "otherUser = " + JSON.stringify( user ) )
+            user.feedback.total = parseFloat( $scope.feedback.rating ) + parseFloat( user.feedback.total )
+            user.feedback.score = +((user.feedback.total/user.feedback.count*50).toFixed(2));
 
             UserService.updateUser( user ).then(function(){
 
-                console.log("user updated: " + user._id)
 
             }, function(){
 

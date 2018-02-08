@@ -1,11 +1,11 @@
-angular.module('myApp').controller('exchangeController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', 'ExchangeService', 'MessageService', 'ConversationService', 'SocketService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, ExchangeService, MessageService, ConversationService, SocketService ){
+angular.module('myApp').controller('exchangeController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', 'ExchangeService', 'MessageService', 'ConversationService', 'UtilityService', 'SocketService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, ExchangeService, MessageService, ConversationService, UtilityService, SocketService ){
 
     var item = $routeParams.item;
     var userID = $routeParams.user;
     var exchangeID = $routeParams.id;
     var path = $location.path();
 
-
+    $scope.UtilityService = UtilityService;
 
     //initialise user
     AuthService.getUser().then( function( user ){
@@ -20,7 +20,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
                 sender: $scope.user,
                 lastUpdatedBy: $scope.user,
                 items: { sender: [], recipient: [] },
-                accepted: { sender: 1, recipient: 0 },
+                accepted: { sender: true, recipient: false },
             }  
 
             $scope.options = {
@@ -133,12 +133,13 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
                     $scope.exchange = exchange;
 
-                    updateConversation( )
+                    console.log( JSON.stringify( $scope.exchange.accepted, null, 2))
 
                     $scope.userIsSender = $scope.user._id == exchange.sender._id
                     $scope.otherUser = $scope.userIsSender ? exchange.recipient : exchange.sender
 
                     updateOptions()
+                    updateConversation( )
 
                 }).catch( function( err ){
                     console.log( "couldn't get exchange = " + err );
@@ -331,36 +332,6 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
         amendExchange()
 
     }
-
-    $scope.formatTimestamp = function( date, format ){
-
-        var formattedTimestamp
-
-        if(format == "short"){
-
-            formattedTimestamp = Date.parse(date).toString('dd/MM HH:mm')
-        
-        }else if(format == "long"){
-
-            formattedTimestamp = Date.parse(date).toString('dd MMMM yyyy, HH:mm')
-        }
-
-
-        return formattedTimestamp
-    }
-
-    $scope.getUserName = function( user ){
-
-        var name = ""
-
-        if( user ){
-            name = user.local ? user.local.name : user.google ? user.google.name : user.facebook.name
-        }
-
-        return name
-
-    }
-
 
 
     // Private functions -------------------------------------------------------------------------------------------

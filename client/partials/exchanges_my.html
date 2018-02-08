@@ -17,13 +17,13 @@
             <br>
 
             User: <a href="/users/{{ exchange.recipient._id }}" ng-if="user._id == exchange.sender._id">
-            {{ getUserName( exchange.recipient ) }}</a>
+            {{ UtilityService.getUserName( exchange.recipient ) }}</a>
             <a href="/users/{{ exchange.sender._id }}" ng-if="user._id != exchange.sender._id">
-            {{ getUserName( exchange.sender.username ) }}</a>
+            {{ UtilityService.getUserName( exchange.sender ) }}</a>
             <br><br>
 
-            Created: {{ formatTimestamp(exchange.created, 'long') }}<br>
-            Last modified: {{ formatTimestamp(exchange.lastModified, 'long') }}<br>
+            Created: {{ UtilityService.formatTimestamp(exchange.created, 'long') }}<br>
+            Last modified: {{ UtilityService.formatTimestamp(exchange.lastModified, 'long') }}<br>
             <br>
 
             Feedback: <br><br>

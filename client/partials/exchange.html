@@ -1,6 +1,6 @@
 <div class="container-fluid content">
 
-    <div class="row" id="exchangeItems">
+    <div class="row" id="exchangeItems" ng-if="otherUser && user">
 
 
 
@@ -33,7 +33,7 @@
 
                 <div class="col-xs-6" id="myExchangeItems">
 
-                        <h3><a href="/profile">{{ getUserName( user ) }}</a></h3>
+                        <h3><a href="/profile">{{ UtilityService.getUserName( user ) }}</a></h3>
 
                         <div ng-if="userIsSender">
 
@@ -54,7 +54,7 @@
 
                 <div class="col-xs-6" id="theirExchangeItems">
 
-                        <h3><a href="/users/{{ otherUser._id }}">{{ getUserName( otherUser ) }}</a></h3>
+                        <h3><a href="/users/{{ otherUser._id }}">{{ UtilityService.getUserName( otherUser ) }}</a></h3>
 
                         <div ng-if="!userIsSender">
 
@@ -79,20 +79,19 @@
 
 
 
-
-        <div class="row" id="exchangeDecision">
+        <div class="row" id="exchangeDecision" ng-if="exchange.accepted">
 
             <div ng-if="userIsSender">
 
                 <div class="col-xs-6">
-                    <label class="checkbox-inline">
-                        <input type="checkbox" name="senderAccepted" ng-model="exchange.accepted.sender" ng-click="toggleAcceptance()">
+                    <label>
+                        <input type="checkbox" ng-model="exchange.accepted.sender" ng-click="toggleAcceptance()">
                     </label>
                 </div>
 
                 <div class="col-xs-6">
-                    <label class="checkbox-inline">
-                        <input type="checkbox" name="recipientAccepted" ng-model="exchange.accepted.recipient" disabled="disabled">
+                    <label>
+                        <input type="checkbox" ng-model="exchange.accepted.recipient" disabled="disabled">
                     </label>
                 </div>
 
@@ -101,14 +100,14 @@
             <div ng-if="!userIsSender">
 
                 <div class="col-xs-6">
-                    <label class="checkbox-inline">
-                        <input type="checkbox" name="recipientAccepted" ng-model="exchange.accepted.recipient" ng-click="toggleAcceptance()">
+                    <label>
+                        <input type="checkbox" ng-model="exchange.accepted.recipient" ng-click="toggleAcceptance()">
                     </label>
                 </div>
 
                 <div class="col-xs-6">
-                    <label class="checkbox-inline">
-                        <input type="checkbox" name="senderAccepted" ng-model="exchange.accepted.sender" disabled="disabled">
+                    <label>
+                        <input type="checkbox" ng-model="exchange.accepted.sender" disabled="disabled">
                     </label>
                 </div>
 
@@ -129,7 +128,7 @@
 
         <div class="col-xs-2" id="theirItems">
 
-                <h4><a href="/users/{{ otherUser._id }}">{{ getUserName( otherUser ) }}'s items</a></h4>
+                <h4><a href="/users/{{ otherUser._id }}">{{ UtilityService.getUserName( otherUser ) }}'s items</a></h4>
 
                 <div ng-if="userIsSender">
                     <div ng-repeat="item in options.recipient">
@@ -162,7 +161,7 @@
 
             <div class="row message" ng-repeat="messageToDisplay in exchange.conversation.messages  | orderBy : '-timestamp'">
 
-                    <div class="col-xs-5 messageInfo" ng-if="messageToDisplay.timestamp">[{{ formatTimestamp(messageToDisplay.timestamp, 'short') }}] <b>{{ getUserName( messageToDisplay.sender ) }}:</b> </div>
+                    <div class="col-xs-5 messageInfo" ng-if="messageToDisplay.timestamp">[{{ UtilityService.formatTimestamp(messageToDisplay.timestamp, 'short') }}] <b>{{ UtilityService.getUserName( messageToDisplay.sender ) }}:</b> </div>
                     <div class="col-xs-7 messageContent">{{ messageToDisplay.content }}</div>  
 
             </div>
@@ -180,9 +179,9 @@
     </div>
 
 
-    <div class="col-xs-6" id="otherUserInfo">
+    <div class="col-xs-6" id="otherUserInfo" ng-if="otherUser">
 
-        <div class="row"><h5><a href="/users/{{ otherUser._id }}">{{ getUserName( otherUser ) }}'s details</a></h5></div>
+        <div class="row"><h5><a href="/users/{{ otherUser._id }}">{{ UtilityService.getUserName( otherUser ) }}'s details</a></h5></div>
         Feedback score: <b>{{ otherUser.feedback.score }}%</b> ({{ otherUser.feedback.count }} completed exchanges)
 
     </div>
