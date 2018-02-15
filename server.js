@@ -6,3 +6,5 @@ var port = process.env.PORT || 8080
 
 app.get('server').listen( port );
 console.log( 'Site live at port: ' + port );
+
+module.exports = app; // for testing

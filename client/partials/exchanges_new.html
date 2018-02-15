@@ -16,7 +16,7 @@
 
                 <div class="col-xs-6" id="myExchangeItems">
 
-                        <h3> {{ user.username }} </h3>
+                        <h3 ng-if="user"> {{ UtilityService.getUserName( user ) }} </h3>
 
                         <div ng-repeat="item in exchange.items.sender">
                             <a ng-click="removeFromExchange(item)"><div class="item">{{ item.name }}</div></a> 
@@ -25,7 +25,9 @@
 
                 <div class="col-xs-6" id="theirExchangeItems">
 
-                        <h3> {{ otherUser.username }} </h3>
+                        <h3 ng-if="otherUser"> {{ UtilityService.getUserName( otherUser ) }} </h3>
+                        <h3 ng-if="!otherUser"> No user selected </h3>
+
 
                         <div ng-repeat="item in exchange.items.recipient">
                             <a ng-click="removeFromExchange(item)"><div class="item">{{ item.name }}</div></a>    

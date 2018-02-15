@@ -16,7 +16,7 @@ exports.list = function( req, res ){
 
 exports.create = function( req, res ){
 
-    var feedback = new Feedback({ author: req.body.author, comment: req.body.comment, rating: req.body.rating });
+    var feedback = new Feedback({ author: req.body.author, subject: req.body.subject, comment: req.body.comment, rating: req.body.rating });
 
     feedback.save( function( err ){
         if( err ){

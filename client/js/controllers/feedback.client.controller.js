@@ -24,15 +24,24 @@ angular.module('myApp').controller('feedbackController', [ '$routeParams', '$loc
 
                         rating: null,
                         comment: null,
-                        author: $scope.user
+                        author: $scope.user,
+                        subject: $scope.otherUser
                     }
 
                     if( $scope.userIsSender ){
+
                         $scope.feedbackSubmitted = exchange.feedback.sender
                     }else{
                         $scope.feedbackSubmitted = exchange.feedback.recipient
 
                     }
+
+
+                    FeedbackService.getFeedbackRegarding( $scope.otherUser._id ).then( function( feedbacks ){
+
+                        $scope.otherUserFeedbacks = feedbacks
+
+                    })
                     
 
                 }).catch( function( err ){
@@ -72,6 +81,8 @@ angular.module('myApp').controller('feedbackController', [ '$routeParams', '$loc
 
 
     $scope.submitFeedback = function( ){
+
+        console.log( JSON.stringify( $scope.feedback ))
 
         FeedbackService.createFeedback( $scope.feedback ).then( function( createdFeedback ){ 
 

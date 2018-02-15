@@ -53,8 +53,8 @@ angular.module( 'myApp' ).factory( 'ItemService', [ '$q', '$timeout', '$http', f
       $http.get( '/api/items' ).then(
         function successCallback( res ) {
 
-            if( res.data.items ){
-              deferred.resolve( res.data.items );
+            if( res.data ){
+              deferred.resolve( res.data );
             } else {
               deferred.reject();
             }

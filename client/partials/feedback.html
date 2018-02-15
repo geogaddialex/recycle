@@ -8,7 +8,7 @@
 
                 <div class="col-xs-6" id="myExchangeItems">
 
-                        <h3><a href="/profile">{{ UtilityService.getUserName( user ) }}</a></h3>
+                        <h3 ng-if="user"><a href="/profile">{{ UtilityService.getUserName( user ) }}</a></h3>
 
                         <div ng-if="userIsSender">
 
@@ -29,7 +29,7 @@
 
                 <div class="col-xs-6" id="theirExchangeItems">
 
-                        <h3><a href="/users/{{ otherUser._id }}">{{ UtilityService.getUserName( otherUser ) }}</a></h3>
+                        <h3 ng-if="otherUser"><a href="/users/{{ otherUser._id }}">{{ UtilityService.getUserName( otherUser ) }}</a></h3>
 
                         <div ng-if="!userIsSender">
 
@@ -94,10 +94,23 @@
 
 
 
-    <div class="col-xs-6" id="otherUserInfo">
+    <div class="col-xs-6" id="otherUserInfo" ng-if="otherUser">
 
         <div class="row"><h5><a href="/users/{{ otherUser._id }}">{{ UtilityService.getUserName( otherUser ) }}'s details</a></h5></div>
         Feedback score: <b>{{ otherUser.feedback.score }}%</b> ({{ otherUser.feedback.count }} completed exchanges)
+        
+        <br><br>
+
+        <div id="displayFeedback">
+
+            <div class="row feedback" ng-repeat="feedbackToDisplay in otherUserFeedbacks  | orderBy : '-timestamp'">
+
+                <div class="col-xs-5 messageInfo" ng-if="feedbackToDisplay.timestamp">[{{ UtilityService.formatTimestamp(feedbackToDisplay.timestamp, 'short') }}] <b>{{ UtilityService.getUserName( feedbackToDisplay.author ) }}:</b> </div>
+                <div class="col-xs-7 messageContent">{{ feedbackToDisplay.rating }} - {{ feedbackToDisplay.comment }}</div>  
+
+            </div>
+
+        </div>
 
 
     </div>

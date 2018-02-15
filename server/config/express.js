@@ -1,26 +1,28 @@
-var path 		          = require('path')					//not in use
+var path 		          = require( 'path' )
 var express  	        = require( 'express' )
 var socketio 	        = require( 'socket.io' )
-var http		          = require('http')
+var http		          = require( 'http' )
 var logger            = require( 'morgan' )
 var cookieParser      = require( 'cookie-parser' )
 var bodyParser        = require( 'body-parser' )
 var session           = require( 'express-session' )
-var flash  		        = require( 'connect-flash' )				//not in use
 var passport 	        = require( 'passport' )
 var User 		          = require( '../models/user.server.model' )
-                        require('datejs')
+                        require( 'datejs' )
                         require( './passport' )( passport );
 
 var app               = express( );
 
 app.use( express.static( 'client' ) );
 
-app.use( logger('dev') );
+if( process.env.NODE_ENV !== "test" ){
+    app.use( logger('dev') );
+}
+
+
 app.use( cookieParser() ); 
 app.use( bodyParser.json() ); 
 app.use( bodyParser.urlencoded({ extended: false }) );
-app.use( flash() );											//not in use
 
 app.use( session({
     secret: 'badsecret',

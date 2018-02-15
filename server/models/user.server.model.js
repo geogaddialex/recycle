@@ -7,7 +7,7 @@ var userSchema = mongoose.Schema({
 
     	  name: String,
         email: String,
-        password: String,
+        password: String
 
     },
 
@@ -24,7 +24,7 @@ var userSchema = mongoose.Schema({
         id : String,
         token: String,
         email: String,
-        name: String,
+        name: String
     },
 
     isAdmin: { type: Boolean, default: false },

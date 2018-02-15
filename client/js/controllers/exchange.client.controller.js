@@ -1,4 +1,4 @@
-angular.module('myApp').controller('exchangeController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', 'ExchangeService', 'MessageService', 'ConversationService', 'UtilityService', 'SocketService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, ExchangeService, MessageService, ConversationService, UtilityService, SocketService ){
+angular.module('myApp').controller('exchangeController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', 'ExchangeService', 'MessageService', 'ConversationService', 'FeedbackService', 'UtilityService', 'SocketService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, ExchangeService, MessageService, ConversationService, FeedbackService, UtilityService, SocketService ){
 
     var item = $routeParams.item;
     var userID = $routeParams.user;
@@ -50,10 +50,10 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
                 //initialise otherUser when url specifies one
                 if( userID ){
 
-                    var user = $scope.users.find(user => user._id === userID);
-                    $scope.otherUser = user
-                    $scope.selectedUser = user
-                    $scope.exchange.recipient = user;
+                    var otherUser = $scope.users.find(user => user._id === userID);
+                    $scope.otherUser = otherUser
+                    $scope.selectedUser = otherUser
+                    $scope.exchange.recipient = otherUser;
                 }
 
             })
@@ -71,15 +71,14 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
                     $scope.options.recipient = [];
                     $scope.exchange.items.recipient = [];
                     $scope.exchange.recipient = "";
-                    $scope.otherUser = {username:"No user selected"};
 
                 } else {
 
                     $scope.options.recipient = [];
                     $scope.exchange.items.recipient = [];
 
-                    $scope.otherUser = $scope.users.find( user => user.username === selected.username );
-                    $scope.exchange.recipient = $scope.users.find( user => user.username === selected.username );
+                    $scope.otherUser = $scope.users.find( user => user._id === selected._id );
+                    $scope.exchange.recipient = $scope.otherUser
 
                     ItemService.getItemsBelongingTo( $scope.otherUser._id ).then( function( items ){
 
@@ -133,13 +132,19 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
                     $scope.exchange = exchange;
 
-                    console.log( JSON.stringify( $scope.exchange.accepted, null, 2))
-
                     $scope.userIsSender = $scope.user._id == exchange.sender._id
                     $scope.otherUser = $scope.userIsSender ? exchange.recipient : exchange.sender
 
                     updateOptions()
                     updateConversation( )
+
+                    FeedbackService.getFeedbackRegarding( $scope.otherUser._id ).then( function( feedbacks ){
+
+                        console.log(JSON.stringify( feedbacks ))
+
+                        $scope.otherUserFeedbacks = feedbacks
+
+                    })
 
                 }).catch( function( err ){
                     console.log( "couldn't get exchange = " + err );

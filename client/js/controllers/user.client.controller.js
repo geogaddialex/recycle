@@ -11,6 +11,8 @@ angular.module('myApp').controller('userController', [ '$routeParams', '$locatio
       var userID = $routeParams.user;
 
       UserService.getUser( userID ).then( function( user ){
+
+        //this could be bad, might replace authorised user with user being viewed
         $scope.user = user;
 
         ItemService.getItemsBelongingTo( $scope.user._id ).then( function( items ){

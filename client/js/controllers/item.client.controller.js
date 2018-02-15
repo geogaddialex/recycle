@@ -1,6 +1,7 @@
-angular.module('myApp').controller('itemController', [ '$routeParams', '$location', '$route', '$scope', 'SocketService', 'ItemService', 'AuthService', function( $routeParams, $location, $route, $scope, SocketService, ItemService, AuthService ){
+angular.module('myApp').controller('itemController', [ '$routeParams', '$location', '$route', '$scope', 'SocketService', 'ItemService', 'AuthService', 'UtilityService', function( $routeParams, $location, $route, $scope, SocketService, ItemService, AuthService, UtilityService ){
     
     var itemId = $routeParams.id;
+    $scope.UtilityService = UtilityService
 
     AuthService.getUser().then( function(user){
       $scope.user = user;
