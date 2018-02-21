@@ -2,6 +2,15 @@
 	padding:5px;
 }
 
+#exchangeStages{
+	height:40px;
+	line-height: 40px;
+	font-size: 16px;
+}
+
+.exchangeStageButton{
+}
+
 #exchangeFooter, #feedbackFooter {
     position: fixed;
     bottom: 0;
@@ -9,7 +18,7 @@
     left:0;
 }
 
-#messenger, #otherUserInfo, #feedback{
+#messenger, #otherUserInfo, #feedback, #userInfo{
 	background-color: white;
 	border-radius: 5px;
 	border: 1px solid #f2e7d9;

@@ -1,12 +1,25 @@
-<div class="container-fluid content" ng-if="exchange">
+<div class="container-fluid content" ng-if="exchange && otherUser && user">
 
-    <div class="row" id="exchangeItems" ng-if="otherUser && user">
+    <div class="row" id="exchangeStages">
+        
+        <a ng-click="showDiv='negotiate'" class="exchangeStageButton">
+            <div class="col-xs-4">1. Negotiate<span ng-if="exchange.status=='Agreed' || exchange.status=='Completed'"> (Done!)</span></div>
+        </a>
+        <a ng-click="exchange.status=='Agreed' ? showDiv='swap' : alert('Negotiate first')" class="exchangeStageButton">
+            <div class="col-xs-4">2. Meet and swap<span ng-if="exchange.status=='Completed'"> (Done!)</span></div>
+        </a>
+        <a ng-click="exchange.status=='Completed' ? showDiv='feedback' : alert('Complete first')" class="exchangeStageButton">
+            <div class="col-xs-4">3. Leave feedback</div>
+        </a>
+
+    </div>
+
+
+    <div class="row" id="exchangeItems" ng-if="showDiv==='negotiate'">
 
 
 
-
-
-        <div class="col-xs-2" id="myItems">
+        <div class="col-xs-2" id="myItems" ng-if="exchange.status=='In progress'">
             <h4><a href="/myItems">Your items</a></h4>
 
             <div ng-if="userIsSender">
@@ -23,7 +36,7 @@
 
         </div>
 
-
+        <div class="col-xs-2" ng-if="exchange.status!='In progress'"></div>
 
 
 
@@ -36,19 +49,30 @@
                         <h3><a href="/profile">{{ UtilityService.getUserName( user ) }}</a></h3>
 
                         <div ng-if="userIsSender">
-
                             <div ng-repeat="item in exchange.items.sender">
-                                <a ng-click="removeFromExchange(item)"><div class="exchangeItem">{{ item.name }}</div></a> 
-                            </div>
 
+                                <a ng-if="exchange.status=='In progress'" ng-click="removeFromExchange(item)">
+                                    <div class="exchangeItem">{{ item.name }}</div>
+                                </a> 
+                                <a ng-if="exchange.status!='In progress'">
+                                    <div class="exchangeItem">{{ item.name }}</div>
+                                </a> 
+
+                            </div>
                         </div>
 
                         <div ng-if="!userIsSender">
-
                             <div ng-repeat="item in exchange.items.recipient">
-                                <a ng-click="removeFromExchange(item)"><div class="exchangeItem">{{ item.name }}</div></a>    
-                            </div>
 
+
+                                <a ng-if="exchange.status=='In progress'" ng-click="removeFromExchange(item)">
+                                    <div class="exchangeItem">{{ item.name }}</div>
+                                </a>
+                                <a ng-if="exchange.status!='In progress'">
+                                    <div class="exchangeItem">{{ item.name }}</div>
+                                </a>  
+
+                            </div>
                         </div>
                 </div>
 
@@ -57,19 +81,29 @@
                         <h3><a href="/users/{{ otherUser._id }}">{{ UtilityService.getUserName( otherUser ) }}</a></h3>
 
                         <div ng-if="!userIsSender">
-
                             <div ng-repeat="item in exchange.items.sender">
-                                <a ng-click="removeFromExchange(item)"><div class="exchangeItem">{{ item.name }}</div></a> 
-                            </div>
 
+                                <a ng-click="removeFromExchange(item)" ng-if="exchange.status=='In progress'">
+                                    <div class="exchangeItem">{{ item.name }}</div>
+                                </a>
+                                <a ng-if="exchange.status!='In progress'">
+                                    <div class="exchangeItem">{{ item.name }}</div>
+                                </a> 
+
+                            </div>
                         </div>
 
                         <div ng-if="userIsSender">
-
                             <div ng-repeat="item in exchange.items.recipient">
-                                <a ng-click="removeFromExchange(item)"><div class="exchangeItem">{{ item.name }}</div></a>    
-                            </div>
 
+                                <a ng-click="removeFromExchange(item)" ng-if="exchange.status=='In progress'">
+                                    <div class="exchangeItem">{{ item.name }}</div>
+                                </a>  
+                                <a ng-if="exchange.status!='In progress'">
+                                    <div class="exchangeItem">{{ item.name }}</div>
+                                </a>     
+
+                            </div>
                         </div>
 
                 </div>
@@ -79,54 +113,52 @@
 
 
 
-        <div class="row" id="exchangeDecision" ng-if="exchange.accepted">
+            <div class="row" id="exchangeDecision" ng-if="exchange.status=='In progress'">
 
-            <div ng-if="userIsSender">
+                <div ng-if="userIsSender">
 
-                <div class="col-xs-6">
-                    <label>
-                        <input type="checkbox" ng-model="exchange.accepted.sender" ng-click="toggleAcceptance()">
-                    </label>
+                    <div class="col-xs-6">
+                        <label>
+                            <input type="checkbox" ng-model="exchange.accepted.sender" ng-click="toggleAcceptance()">
+                        </label>
+                    </div>
+
+                    <div class="col-xs-6">
+                        <label>
+                            <input type="checkbox" ng-model="exchange.accepted.recipient" disabled="disabled">
+                        </label>
+                    </div>
+
                 </div>
 
-                <div class="col-xs-6">
-                    <label>
-                        <input type="checkbox" ng-model="exchange.accepted.recipient" disabled="disabled">
-                    </label>
+                <div ng-if="!userIsSender">
+
+                    <div class="col-xs-6">
+                        <label>
+                            <input type="checkbox" ng-model="exchange.accepted.recipient" ng-click="toggleAcceptance()">
+                        </label>
+                    </div>
+
+                    <div class="col-xs-6">
+                        <label>
+                            <input type="checkbox" ng-model="exchange.accepted.sender" disabled="disabled">
+                        </label>
+                    </div>
+
+                </div>
+
+                <div class="col-xs-12">
+                    <button type="button" class="btn btn-outline-danger" ng-click="cancelExchange()">Cancel exchange</button>
                 </div>
 
             </div>
-
-            <div ng-if="!userIsSender">
-
-                <div class="col-xs-6">
-                    <label>
-                        <input type="checkbox" ng-model="exchange.accepted.recipient" ng-click="toggleAcceptance()">
-                    </label>
-                </div>
-
-                <div class="col-xs-6">
-                    <label>
-                        <input type="checkbox" ng-model="exchange.accepted.sender" disabled="disabled">
-                    </label>
-                </div>
-
-            </div>
-
-            <div class="col-xs-12">
-                <button type="button" class="btn btn-outline-danger" ng-click="cancelExchange()">Cancel exchange</button>
-            </div>
-
-        </div>
-
-
 
 
 
         </div><!-- exchange -->
 
 
-        <div class="col-xs-2" id="theirItems">
+        <div class="col-xs-2" id="theirItems" ng-if="exchange.status=='In progress'">
 
                 <h4><a href="/users/{{ otherUser._id }}">{{ UtilityService.getUserName( otherUser ) }}'s items</a></h4>
 
@@ -142,8 +174,52 @@
                     </div>
                 </div>
 
-            </div>
         </div>
+
+
+
+    </div><!-- negotiateDiv -->
+
+    <div ng-if="showDiv==='swap'">
+
+        Go meet them and swap!!
+
+    </div>    
+
+
+
+
+    <div ng-if="showDiv==='feedback'">
+
+        <div class="row"><h5>Feedback</h5></div>
+    
+        <div id="feedbackForm" class="row" ng-show="!feedbackSubmitted.timestamp">
+
+            How did you rate the experience of this exchange?
+            <table id="feedbackTable">
+                <tr><th>0 - Bad</th><th>1 - Neutral</th><th>2 - Good</th></tr>
+                <tr>
+                    <td><input type="radio" name="feedbackRating" value="0" ng-model="feedback.rating"></td>
+                    <td><input type="radio" name="feedbackRating" value="1" ng-model="feedback.rating"></td>
+                    <td><input type="radio" name="feedbackRating" value="2" ng-model="feedback.rating"></td>
+                </tr>
+            </table>
+
+           
+            <input type="text" id="messageInput" placeholder="Type a message" ng-model="feedback.comment"/><br>
+
+            <button class="btn" id="messageButton" ng-click="submitFeedback( )">Submit Feedback</button>
+        </div>
+
+        <div class="row" ng-show="feedbackSubmitted.timestamp">
+            Thanks, feedback submitted!<br><br>
+
+            Rating: {{ feedbackSubmitted.rating }}<br>
+            Comment: {{ feedbackSubmitted.comment }}<br><br>
+
+        </div>
+
+    </div>
 
 
 </div>

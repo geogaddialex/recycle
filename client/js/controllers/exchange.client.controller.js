@@ -130,17 +130,43 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
                 ExchangeService.getExchange( exchangeID ).then( function( exchange ){
 
-                    $scope.exchange = exchange;
-
+                    $scope.exchange = exchange
                     $scope.userIsSender = $scope.user._id == exchange.sender._id
                     $scope.otherUser = $scope.userIsSender ? exchange.recipient : exchange.sender
+
+                    if( exchange.status == "In progress"){
+
+                        $scope.showDiv = "negotiate"
+                    }else if( exchange.status == "Agreed" ){
+
+                        $scope.showDiv = "swap"
+                    }else if( exchange.status == "Completed" ){
+
+                        $scope.showDiv = "feedback"
+                    }
 
                     updateOptions()
                     updateConversation( )
 
-                    FeedbackService.getFeedbackRegarding( $scope.otherUser._id ).then( function( feedbacks ){
+                    $scope.feedback = {
 
-                        console.log(JSON.stringify( feedbacks ))
+                        rating: null,
+                        comment: null,
+                        author: $scope.user,
+                        subject: $scope.otherUser
+                    }
+
+                    if( $scope.userIsSender ){
+
+                        $scope.feedbackSubmitted = exchange.feedback.sender
+                    }else{
+                        $scope.feedbackSubmitted = exchange.feedback.recipient
+
+                    }
+
+
+
+                    FeedbackService.getFeedbackRegarding( $scope.otherUser._id ).then( function( feedbacks ){
 
                         $scope.otherUserFeedbacks = feedbacks
 
@@ -338,6 +364,67 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     }
 
+    $scope.cancelExchange = function( ID ){
+
+        ExchangeService.getExchange( ID ).then( function( exchange ){
+
+            if(exchange.status == "In progress"){
+
+                exchange.status = "Cancelled before reaching agreement"
+
+            }else{
+
+                exchange.status = "Cancelled after reaching agreement"
+            }
+
+
+            ExchangeService.amendExchange( exchange ).then( function(){
+
+
+            })
+
+        })
+    }
+
+    $scope.completeExchange = function( ID ){
+
+        ExchangeService.getExchange( ID ).then( function( exchange ){
+
+            exchange.status = "Completed"
+
+            ExchangeService.amendExchange( exchange ).then( function(){
+
+
+            })
+
+        })
+    }
+
+    $scope.submitFeedback = function( ){
+
+        console.log( JSON.stringify( $scope.feedback ))
+
+        FeedbackService.createFeedback( $scope.feedback ).then( function( createdFeedback ){ 
+
+            if( $scope.userIsSender ){
+
+                $scope.exchange.feedback.sender = createdFeedback.data
+
+            }else{
+
+                $scope.exchange.feedback.recipient = createdFeedback.data
+            }
+
+            amendExchange()
+            updateFeedbackScore()
+
+            $scope.feedbackSubmitted = createdFeedback.data
+
+
+        })
+
+    }
+
 
     // Private functions -------------------------------------------------------------------------------------------
 
@@ -374,6 +461,26 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
         }).catch( function( err ){
             console.log( "couldn't get conversation = " + err );
+        })
+
+    }
+
+    var updateFeedbackScore = function( ){
+
+        UserService.getUser( $scope.otherUser._id ).then(function( user ){
+
+            user.feedback.count += 1
+            user.feedback.total = parseFloat( $scope.feedback.rating ) + parseFloat( user.feedback.total )
+            user.feedback.score = +((user.feedback.total/user.feedback.count*50).toFixed(2));
+
+            UserService.updateUser( user ).then(function(){
+
+
+            }, function(){
+
+                alert( "User not updated" );
+            })
+
         })
 
     }

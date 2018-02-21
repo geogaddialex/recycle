@@ -7,8 +7,8 @@ var feedbackSchema = mongoose.Schema({
 	subject: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 	comment: String,
 	rating: Number,
-	timestamp: { type: Date, default: Date.now }
-
+	timestamp: { type: Date, default: Date.now },
+	exchangeHappened: Boolean
 }, 
 { collection: 'feedback' });
 

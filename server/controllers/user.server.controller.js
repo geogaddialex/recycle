@@ -2,6 +2,7 @@ var User = require( '../models/user.server.model' );
 var Item = require( '../models/item.server.model' );
 var Exchange = require( '../models/exchange.server.model' );
 var Feedback = require( '../models/feedback.server.model' );
+var Group = require( '../models/group.server.model' );
 
 exports.list = function( req, res ){
 
@@ -70,8 +71,6 @@ exports.listFeedback = function( req, res ){
 
     var user = req.user;
 
-    console.log( JSON.stringify(user) )
-
     Feedback.find({ subject: user }).populate( 'author' ).exec( function( err, feedback ){
 
         if( err ){
@@ -80,6 +79,23 @@ exports.listFeedback = function( req, res ){
         }
         
         res.json({ feedback: feedback });
+            
+    })
+}
+
+exports.listGroups = function( req, res ){
+
+    var user = req.user;
+
+    Group.find({ members: user })
+    .exec( function( err, groups ){
+
+        if( err ){
+            console.log( "error: " + err );
+            return res.status( 500 );
+        }
+        
+        res.json({ groups: groups });
             
     })
 }

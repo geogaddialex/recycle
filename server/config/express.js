@@ -39,6 +39,7 @@ var exchangeRoutes = require( '../routes/exchange.server.routes.js' );
 var messageRoutes = require( '../routes/message.server.routes.js' );
 var conversationRoutes = require( '../routes/conversation.server.routes.js' );
 var feedbackRoutes = require( '../routes/feedback.server.routes.js' );
+var groupRoutes = require( '../routes/group.server.routes.js' );
 var authRoutes = require( '../routes/authentication.server.routes.js' )( passport )
 app.use('/api/items', itemRoutes);
 app.use('/api/users', userRoutes);
@@ -46,6 +47,7 @@ app.use('/api/exchanges', exchangeRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/conversations', conversationRoutes);
 app.use('/api/feedback', feedbackRoutes);
+app.use('/api/groups', groupRoutes);
 app.use('/api/auth', authRoutes);
 
 app.get('*', function(req, res) {

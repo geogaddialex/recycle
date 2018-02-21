@@ -18,12 +18,18 @@ myApp.config( function( $routeProvider, $locationProvider ){
 
         .when('/myExchanges', { templateUrl: 'partials/exchanges_my.html', controller: 'exchangeController', access: { restricted: true } })
         .when('/exchanges', { templateUrl: 'partials/exchanges.html', controller: 'exchangeController', access: { restricted: true } })
+
         .when('/exchange/:id', { templateUrl: 'partials/exchange.html', controller: 'exchangeController', access: { restricted: true } })
+
         .when('/newExchange', { templateUrl: 'partials/exchanges_new.html', controller: 'exchangeController', access: { restricted: true } })
         .when('/newExchange/:user', { templateUrl: 'partials/exchanges_new.html', controller: 'exchangeController', access: { restricted: true } })
         .when('/newExchange/:user/:item', { templateUrl: 'partials/exchanges_new.html', controller: 'exchangeController', access: { restricted: true } })
 
-        .when('/feedback/:id', { templateUrl: 'partials/feedback.html', controller: 'feedbackController', access: { restricted: true } })
+        .when('/myGroups', { templateUrl: 'partials/groups_my.html', controller: 'groupController', access: { restricted: true } })
+        .when('/groups', { templateUrl: 'partials/groups_browse.html', controller: 'groupController', access: { restricted: true } })
+        .when('/newGroup', { templateUrl: 'partials/groups_new.html', controller: 'groupController', access: { restricted: true } })
+        .when('/groups/:id', { templateUrl: 'partials/group.html', controller: 'groupController', access: { restricted: true } })
+
         
         .otherwise({ templateUrl: 'partials/404.html', access: { restricted: true } });
 

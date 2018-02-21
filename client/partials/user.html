@@ -78,3 +78,53 @@
         </div>
     </div>
 </div>
+
+<div id="exchangeFooter" class="row">
+
+    <div class="col-xs-6" id="messenger">
+
+        <!-- <div class="row"><h5>Messages</h5></div>
+
+        <div id="displayMessages">
+
+            <div class="row message" ng-repeat="messageToDisplay in exchange.conversation.messages  | orderBy : '-timestamp'">
+
+                    <div class="col-xs-5 messageInfo" ng-if="messageToDisplay.timestamp">[{{ UtilityService.formatTimestamp(messageToDisplay.timestamp, 'short') }}] <b>{{ UtilityService.getUserName( messageToDisplay.sender ) }}:</b> </div>
+                    <div class="col-xs-7 messageContent">{{ messageToDisplay.content }}</div>  
+
+            </div>
+
+        </div>
+    
+
+        <div id="messageForm" class="row">
+            <input type="text" id="messageInput" placeholder="Type a message" 
+            ng-model="message" ng-keydown="$event.keyCode === 13 && sendMessage()" />
+
+            <button class="btn" id="messageButton" ng-click="sendMessage( )">Send</button>
+        </div> -->
+
+    </div>
+
+
+    <div class="col-xs-6" id="userInfo" ng-if="user">
+
+        <div class="row"><h5>{{ UtilityService.getUserName( user ) }}'s details</h5></div>
+        Feedback score: <b>{{ user.feedback.score }}%</b> ({{ user.feedback.count }} completed exchanges)
+        
+        <br><br>
+
+        <div id="displayFeedback">
+
+            <div class="row feedback" ng-repeat="feedbackToDisplay in feedbacks  | orderBy : '-timestamp'">
+
+                <div class="col-xs-5 messageInfo" ng-if="feedbackToDisplay.timestamp">[{{ UtilityService.formatTimestamp(feedbackToDisplay.timestamp, 'short') }}] <b>{{ UtilityService.getUserName( feedbackToDisplay.author ) }}:</b> </div>
+                <div class="col-xs-7 messageContent">{{ feedbackToDisplay.rating }} - {{ feedbackToDisplay.comment }}</div>  
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

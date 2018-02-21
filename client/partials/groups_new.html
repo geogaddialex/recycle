@@ -1,0 +1,17 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div ng-if="message">{{message}}</div>
+        </div>
+    </div>
+    <div class="row addItem">
+        <div class="col-xs-12">
+
+            <form name="groupForm">
+                Group Name: <input type="text" ng-model="group.name">
+                <button ng-click="createGroup( group )">Add this group</button>
+            </form>
+
+        </div>
+    </div>
+</div> 

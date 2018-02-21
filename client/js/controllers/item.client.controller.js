@@ -15,7 +15,6 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
             $scope.item = item;
             $scope.viewingOwnItem = $scope.user._id == item.owner._id
-            $scope.ownerName = $scope.getOwnerName( item.owner )
 
           }).catch( function( err ){
             console.log( "error = " + err );

@@ -14,7 +14,7 @@
                 </div>
                 <div class="row" ng-if="!viewingOwnItem">
                     <div class="col">
-                        Belongs to: <a href="/users/{{item.owner._id}}">{{ ownerName }}</a><br>
+                        Belongs to: <a href="/users/{{item.owner._id}}">{{ UtilityService.getUserName( item.owner ) }}</a><br>
                         <a href="/newExchange/{{item.owner._id}}/{{item._id}}">Make an offer</a>
                     </div>
                 </div>

@@ -13,8 +13,12 @@ body{
 }
 
 a{
-  color: #555;
+  /*color: #555;*/
   text-decoration: none;
+}
+
+a button {
+  color: #333333 !important;
 }
 
 a:hover{

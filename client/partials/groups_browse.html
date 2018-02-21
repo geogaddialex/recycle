@@ -1,0 +1,27 @@
+<div class="container-fluid content">
+
+            <div class="row">
+                <div ng-show="groups">
+                        
+                    <div ng-repeat="group in groups" class="col-xs-12 groupContainer">
+
+                            <div class="row">
+                                <div class="col-xs-2 imageContainer">
+                                    <img src="/images/none.jpg" class="groupImage" height="200px"></a>
+                                </div>
+                                 <div class="col-xs-2 groupName">
+                                    <a href="/groups/{{ group._id }}">{{ group.name }}</a><br>
+                                    {{ group.members.length }} members<br>
+                                    <button class="btn" ng-click="joinGroup( group._id )">
+                                        Join group
+                                    </button>
+                                </div>
+                            </div><br>
+
+                        
+                    </div>    
+                </div>
+
+            </div><!-- row -->
+
+</div><!-- content -->
