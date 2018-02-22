@@ -85,15 +85,6 @@ h2, h3{
     border-color: #e7e7e7;
 }
 
-#whenLoggedOut{
-  margin-top:8px;
-}
-
-#navSearch{
-  margin-top:10px;
-}
-
-
 #menu-toggle{
   background-color: #f8f8f8;
   border-color: #e7e7e7;
@@ -121,63 +112,8 @@ li a span.glyphicon{
   font-size: 120% !important;
 }
 
-@media screen and (min-width: 768px) {
-    #navSearch{
-  		margin-top: 11px;
-  	}
-}
-
 .form-control.button{
   text-align: center;
-}
-
-#wrapper {
-  padding-left: 0;
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
-}
-
-#wrapper.toggled {
-  padding-left: 250px;
-}
-
-#sidebar-wrapper {
-  z-index: 1000;
-  position: fixed;
-  left: 200px;
-  width: 0;
-  height: 100%;
-  margin-left: -200px;
-  overflow-y: auto;
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
-}
-
-#wrapper.toggled #sidebar-wrapper {
-  width: 200px;
-}
-
-#page-content-wrapper {
-  width: 100%;
-  position: absolute;
-}
-
-#wrapper.toggled #page-content-wrapper {
-  position: absolute;
-  margin-right: -200px;
-}
-
-.sidebar-nav {
-  position: absolute;
-  top: 40px;
-  width: 200px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
 }
 
 .btn{
@@ -187,29 +123,4 @@ li a span.glyphicon{
 
 .btn:hover{
   border: 1px solid #d9e4f2;
-}
-
-
-
-
-@media(min-width:768px) {
-  #wrapper {
-    padding-left: 0;
-  }
-  #wrapper.toggled {
-    padding-left: 110px;
-  }
-  #sidebar-wrapper {
-    width: 0;
-  }
-  #wrapper.toggled #sidebar-wrapper {
-    width: 200px;
-  }
-  #page-content-wrapper {
-    position: relative;
-  }
-  #wrapper.toggled #page-content-wrapper {
-    position: relative;
-    margin-right: 0;
-  }
 }

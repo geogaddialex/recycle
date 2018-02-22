@@ -77,8 +77,8 @@ angular.module( 'myApp' ).factory( 'GroupService', [ '$q', '$timeout', '$http', 
       $http.get( url ).then(
         function successCallback( res ) {
 
-            if( res.data.groups ){
-              deferred.resolve( res.data.groups );
+            if( res.data.items ){
+              deferred.resolve( res.data.items );
             } else {
               deferred.reject();
             }

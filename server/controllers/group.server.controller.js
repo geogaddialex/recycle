@@ -27,6 +27,7 @@ exports.getOne = function( req, res ){
 exports.list = function( req, res ){
 
     Group.find({ })
+    .populate('members')
     .exec( function( err, groups ){
 
         if( err ){
@@ -84,13 +85,16 @@ exports.getItems = function( req, res ){
     var group = req.group;
 
     Item.find({ owner : {$in : group.members }})
+    .populate('owner')
     .exec( function( err, items ){
+
+        console.log( JSON.stringify( items, null, 2 ) )
 
         if( err ){
             return res.status( 500 );
         }
         
-        res.json(items);
+        res.status( 200 ).json({ items: items });
             
     })
 }

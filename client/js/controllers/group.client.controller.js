@@ -1,4 +1,4 @@
-angular.module('myApp').controller('groupController', [ '$routeParams', '$location', '$route', '$scope', 'SocketService', 'ItemService', 'GroupService', 'ConversationService', 'AuthService', 'UtilityService', function( $routeParams, $location, $route, $scope, SocketService, ItemService, GroupService, ConversationService, AuthService, UtilityService ){
+angular.module('myApp').controller('groupController', [ '$routeParams', '$location', '$route', '$scope', 'SocketService', 'ItemService', 'GroupService', 'ConversationService', 'MessageService', 'AuthService', 'UtilityService', function( $routeParams, $location, $route, $scope, SocketService, ItemService, GroupService, ConversationService, MessageService, AuthService, UtilityService ){
     
     var groupId = $routeParams.id;
     $scope.UtilityService = UtilityService
@@ -14,23 +14,22 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
             GroupService.getGroup( groupId ).then( function( group ){
 
                 $scope.group = group;
-
                 $scope.userInGroup = group.members.findIndex(i => i._id === user._id) != -1
 
-            }).catch( function( err ){
-              console.log( "error = " + err );
-            });
+                GroupService.getItemsForGroup( group._id ).then( function( items ){
 
+                    $scope.items = items
 
-            GroupService.getItemsForGroup( groupId ).then( function( items ){
-
-                console.log( JSON.stringify( items ))
-
-                $scope.items = items
+                }).catch( function( err ){
+                  console.log( "error = " + err );
+                });
 
             }).catch( function( err ){
               console.log( "error = " + err );
             });
+
+
+            
 
         }
 
@@ -126,7 +125,6 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
 
       GroupService.updateGroup( $scope.group ).then( function(){
 
-        $location.path("/groups/"+$scope.group._id);
 
       }, function(){
         alert( "Group not updated" );
@@ -161,5 +159,59 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
       })
 
     }
+
+    $scope.sendMessage = function( ){
+
+        var messageToCreate = {
+
+            sender: $scope.user,
+            content: $scope.message
+        }
+
+        MessageService.createMessage( messageToCreate ).then( function( createdMessage ){ 
+
+            $scope.group.conversation.messages.push( createdMessage.data )
+
+            $scope.message = ""
+            amendConversation()
+
+        })
+
+    }
+
+    $scope.userInGroup = function( group ){
+
+      return group.members.findIndex(i => i._id === $scope.user._id) != -1
+
+    }
+
+    var amendConversation = function( ){
+
+        ConversationService.updateConversation( $scope.group.conversation ).then( function( ){
+
+
+        }, function(){
+            alert( "Exchange not amended" );
+        })
+
+    }
+
+    SocketService.on('conversation.updated', function( conversation ){
+
+        if( conversation._id == $scope.group.conversation._id ){
+
+                $scope.$applyAsync( function(){
+
+                    $scope.group.conversation = conversation;
+                  
+                });
+                
+        }
+    });
+   
+    $scope.$on( '$destroy', function( event ){
+
+      SocketService.getSocket().removeAllListeners();
+    });
 
 }]);

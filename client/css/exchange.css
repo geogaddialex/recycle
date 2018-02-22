@@ -18,7 +18,7 @@
     left:0;
 }
 
-#messenger, #otherUserInfo, #feedback, #userInfo{
+#messenger, #otherUserInfo, #feedback, #userInfo, #members{
 	background-color: white;
 	border-radius: 5px;
 	border: 1px solid #f2e7d9;

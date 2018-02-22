@@ -12,8 +12,12 @@
                                  <div class="col-xs-2 groupName">
                                     <a href="/groups/{{ group._id }}">{{ group.name }}</a><br>
                                     {{ group.members.length }} members<br>
-                                    <button class="btn" ng-click="joinGroup( group._id )">
+                                    
+                                    <button class="btn" ng-click="joinGroup( group._id )" ng-if="!userInGroup( group )">
                                         Join group
+                                    </button>
+                                    <button class="btn" ng-click="leaveGroup( group._id )" ng-if="userInGroup( group )">
+                                        Leave group
                                     </button>
                                 </div>
                             </div><br>
