@@ -1,10 +1,13 @@
-<nav ng-controller="profileController as ctrl" class="navbar navbar-default navbar-fixed-top">
+<nav ng-controller="navController as ctrl" class="navbar navbar-default navbar-fixed-top">
 
 
 <div class="container-fluid">
 
     <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
             <span class="sr-only">Toggle navigation</span>
         </button>
         <a class="navbar-brand" href="/">give/swap</a>
@@ -62,7 +65,27 @@
 
             <ul class="nav navbar-nav navbar-right">
 
-                <li><a href="/messages"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span ng-class="{'unreadNotifications': unreadNotifications}" class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+                    </a>
+
+                    <ul class="dropdown-menu">
+
+                        <li ng-repeat="notification in notifications | filter:{ hidden: 'false'} | orderBy: '-createdAt' | limitTo:10">
+                            <a href="{{notification.link}}" ng-click="markRead( notification )" ng-class="{'unreadNotification': !notification.read}">
+                                [{{ UtilityService.formatTimestamp( notification.createdAt, 'short') }}] {{ notification.message }}
+                                <span ng-if="!notification.read" ng-click="markRead( notification, $event)" 
+                                    class="glyphicon glyphicon-ok" title="Mark read"></span>
+                                <span ng-click="hide( $event, notification)" class="glyphicon glyphicon-remove" title="Hide"></span>
+                            </a>
+
+                        </li>
+                        <li ng-if="notifications.length<1">No notifications</li>
+                        <li><a href="/notifications">View all {{notifications.length}}</a></li>
+
+                    </ul>
+                </li><!-- dropdown -->
 
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>

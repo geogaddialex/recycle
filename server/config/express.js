@@ -19,7 +19,6 @@ if( process.env.NODE_ENV !== "test" ){
     app.use( logger('dev') );
 }
 
-
 app.use( cookieParser() ); 
 app.use( bodyParser.json() ); 
 app.use( bodyParser.urlencoded({ extended: false }) );
@@ -40,6 +39,7 @@ var messageRoutes = require( '../routes/message.server.routes.js' );
 var conversationRoutes = require( '../routes/conversation.server.routes.js' );
 var feedbackRoutes = require( '../routes/feedback.server.routes.js' );
 var groupRoutes = require( '../routes/group.server.routes.js' );
+var notificationRoutes = require( '../routes/notification.server.routes.js' );
 var authRoutes = require( '../routes/authentication.server.routes.js' )( passport )
 app.use('/api/items', itemRoutes);
 app.use('/api/users', userRoutes);
@@ -48,6 +48,7 @@ app.use('/api/messages', messageRoutes);
 app.use('/api/conversations', conversationRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/groups', groupRoutes);
+app.use('/api/notifications', notificationRoutes);
 app.use('/api/auth', authRoutes);
 
 app.get('*', function(req, res) {
@@ -67,7 +68,6 @@ app.use(function(err, req, res) {
   }));
 });
 
-// Attach Socket.io
 var server = http.createServer( app );
 var io = socketio.listen( server );
 app.set( 'socketio', io );

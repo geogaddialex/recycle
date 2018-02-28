@@ -1,6 +1,5 @@
 'use strict';
 
-//socket factory that provides the socket service
 angular.module( 'myApp' ).factory('SocketService', function( ){
 
 	var socket = io.connect();

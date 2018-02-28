@@ -1,8 +1,5 @@
 var Exchange = require( '../models/exchange.server.model' );
 
-//list exchanges for one user
-//edit an exchange (accept, reject, modify, comment)
-
 exports.list = function( req, res ){
 
     Exchange.find({ })
@@ -33,7 +30,7 @@ exports.create = function( req, res ){
         exchange.populate("recipient", function(err, exchange) {
 
             //should "modularize the socket transmission and abstract it into a factory", this is quick and dirty way
-            var socketio = req.app.get('socketio'); // take socket instance from the app container
+            var socketio = req.app.get('socketio');
             socketio.sockets.emit('exchange.created', exchange);
 
             res.status( 201 ).json( exchange );

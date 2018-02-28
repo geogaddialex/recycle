@@ -1,0 +1,18 @@
+<div class="container-fluid content">
+
+            <div class="row">
+                <div ng-show="notifications">
+                        
+                    <div ng-repeat="notification in notifications | orderBy: '-createdAt' ">
+
+                        <a href="{{notification.link}}" ng-class="{'unreadNotification': !notification.read}">
+                            [{{ UtilityService.formatTimestamp( notification.createdAt, 'short') }}] {{ notification.message }}
+                            <span ng-if="!notification.read" ng-click="markRead( $event, notification)" class="glyphicon glyphicon-ok" title="Mark read"></span>
+                        </a>
+
+                    </div>    
+                </div>
+
+            </div><!-- row -->
+
+</div><!-- content -->

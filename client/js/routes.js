@@ -30,6 +30,7 @@ myApp.config( function( $routeProvider, $locationProvider ){
         .when('/newGroup', { templateUrl: 'partials/groups_new.html', controller: 'groupController', access: { restricted: true } })
         .when('/groups/:id', { templateUrl: 'partials/group.html', controller: 'groupController', access: { restricted: true } })
 
+        .when('/notifications', { templateUrl: 'partials/notifications.html', controller: 'notificationController', access: { restricted: true } })
         
         .otherwise({ templateUrl: 'partials/404.html', access: { restricted: true } });
 

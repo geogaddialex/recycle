@@ -40,39 +40,12 @@ h2, h3{
   padding: 0 3%;
 }
 
-#navSearch{
-  box-shadow: none;
+.unreadNotifications{
+  color:red;
 }
 
-.navbar-right li a{
-  /*padding-bottom: 10px;  keeps icons centred vertically */
-}
-
-.navbar-bottom{
-    position:inherit;
-
-  margin-top:10px;
-  margin-bottom: 0;
-  background-color: #f2e7d9;
-  border-radius: 0;
-}
-
-.navbar-bottom-ul {
-    float:none;
-    margin:0 auto;
-    display: block;
-    text-align: center;
-}
-
-.navbar-bottom-ul > li {
-    display: inline-block;
-    float:none;
-}
-.navbar-bottom-ul > li > a {
-    display: inline-block;
-    float:none;
-    color: #777 !important;
-    font-size: 16px;
+.unreadNotification, .unreadNotification:hover{
+  background-color: #CDB6B6 !important;
 }
 
 .dropdown-menu {
@@ -108,8 +81,9 @@ li a span.glyphicon{
     font-size: 150%;
 }
 
-.glyphicon-search{
-  font-size: 120% !important;
+.glyphicon-ok, .glyphicon-remove{
+  font-size: 100% !important;
+  margin-left: 5px;
 }
 
 .form-control.button{
