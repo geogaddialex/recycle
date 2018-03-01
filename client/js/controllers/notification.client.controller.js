@@ -1,8 +1,6 @@
 angular.module('myApp').controller('notificationController', [ 'AuthService', 'UserService', 'NotificationService', 'UtilityService', 'SocketService', '$scope', '$location', function( AuthService, UserService, NotificationService, UtilityService, SocketService, $scope, $location ){
 
     var path = $location.path()
-
-    //needed to log in, not sure why
     $scope.UtilityService = UtilityService
 
     AuthService.getUser( ).then( function( user ){

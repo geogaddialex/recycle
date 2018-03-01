@@ -15,3 +15,6 @@ module.exports = {
     }
 
 };
+
+// herokuapp still doesnt work even though the redirect_uri is entered exactly into OAuth whitelist
+// (check network tab when clicking facebook button)

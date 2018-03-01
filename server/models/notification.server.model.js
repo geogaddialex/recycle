@@ -6,8 +6,7 @@ var notificationSchema = mongoose.Schema({
     message: { type: String },
     link: { type: String },
     createdAt: { type: Date, default: Date.now },
-    read: { type: Boolean, default: false },
-    hidden: { type: Boolean, default: false }
+    read: { type: Boolean, default: false }
 
 });
 

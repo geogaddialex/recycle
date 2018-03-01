@@ -7,7 +7,7 @@
 
                         <a href="{{notification.link}}" ng-class="{'unreadNotification': !notification.read}">
                             [{{ UtilityService.formatTimestamp( notification.createdAt, 'short') }}] {{ notification.message }}
-                            <span ng-if="!notification.read" ng-click="markRead( $event, notification)" class="glyphicon glyphicon-ok" title="Mark read"></span>
+                            <span ng-if="!notification.read" ng-click="markRead( $event, notification)" class="glyphicon glyphicon-remove" title="Mark read"></span>
                         </a>
 
                     </div>    
