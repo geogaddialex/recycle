@@ -108,14 +108,20 @@ angular.module('myApp').controller('navController', [ 'AuthService', 'UserServic
 
     SocketService.on('notification.updated', function( notification ){
 
+      AuthService.getUser( ).then( function( user ){
+      
         if( notification.user === $scope.user._id ){
 
           var index = $scope.notifications.findIndex(x => x._id == notification._id);
 
           $scope.notifications[index] = notification
-          $scope.$apply()
 
         }
+      }).catch( function(err){
+        console.log(err)
+      })
+
+        
 
     });
    
@@ -146,10 +152,10 @@ angular.module('myApp').controller('navController', [ 'AuthService', 'UserServic
 
           console.log( "notification created (by service)" )
 
-      }),function(err){
+      }).catch(function(err){
 
-        console.log("not created by service: " + err)
-      }
+        console.log("notification not created by service: " + err)
+      })
 
     }
     
