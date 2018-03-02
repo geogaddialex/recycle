@@ -17,16 +17,32 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
             $scope.item = item;
             $scope.viewingOwnItem = $scope.user._id == item.owner._id
 
+              if($scope.viewingOwnItem){
+                
+                $scope.newTag = {
+                  name: ""
+                }
+
+                TagService.getTags(  ).then( function( tags ){
+                  
+                    $scope.tags = tags;
+
+                }).catch( function( err ){
+
+                  console.log( "error getting tags = " + err );
+                });
+
+              }
+
           }).catch( function( err ){
-            console.log( "error = " + err );
-          });
+            console.log( "error getting item = " + err );
+          });       
+            
         }
 
         if( $location.path() == "/items" ){
 
           ItemService.getItems( ).then( function( items ){
-
-            console.log( JSON.stringify( items, null, 2))
 
             $scope.items = items;
 
@@ -137,12 +153,16 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
     $scope.addTag = function( tagToAdd ){
 
+      //need to edit this so that the item is passed as param, so that existing items can be used
+
       if( $scope.selectedTag === "addTag" ){
+
+        //need to ensure tag isnt already existing (with different capitalisation etc ) before adding
 
           TagService.createTag({ name: tagToAdd }).then( function( newTag ){
 
-              $scope.newItem.tags.push( newTag.config.data )
-              $scope.newTag = ""
+              $scope.newItem.tags.push( newTag.data )
+              $scope.newTag.name = ""
 
           }, function(){
 
@@ -151,7 +171,6 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
       }else{
 
-        //don't try to add if already added
         $scope.newItem.tags.push( $scope.selectedTag )
 
       }

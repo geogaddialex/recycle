@@ -1,3 +1,5 @@
+<div ng-if="!group">This group does not exist</div>
+
 <div class="container-fluid content" ng-if="group">
     <div class="row">
 
@@ -45,7 +47,7 @@
     </div><!-- row -->
 </div>
 
-<div id="exchangeFooter" class="row">
+<div id="exchangeFooter" class="row" ng-if="group">
 
     <div class="col-xs-9" id="messenger">
 

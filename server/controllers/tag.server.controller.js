@@ -70,8 +70,6 @@ exports.getItems = function( req, res ){
 
     Item.find({ tags: tag._id }).populate('owner tags').exec( function( err, items ){
 
-        console.log( JSON.stringify( items, null, 2))
-
         if( err ){
             return res.status( 500 );
         }

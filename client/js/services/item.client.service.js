@@ -119,6 +119,7 @@ angular.module( 'myApp' ).factory( 'ItemService', [ '$q', '$timeout', '$http', f
 
           deferred.reject();
         }
+        
       ).catch( function( err ){
         console.log( "caught error: " + err );
       });
