@@ -1,0 +1,17 @@
+<div class="container-fluid content">
+
+            <div class="row">
+                <div ng-show="tags">
+                        
+                    <div ng-repeat="tag in tags | orderBy: 'name' ">
+
+                        <a href="/tags/{{tag.name}}">
+{{tag.name}}
+                        </a>
+
+                    </div>    
+                </div>
+
+            </div><!-- row -->
+
+</div><!-- content -->

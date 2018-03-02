@@ -29,7 +29,7 @@ exports.list = function( req, res ){
             return res.status( 500 );
         }
         
-        res.json(items);
+        res.json({ items: items });
             
     })
 }

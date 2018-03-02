@@ -55,7 +55,7 @@ angular.module( 'myApp' ).factory( 'ItemService', [ '$q', '$timeout', '$http', f
         function successCallback( res ) {
 
             if( res.data ){
-              deferred.resolve( res.data );
+              deferred.resolve( res.data.items );
             } else {
               deferred.reject();
             }

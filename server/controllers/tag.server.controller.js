@@ -68,17 +68,15 @@ exports.getItems = function( req, res ){
 
     var tag = req.tag;
 
-    console.log("tag: " + tag)
-
-
-
     Item.find({ tags: tag._id }).populate('owner tags').exec( function( err, items ){
+
+        console.log( JSON.stringify( items, null, 2))
 
         if( err ){
             return res.status( 500 );
         }
         
-        res.json(items);
+        res.json({items: items});
             
     })
 };

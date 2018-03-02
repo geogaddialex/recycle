@@ -26,6 +26,8 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
           ItemService.getItems( ).then( function( items ){
 
+            console.log( JSON.stringify( items, null, 2))
+
             $scope.items = items;
 
           }).catch( function( err ){
