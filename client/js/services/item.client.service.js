@@ -6,7 +6,8 @@ angular.module( 'myApp' ).factory( 'ItemService', [ '$q', '$timeout', '$http', f
       createItem: createItem,
       deleteItem: deleteItem,
       updateItem: updateItem,
-      getItemsBelongingTo: getItemsBelongingTo
+      getItemsBelongingTo: getItemsBelongingTo,
+      getItemsWithTag: getItemsWithTag,
     });
 
 
@@ -74,6 +75,34 @@ angular.module( 'myApp' ).factory( 'ItemService', [ '$q', '$timeout', '$http', f
        
       var deferred = $q.defer();
       var url = '/api/users/'+id+'/items'
+
+      $http.get( url ).then(
+        function successCallback( res ) {
+
+            if( res.data.items ){
+              deferred.resolve( res.data.items );
+            } else {
+              deferred.reject();
+            }
+
+        }, function errorCallback( res ){
+
+          console.log( "error: " + res.data );
+
+          deferred.reject();
+        }
+      ).catch( function( err ){
+        console.log( "caught error: " + err );
+      });
+
+      return deferred.promise;
+    }
+
+
+    function getItemsWithTag( tag ){
+       
+      var deferred = $q.defer();
+      var url = '/api/tags/'+tag+'/items'
 
       $http.get( url ).then(
         function successCallback( res ) {

@@ -3,7 +3,7 @@ var Item = require( '../models/item.server.model' );
 
 exports.getOne = function( req, res ){ 
 
-    Item.findById( req.params.id ).populate('owner').exec( function( err, item ){
+    Item.findById( req.params.id ).populate('owner tags').exec( function( err, item ){
 
         if( err ){  
             return res.status(500).json({ errors: "Could not retrieve item" });
@@ -23,7 +23,7 @@ exports.getOne = function( req, res ){
 
 exports.list = function( req, res ){
 
-    Item.find({ }).populate('owner').exec( function( err, items ){
+    Item.find({ }).populate('owner tags').exec( function( err, items ){
 
         if( err ){
             return res.status( 500 );
@@ -36,7 +36,8 @@ exports.list = function( req, res ){
 
 exports.create = function( req, res ){
 
-    var item = new Item({ name: req.body.name, owner: req.user });
+    var item = new Item(req.body);
+    item.owner = req.user
 
     item.save( function( err ){
         if( err ){
@@ -54,21 +55,10 @@ exports.create = function( req, res ){
 
 exports.delete = function( req, res ){
 
-    // var id = req.params.id;
-
     Item.remove({_id : req.params.id}, (err, result) => {
         res.json({ message: "Item successfully deleted!", result });
     });
 
-    // Item.findByIdAndRemove(id, (err, item) => {  
-
-    //     if( err ){
-    //         console.log( "error: " + err );
-    //         return res.status(500).json({ errors: "Could not delete item" });
-    //     } 
-
-    //     res.status( 200 ).json({ message: "Item successfully deleted!", item });
-    // });
 
 };
 

@@ -36,6 +36,10 @@
 
 }
 
-.content{
-	text-align: center;
+.tag{
+	background-color:white;
+	border-radius:5px;
+	border: 1px solid;
+	padding: 3px;
+	margin: 1px;
 }

@@ -16,6 +16,8 @@ myApp.config( function( $routeProvider, $locationProvider ){
         .when('/items/:id', { templateUrl: 'partials/item.html', controller: 'itemController', access: { restricted: true } })
         .when('/myItems', { templateUrl: 'partials/items_my.html', controller: 'itemController', access: { restricted: true } })
 
+        .when('/tags/:tag', { templateUrl: 'partials/tag.html', controller: 'itemController', access: { restricted: true } })
+
         .when('/myExchanges', { templateUrl: 'partials/exchanges_my.html', controller: 'exchangeController', access: { restricted: true } })
         .when('/exchanges', { templateUrl: 'partials/exchanges.html', controller: 'exchangeController', access: { restricted: true } })
 

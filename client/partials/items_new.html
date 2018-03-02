@@ -8,13 +8,37 @@
         <div class="col-xs-12">
 
             <form name="itemForm">
-                Item Name: <input type="text" ng-model="item.name">
-                Tags: <select name="tagSelect" id="tagSelect" ng-model="selectedTag"
-                        ng-options="tag in tags"> 
-                <option value="">Select a tag</option>
-            </select> <button ng-click="addTag( tag )">Add a new tag</button>
-                <button ng-click="createItem( item )">Add this item</button>
+
+                Item Name: 
+
+                    <input type="text" ng-model="newItem.name"><br>
+
+                Add Tags:   
+
+                    <select id="tagSelect" ng-model="selectedTag"> 
+
+                        <option value="">Select a tag</option>
+                        <option ng-repeat="tag in tags" ng-value="tag">{{tag.name}}</option>
+                        <option value="addTag">Add new tag</option>
+
+                    </select>
+
+                    <input type="text" ng-model="newTag.name" ng-if="selectedTag=='addTag'">
+                    <button ng-click="addTag( newTag.name )">Add</button><br>
+
+                
+                <div ng-if="newItem.tags.length>0">
+
+                    Tags added:
+                
+                        <span ng-repeat="tag in newItem.tags">{{tag.name}}</span>
+                </div>
+
             </form>
+
+
+            <br><button ng-click="createItem( newItem )">Add this item</button>
+
 
         </div>
     </div>

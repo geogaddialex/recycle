@@ -3,36 +3,64 @@
             <div class="row">
                 <div ng-show="items">
                         
-                    <div ng-repeat="item in items" ng-if="item.owner._id != user._id" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 itemContainer">
-                        <div class="item">
+                    
 
-                            <div class="row">
-                                <div class="col imageContainer">
-                                    <a href="/items/{{ item._id }}"><img src="/images/none.jpg" class="itemImage"></a><br>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col itemName">
-                                    <a href="/items/{{ item._id }}">{{ item.name }}</a><br>
-                                    <a href="/users/{{ item.owner._id }}">{{ UtilityService.getUserName( item.owner ) }}</a><br>
-                                    <a href="/newExchange/{{ item.owner._id }}/{{ item._id }}">Make an offer</a>
-                                    
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <a href="/viewInfo/{{ item._id }}"><span class="glyphicon glyphicon-info-sign"></span></a>    
-                                </div>
-                                <div class="col-xs-4">
-                                    <a href="/addToFavourites/{{ item._id }}"><span class="glyphicon glyphicon-star"></span></a>
-                                </div>
-                                <div class="col-xs-4">
-                                    <a href="/showLocation/{{ item._id }}"><span class="glyphicon glyphicon-map-marker"></span></a>
-                                </div>
-                            </div>
+                    <div ng-repeat="item in items" ng-if="item.owner._id != user._id">
+
+                        <a href="/items/{{ item._id }}">
+                        <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 itemContainer">
                         
-                        </div><!-- item -->
-                    </div>    
+                            <div class="item">
+
+                                <div class="row">
+                                    <div class="col imageContainer">
+                                        <img src="/images/none.jpg" class="itemImage"><br>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col itemName">
+                                        <a href="/items/{{ item._id }}">{{ item.name }}</a><br>
+                                        <a href="/users/{{ item.owner._id }}">{{ UtilityService.getUserName( item.owner ) }}</a><br>
+                                        <a href="/newExchange/{{ item.owner._id }}/{{ item._id }}">Make an offer</a>
+                                        
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col itemTags">
+                                        <a class="tag" href="/tags/{{tag.name}}" ng-repeat="tag in item.tags">
+                                            <span class="glyphicon glyphicon-tag"></span> {{ tag.name }}
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-xs-4">
+                                        <a href="/viewInfo/{{ item._id }}">
+                                            <span title="View info" class="glyphicon glyphicon-info-sign"></span>
+                                        </a>    
+                                    </div>
+
+                                    <div class="col-xs-4"></div>
+                                    
+                                    <div class="col-xs-4">
+                                        <a href="/showLocation/{{ item._id }}">
+                                            <span title="Show location" class="glyphicon glyphicon-map-marker"></span>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            
+                            </div><!-- item -->
+                        </div>
+                        </a>
+
+                    </div><!-- ng-repeat -->
+
+
+
                 </div>
 
             </div><!-- row -->

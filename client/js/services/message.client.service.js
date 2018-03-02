@@ -69,33 +69,4 @@ angular.module( 'myApp' ).factory( 'MessageService', [ '$q', '$timeout', '$http'
 
 
 
-    function getMessagesBelongingTo( id ){
-       
-      var deferred = $q.defer();
-      var url = '/api/users/'+id+'/messages'
-
-      $http.get( url ).then(
-        function successCallback( res ) {
-
-            if( res.data.messages ){
-              deferred.resolve( res.data.messages );
-            } else {
-              deferred.reject();
-            }
-
-        }, function errorCallback( res ){
-
-          console.log( "error: " + res.data );
-
-          deferred.reject();
-        }
-      ).catch( function( err ){
-        console.log( "caught error: " + err );
-      });
-
-      return deferred.promise;
-    }
-    
-
-
 }]);

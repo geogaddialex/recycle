@@ -1,7 +1,8 @@
-angular.module('myApp').controller('itemController', [ '$routeParams', '$location', '$route', '$scope', 'SocketService', 'ItemService', 'AuthService', 'UtilityService', function( $routeParams, $location, $route, $scope, SocketService, ItemService, AuthService, UtilityService ){
+angular.module('myApp').controller('itemController', [ '$routeParams', '$location', '$route', '$scope', 'SocketService', 'ItemService', 'TagService', 'AuthService', 'UtilityService', function( $routeParams, $location, $route, $scope, SocketService, ItemService, TagService, AuthService, UtilityService ){
     
     var itemId = $routeParams.id;
     $scope.UtilityService = UtilityService
+
 
     AuthService.getUser().then( function(user){
       $scope.user = user;
@@ -42,6 +43,44 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
               console.log( "error = " + err );
               $scope.myItems = {};
             });
+        }
+
+        if( $location.path() == "/items/add" ){
+
+            $scope.newItem = {
+
+              tags: []          
+            }
+
+            $scope.newTag = {
+              name: ""
+            }
+
+
+            TagService.getTags(  ).then( function( tags ){
+              
+              $scope.tags = tags;
+
+            }).catch( function( err ){
+
+              console.log( "error = " + err );
+            });
+
+        }
+
+        var tag = $routeParams.tag;
+
+        if( ($location.path().split('/').indexOf('tags') > -1) && tag){
+
+          ItemService.getItemsWithTag( tag ).then( function( items ){
+              
+            $scope.items = items;
+
+          }).catch( function( err ){
+
+            console.log( "error = " + err );
+          });
+
         }
 
 
@@ -91,6 +130,30 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
       }, function(){
         alert( "Item not updated" );
       })
+
+    }
+
+    $scope.addTag = function( tagToAdd ){
+
+      if( $scope.selectedTag === "addTag" ){
+
+          TagService.createTag({ name: tagToAdd }).then( function( newTag ){
+
+              $scope.newItem.tags.push( newTag.config.data )
+              $scope.newTag = ""
+
+          }, function(){
+
+            alert( "Tag not added" );
+          })
+
+      }else{
+
+        //don't try to add if already added
+        $scope.newItem.tags.push( $scope.selectedTag )
+
+      }
+
 
     }
 

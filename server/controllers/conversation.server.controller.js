@@ -73,7 +73,6 @@ exports.lookupConversation = function(req, res, next) {
 
     Conversation.findOne({ '_id': req.params.id })
     .populate({path: 'messages', populate: { path: 'sender' }})
-    // .populate('messages messages.sender')
     .exec( function( err, conversation ){
 
         if( err ){  
