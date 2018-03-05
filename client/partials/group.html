@@ -3,8 +3,9 @@
 <div class="container-fluid content" ng-if="group">
     <div class="row">
 
-        <h3>{{ group.name }}<button ng-if="!userInGroup" ng-click="joinGroup( group._id )">Join</button>
-        <button ng-if="userInGroup" ng-click="leaveGroup( group._id )">Leave</button></h3>
+        <h3>{{ group.name }}</h3>
+        <button ng-if="!userInGroup" ng-click="joinGroup( group._id )">Join</button>
+        <button ng-if="userInGroup" ng-click="leaveGroup( group._id )">Leave</button>
         
 
         <div class="col-xs-12 groupContainer">
@@ -65,12 +66,14 @@
         </div>
     
 
-        <div id="messageForm" class="row">
-            <input type="text" id="messageInput" placeholder="Type a message" 
-            ng-model="message" ng-keydown="$event.keyCode === 13 && sendMessage()" />
+        <div id="messageForm" class="row" ng-if="userInGroup">
+            <input type="text" id="messageInput" placeholder="Type a message" ng-model="message.text" 
+                ng-keydown="$event.keyCode === 13 && sendMessage()" />
 
             <button class="btn" id="messageButton" ng-click="sendMessage( )">Send</button>
         </div>
+
+        <div ng-if="!userInGroup">Join the group to leave a message</div>
 
     </div>
 

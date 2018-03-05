@@ -25,6 +25,8 @@ a:hover{
     text-align: center;
     min-height:91%;
     display:block;
+    margin: 0 5%;
+    padding-bottom: 130px;
 }
 
 .navbar{

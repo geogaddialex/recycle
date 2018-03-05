@@ -5,6 +5,17 @@ var Item = require( '../models/item.server.model' );
 exports.getOne = function( req, res ){ 
 
     Group.findById( req.params.id )
+    .populate({ 
+     path: 'conversation',
+     populate: {
+       path: 'messages',
+       model: 'Message',
+       populate:{
+        path: 'sender',
+        model: 'User'
+       }
+     } 
+    })
     .populate('members')
     .exec( function( err, group ){
 
@@ -68,7 +79,9 @@ exports.delete = function( req, res ){
 
 exports.update = function( req, res ){
 
-    Group.findByIdAndUpdate(req.params.id, { $set: req.body }, {new: true}, (err, group) => {  
+    Group.findByIdAndUpdate(req.params.id, { $set: req.body }, {new: true}).
+    populate('members conversation')
+    .exec(function( err, group ){  
 
         if( err ){
             console.log( "error: " + err );
@@ -88,8 +101,6 @@ exports.getItems = function( req, res ){
     .populate('owner')
     .exec( function( err, items ){
 
-        console.log( JSON.stringify( items, null, 2 ) )
-
         if( err ){
             return res.status( 500 );
         }
@@ -101,7 +112,10 @@ exports.getItems = function( req, res ){
 
 exports.lookupGroup = function(req, res, next) {
 
-    Group.findOne({ '_id': req.params.id }, function( err, group ){
+    Group.findOne({ '_id': req.params.id })
+    .populate('members conversation conversation.messages')
+    .exec( function( err, group ){
+
         if( err ){  
             console.log( err ); 
             return res.status(500).json({ errors: "Could not retrieve group" });

@@ -14,6 +14,7 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
             GroupService.getGroup( groupId ).then( function( group ){
 
                 $scope.group = group;
+                $scope.message = { text: "" }
                 $scope.userInGroup = group.members.findIndex(i => i._id === user._id) != -1
 
                 GroupService.getItemsForGroup( group._id ).then( function( items ){
@@ -103,6 +104,7 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
             GroupService.createGroup( group ).then( function( ){ 
 
               $location.path("/myGroups");
+
             }, function(){
               alert( "Group not created" );
             })
@@ -115,7 +117,9 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
     $scope.deleteGroup = function( ID ){
 
       GroupService.deleteGroup( ID ).then( function( ){ 
+
           $route.reload();
+
        }, function(){
           alert( "Group not deleted" );
        })
@@ -125,8 +129,19 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
 
       GroupService.updateGroup( $scope.group ).then( function(){
 
+        if( groupId ){
+
+          $scope.userInGroup = $scope.group.members.findIndex(i => i._id === $scope.user._id) != -1
+
+        } else if( $location.path() == "/groups" ){
+
+          var groupToUpdate = $scope.groups.findIndex(i => i._id === $scope.group._id)
+          $scope.groups[groupToUpdate] = $scope.group
+
+        }
 
       }, function(){
+
         alert( "Group not updated" );
       })
 
@@ -149,10 +164,26 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
 
       GroupService.getGroup( ID ).then( function( group ){
 
+        if( $scope.myGroups ){
+
+          var array = $scope.myGroups
+          array.splice( array.indexOf( group ), 1 ) 
+
+        }
+
         $scope.group = group
 
         var array = $scope.group.members
-        array.splice( array.indexOf( $scope.user._id ), 1 ) 
+        var userIndex =  array.findIndex(i => i._id === $scope.user._id)
+
+
+        console.log("user ID: " + $scope.user._id )
+        console.log( userIndex )
+
+        console.log( "before splice: " +  JSON.stringify( array, null, 2))
+        array.splice( userIndex, 1 ) 
+
+        console.log( "after splice: " + JSON.stringify( array, null, 2))
 
         $scope.updateGroup()
 
@@ -165,7 +196,7 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
         var messageToCreate = {
 
             sender: $scope.user,
-            content: $scope.message
+            content: $scope.message.text
         }
 
         MessageService.createMessage( messageToCreate ).then( function( createdMessage ){ 
