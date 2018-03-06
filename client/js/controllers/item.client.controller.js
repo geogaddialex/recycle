@@ -151,6 +151,18 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
     }
 
+    $scope.resetItem = function(){
+
+      ItemService.getItem( itemId ).then( function( item ){
+
+          $scope.item = item;
+
+      }, function(){
+
+      })
+
+    }
+
     $scope.addTag = function( tagToAdd ){
 
       var itemToEdit = $scope.item ? $scope.item : $scope.newItem

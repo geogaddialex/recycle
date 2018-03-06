@@ -68,3 +68,11 @@ button{
 button:hover{
   border: 1px solid #d9e4f2;
 }
+
+.white{
+  background-color: white;
+}
+
+.itemTags > span {
+  display: inline-block;
+}

@@ -4,11 +4,10 @@
 <div class="container-fluid content" ng-if="item">
     <div class="row">
 
+        <div class="col-xs-12 col-sm-offset-3 col-sm-6 item">
 
-        <input type="text" ng-model="item.name" ng-if="viewingOwnItem" />
-        <h3 ng-if="!viewingOwnItem">{{ item.name }}</h3>
-
-        <div class="col-xs-12 itemContainer">
+                <input type="text" ng-model="item.name" ng-if="viewingOwnItem" />
+                <h3 ng-if="!viewingOwnItem">{{ item.name }}</h3>
 
                 <div class="row">
                     <div class="col imageContainer">
@@ -32,7 +31,15 @@
                 <br><br>
 
 
-                <div ng-if="viewingOwnItem" class="row">
+                
+            
+        </div> 
+
+
+
+    </div><!-- row -->
+
+            <div ng-if="viewingOwnItem" class="row">
                     <div class="col">
 
                         Add tags:<br>
@@ -45,14 +52,11 @@
                         </select>
 
                         <input type="text" ng-model="newTag.name" ng-if="selectedTag=='addTag'">
-                        <button ng-click="addTag( newTag.name )">Add</button><br>
+                        <button ng-click="addTag( newTag.name )" class="white">Add</button><br>
 
 
-                        <button ng-click="updateItem()">Save</button>
-                        <button ng-click="resetItem()">Reset</button>
+                        <button ng-click="updateItem()" class="white">Save</button>
+                        <button ng-click="resetItem()" class="white">Reset</button>
                     </div>
                 </div>
-            
-        </div> 
-    </div><!-- row -->
 </div>
