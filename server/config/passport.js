@@ -65,16 +65,24 @@ module.exports = function( passport ){
         passwordField : 'password',
         passReqToCallback : true
 
-    }, function(req, username, password, done) {
+    }, function(req, email, password, done) {
 
-        User.findOne({ 'local.email' :  username }, function(err, user) {
+        // console.log("email: " + email)
+
+        User.findOne({ 'local.email' :  email }, function(err, user) {
+
+            console.log( JSON.stringify( user, null, 2 ))
 
             if (err)
                 return done(err);
 
-            if (!user)
+            if (!user){
+                console.log( "ERROR: NO USER: " )
+            }
 //deal with
-            if (!user.validPassword(password))
+            if (!user.validPassword(password)){
+                console.log("ERROR: INVALID PW")
+            }
 //deal with
             return done(null, user);
         });

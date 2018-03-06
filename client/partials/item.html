@@ -24,7 +24,7 @@
 
                 <a class="tag" href="/tags/{{tag.name}}" ng-repeat="tag in item.tags">
                     <span class="glyphicon glyphicon-tag"></span> {{ tag.name }}
-                    <span ng-click="removeTag( tag, $event)" class="glyphicon glyphicon-remove" title="Remove tag"></span>
+                    <span ng-if="viewingOwnItem" ng-click="removeTag( tag, $event)" class="glyphicon glyphicon-remove" title="Remove tag"></span>
                 </a>
 
                 
