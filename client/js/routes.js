@@ -35,6 +35,8 @@ myApp.config( function( $routeProvider, $locationProvider ){
         .when('/notifications', { templateUrl: 'partials/notifications.html', controller: 'notificationController', access: { restricted: true } })
         .when('/tags', { templateUrl: 'partials/tags.html', controller: 'tagController', access: { restricted: true } })
         
+        .when('/help', { templateUrl: 'partials/help.html', access: { restricted: false } })
+        
         .otherwise({ templateUrl: 'partials/404.html', access: { restricted: true } });
 
     $locationProvider.html5Mode({ enabled: true, rewriteLinks: false });

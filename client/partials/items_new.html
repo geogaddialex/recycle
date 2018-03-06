@@ -30,8 +30,12 @@
                 <div ng-if="newItem.tags.length>0">
 
                     Tags added:
-                
-                        <span ng-repeat="tag in newItem.tags">{{tag.name}}</span>
+                            
+                            <a class="tag" href="/tags/{{tag.name}}" ng-repeat="tag in newItem.tags">
+                                <span class="glyphicon glyphicon-tag"></span> {{ tag.name }}
+                                <span ng-click="removeTag( tag, $event)" class="glyphicon glyphicon-remove" title="Remove tag"></span>
+                            </a>
+
                 </div>
 
             </form>

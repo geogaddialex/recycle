@@ -22,15 +22,11 @@
                     </div>
                 </div>
 
-<!--                 <div ng-if="item.tags.length>0">
-                        <span ng-repeat="tag in item.tags">{{tag.name}}</span>
-                </div>
- -->
-                            <a class="tag" href="/tags/{{tag.name}}" ng-repeat="tag in item.tags">
-                                <span class="glyphicon glyphicon-tag"></span> {{ tag.name }}
-                            </a>
 
-
+                <a class="tag" href="/tags/{{tag.name}}" ng-repeat="tag in item.tags">
+                    <span class="glyphicon glyphicon-tag"></span> {{ tag.name }}
+                    <span ng-click="removeTag( tag, $event)" class="glyphicon glyphicon-remove" title="Remove tag"></span>
+                </a>
 
                 
                 <br><br>
@@ -40,7 +36,7 @@
                     <div class="col">
 
                         Add tags:<br>
-                        <select id="tagSelect" ng-model="selectedTag"> 
+                        <select id="tagSelect" ng-model="selectedTag" ng-change="selectTag(selectedTag)"> 
 
                             <option value="">Select a tag</option>
                             <option ng-repeat="tag in tags" ng-value="tag">{{tag.name}}</option>

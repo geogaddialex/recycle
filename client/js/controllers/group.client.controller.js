@@ -176,14 +176,7 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
         var array = $scope.group.members
         var userIndex =  array.findIndex(i => i._id === $scope.user._id)
 
-
-        console.log("user ID: " + $scope.user._id )
-        console.log( userIndex )
-
-        console.log( "before splice: " +  JSON.stringify( array, null, 2))
-        array.splice( userIndex, 1 ) 
-
-        console.log( "after splice: " + JSON.stringify( array, null, 2))
+        array.splice( userIndex, 1 )
 
         $scope.updateGroup()
 

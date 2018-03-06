@@ -80,8 +80,8 @@
                         <li ng-repeat="notification in notifications | filter:{ read: 'false'} | orderBy: '-createdAt' | limitTo:10">
                             <a href="{{notification.link}}" ng-click="markRead( notification )" ng-class="{'unreadNotification': !notification.read}">
                                 [{{ UtilityService.formatTimestamp( notification.createdAt, 'short') }}] {{ notification.message }}
-                                <span ng-if="!notification.read" ng-click="markRead( notification, $event)" 
-                                    class="glyphicon glyphicon-remove" title="Mark read"></span>
+                                <span ng-if="!notification.read" ng-click="markRead( $event, notification )" 
+                                    class="glyphicon glyphicon-remove tooltip-test" title="Mark read"></span>
                             </a>
 
                         </li>
@@ -97,19 +97,13 @@
 
                     <ul class="dropdown-menu">
                         <li><a href="/profile">Profile</a></li>
-                        <li><a href="/settings">Settings</a></li>
                         <li ng-controller="logoutController"><a ng-click='logout()'>Log out</a></li>
                     </ul>
                 </li><!-- dropdown -->
 
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
-
-                    <ul class="dropdown-menu">
-                        <li><a href="/faq">FAQ</a></li>
-                        <li><a href="/contact">Contact</a></li>
-                    </ul>
-                </li><!-- dropdown -->
+                <li>
+                    <a href="/help"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a></li>
+                </li>
             </ul>
         </div><!-- whenLoggedIn -->
 

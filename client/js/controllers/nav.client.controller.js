@@ -27,7 +27,7 @@ angular.module('myApp').controller('navController', [ 'AuthService', 'UserServic
     })
 
 
-    $scope.markRead = function( notification, event ){
+    $scope.markRead = function( event, notification ){
 
       if(event){
 

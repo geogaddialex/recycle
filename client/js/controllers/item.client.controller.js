@@ -153,16 +153,16 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
     $scope.addTag = function( tagToAdd ){
 
-      //need to edit this so that the item is passed as param, so that existing items can be used
+      var itemToEdit = $scope.item ? $scope.item : $scope.newItem
 
       if( $scope.selectedTag === "addTag" ){
 
-        //need to ensure tag isnt already existing (with different capitalisation etc ) before adding
+        //need to ensure tag isnt already existing (with different capitalisation etc ) before adding to DB
 
           TagService.createTag({ name: tagToAdd }).then( function( newTag ){
 
-              $scope.newItem.tags.push( newTag.data )
-              $scope.newTag.name = ""
+            itemToEdit.tags.push( newTag.data )
+            $scope.newTag.name = ""
 
           }, function(){
 
@@ -171,16 +171,26 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
       }else{
 
-        $scope.newItem.tags.push( $scope.selectedTag )
+        itemToEdit.tags.push( $scope.selectedTag )
 
       }
 
-
     }
 
-    $scope.getOwnerName = function( owner ){
-      return owner.local.name ? owner.local.name : owner.google.name ? owner.google.name : owner.facebook.name
+    $scope.selectTag = function(tag) {
+      $scope.selectedTag = tag
+    }
 
+    $scope.removeTag = function( tag, event ){
+
+      event.preventDefault()
+
+      var itemToEdit = $scope.item ? $scope.item : $scope.newItem
+      var tags = itemToEdit.tags
+      var tagIndex =  tags.findIndex(i => i._id === tag._id)
+
+      tags.splice( tagIndex, 1 )
+      
     }
 
 
