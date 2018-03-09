@@ -9,18 +9,42 @@
 
             <div class="row"><h5>{{ UtilityService.getUserName( user ) }}</h5><div ng-show="user.isAdmin">(Administrator)</div></div>
 
-            Feedback score: <b>{{ user.feedback.score }}%</b> ({{ user.feedback.count }} completed exchanges)
+            Feedback score: <b>{{ user.feedback.score }}%</b>
+            <span class="glyphicon glyphicon-thumbs-up green"></span>
+            ({{ user.feedback.count }} completed exchanges)
             
             <br><br>
 
-            <div id="displayFeedback">
+            <div id="displayFeedback" ng-if="feedbacks.length>0">
 
-                <div class="row feedback" ng-repeat="feedbackToDisplay in feedbacks  | orderBy : '-timestamp'">
+                <table>
+                    <tr>                      
+                        <th>Rating</th>
+                        <th>Comment</th>
+                        <th>User</th>  
+                        <th>Date</th>
+                    </tr>
 
-                    <div class="col-xs-5 messageInfo" ng-if="feedbackToDisplay.timestamp">[{{ UtilityService.formatTimestamp(feedbackToDisplay.timestamp, 'short') }}] <b>{{ UtilityService.getUserName( feedbackToDisplay.author ) }}:</b> </div>
-                    <div class="col-xs-7 messageContent">{{ feedbackToDisplay.rating }} - {{ feedbackToDisplay.comment }}</div>  
+                    <tr ng-repeat="feedbackToDisplay in feedbacks  | orderBy : '-timestamp'">
 
-                </div>
+                        <td class="feedbackRating">
+                            <span ng-if="feedbackToDisplay.rating === 2" class="glyphicon glyphicon-thumbs-up green"></span>
+                            <span ng-if="feedbackToDisplay.rating === 1" class="glyphicon glyphicon-minus yellow"></span>
+                            <span ng-if="feedbackToDisplay.rating === 0" class="glyphicon glyphicon-thumbs-down red"></span>
+                        </td>
+
+                        <td>{{ feedbackToDisplay.comment }}</td> 
+
+                        <td>
+                            <a href="/users/{{feedbackToDisplay.author._id}}">{{ UtilityService.getUserName( feedbackToDisplay.author ) }}
+                            </a> ({{feedbackToDisplay.author.feedback.score}}% <span class="glyphicon glyphicon-thumbs-up green"></span>)
+                        </td>
+
+                        <td>
+                            {{ UtilityService.formatTimestamp(feedbackToDisplay.timestamp, 'short') }}
+                        </td>
+                    </tr>
+                </table>
 
             </div>
 
@@ -42,7 +66,7 @@
                     <div class="row">
                         <div class="col itemName">
                             <a href="/items/{{item._id}}">{{item.name}}</a><br>
-                            <a href="/newExchange/{{item.owner.username}}/{{item._id}}">Make an offer</a>
+                            <a href="/newExchange/{{item.owner._id}}/{{item._id}}">Make an offer</a>
                         </div>
                     </div>
 

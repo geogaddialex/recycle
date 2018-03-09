@@ -1,4 +1,4 @@
-angular.module('myApp').controller('itemController', function( $routeParams, $location, $route, $scope, $mdDialog, SocketService, ItemService, TagService, AuthService, UtilityService ){
+angular.module('myApp').controller('itemController', function( $routeParams, $location, $route, $scope, ngDialog, SocketService, ItemService, TagService, AuthService, UtilityService ){
     
     var itemId = $routeParams.id;
     var tag = $routeParams.tag;
@@ -126,19 +126,30 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
         clearError()
 
+
         if( !UtilityService.isValidItemName( item.name )){
 
             setError("Not a valid item name, names must be between 3 and 30 characters")
 
         }else{
 
-            ItemService.createItem( item ).then( function( ){ 
+            ngDialog.openConfirm({ 
 
-                $location.path("/myItems");
+                template: '/partials/dialog_create_item.html'
 
-            }, function(){
-                setError("Item not created" );
-            })
+            }).then(function (success) {
+
+                  ItemService.createItem( item ).then( function( ){ 
+
+                      $location.path("/myItems");
+
+                  }, function(){
+                      setError("Item not created" );
+                  })
+
+            }, function (error) {
+
+            });
             
         }
 
@@ -149,26 +160,27 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
       clearError()
    
-      var confirm = $mdDialog.confirm()
-            .title('Are you sure you want to delete this item?')
-            .textContent('You wont be able to retrieve it once its gone.')
-            .ariaLabel('Deleting item')
-            .targetEvent(event)
-            .ok('Delete')
-            .cancel('Cancel');
+      ngDialog.openConfirm({ 
 
-      $mdDialog.show( confirm ).then(function() {
+          template: '/partials/dialog_delete_item.html'
+
+      }).then(function (success) {
+
+        ItemService.deleteItem( ID ).then( function( ){ 
+
+            $route.reload();
+
+         }, function(){
+
+            setError( "Item not deleted" );
+         })
+
+      }, function (error) {
+
+      });
         
-          ItemService.deleteItem( ID ).then( function( ){ 
+          
 
-              $route.reload();
-
-           }, function(){
-
-              setError( "Item not deleted" );
-           })
-
-      })
 
     };  
     
@@ -183,14 +195,24 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
       }else{
 
-          ItemService.updateItem( $scope.item ).then( function(){
+        ngDialog.openConfirm({ 
 
-            $location.path("/myItems");
+          template: '/partials/dialog_save_changes.html'
+          
+        }).then(function (success) {
 
-          }, function(){
+              ItemService.updateItem( $scope.item ).then( function(){
 
-            setError( "Item could not be updated" );
-          })
+                $location.path("/myItems");
+
+              }, function(){
+
+                setError( "Item could not be updated" );
+              })
+
+        }, function (error) {
+
+        });
 
       }
 
@@ -200,15 +222,26 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
       clearError()
 
-      ItemService.getItem( itemId ).then( function( item ){
+      ngDialog.openConfirm({ 
 
-          $scope.item = item;
+          template: '/partials/dialog_reset_changes.html'
+          
+        }).then(function (success) {
 
-      }, function(){
+            ItemService.getItem( itemId ).then( function( item ){
 
-        setError( "Something went wrong" )
+                $scope.item = item;
 
-      })
+            }, function(){
+
+              setError( "Something went wrong" )
+
+            })
+
+        }, function (error) {
+
+
+        });
 
     }
 
@@ -223,33 +256,66 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
       }else if( $scope.selectedTag === "addTag" ){
 
+          // TagService.getTag( tagToAdd ).then( function( tag ){
+
+          //   var tagExists = tag
+
+          // },function(){
+
+          //   var tagExists = false
+
+          // })
+
+
           if( !UtilityService.isValidTagName( tagToAdd )){
 
               setError("Not a valid tag name, tags must be between 3 and 15 characters")
 
           }else if( false ){
 
+
+
               //need to ensure tag isnt already existing (with different capitalisation etc ) before adding to DB
               //if it already exists, just push that tag rather than giving an error
 
           }else{
 
-              TagService.createTag({ name: tagToAdd }).then( function( newTag ){
+            ngDialog.openConfirm({ 
 
-                  itemToEdit.tags.push( newTag.data )
-                  $scope.newTag.name = ""
+              template: '/partials/dialog_create_tag.html'
+              
+            }).then(function (success) {
 
-              }, function(){
+                TagService.createTag({ name: tagToAdd }).then( function( newTag ){
 
-                setError("Tag couldn't be added")
-              })
+                    itemToEdit.tags.push( newTag.data )
+                    $scope.newTag.name = ""
+
+                }, function(){
+
+                  setError("Tag couldn't be added")
+                })
+
+            }, function(error){
+
+            })
               
           }
 
 
       }else{
 
-        itemToEdit.tags.push( $scope.selectedTag )
+          var uniqueTag = itemToEdit.tags.findIndex(i => i._id === $scope.selectedTag._id) == -1
+
+          if(uniqueTag){
+          
+              itemToEdit.tags.push( $scope.selectedTag )
+          
+          }else{
+
+              setError( "You have already added that tag" )
+
+          }
 
       }
 

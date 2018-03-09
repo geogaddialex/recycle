@@ -82,15 +82,39 @@ button{
   padding:5px;
 }
 
-
 button:hover{
   border: 1px solid #d9e4f2;
 }
 
-.white{
+.whiteBackground{
   background-color: white;
 }
 
-.itemTags > span {
-  display: inline-block;
+.red{
+  color: red;
+}
+
+.yellow{
+  color: khaki;
+}
+
+.green{
+  color: green;
+}
+
+table tr td, table tr th {
+
+    padding: 5px 10px;
+    text-align: left
+}
+
+tr .feedbackRating{
+
+  text-align: center
+}
+
+table{
+
+    margin-left:auto; 
+    margin-right:auto;
 }

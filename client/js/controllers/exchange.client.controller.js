@@ -1,4 +1,4 @@
-angular.module('myApp').controller('exchangeController', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, ExchangeService, MessageService, ConversationService, FeedbackService, UtilityService, SocketService ){
+angular.module('myApp').controller('exchangeController', function( $routeParams, $location, $scope, ngDialog, ItemService, AuthService, UserService, ExchangeService, MessageService, ConversationService, FeedbackService, UtilityService, SocketService ){
 
     var item = $routeParams.item;
     var userID = $routeParams.user;
@@ -243,28 +243,38 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
         
         clearError()
 
-        var conversationToCreate = {
+        ngDialog.openConfirm({ 
 
-            users: [ exchange.sender, exchange.recipient ]
-        }
+            template: '/partials/dialog_create_exchange.html'
 
-        ConversationService.createConversation( conversationToCreate ).then(function( createdConversation ){
+        }).then(function (success) {
 
-            exchange.conversation = createdConversation.data;
+            var conversationToCreate = {
 
-            ExchangeService.createExchange( exchange ).then( function( ){ 
+                users: [ exchange.sender, exchange.recipient ]
+            }
 
-                $location.path("/myExchanges");
+            ConversationService.createConversation( conversationToCreate ).then(function( createdConversation ){
+
+                exchange.conversation = createdConversation.data;
+
+                ExchangeService.createExchange( exchange ).then( function( ){ 
+
+                    $location.path("/myExchanges");
+
+                }, function(){
+                    
+                    setError( "Could not send offer" )
+
+                })
 
             }, function(){
-                
+
                 setError( "Could not send offer" )
 
             })
 
-        }, function(){
-
-            setError( "Could not send offer" )
+        }, function(error){
 
         })
  

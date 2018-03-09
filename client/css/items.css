@@ -53,3 +53,7 @@
 .itemTags{
 	margin-bottom: 10px;
 }
+
+.itemTags > span {
+  display: inline-block;
+}

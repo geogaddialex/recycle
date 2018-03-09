@@ -1,4 +1,4 @@
-angular.module('myApp').controller('profileController', function( AuthService, UserService, NotificationService, UtilityService, SocketService, $scope, $location ){
+angular.module('myApp').controller('profileController', function( ngDialog, AuthService, UserService, NotificationService, UtilityService, SocketService, $scope, $location ){
 
     $scope.UtilityService = UtilityService
     $scope.error = {}
@@ -18,14 +18,51 @@ angular.module('myApp').controller('profileController', function( AuthService, U
 
         clearError()
 
-        UserService.updateUser( $scope.user ).then( function(){
+        ngDialog.openConfirm({ 
 
-            $location.path("/profile");
+            template: '/partials/dialog_save_changes.html'
 
-        }, function(){
+        }).then(function (success) {
 
-            setError( "Cannot update profile" )
+            UserService.updateUser( $scope.user ).then( function(){
+
+                $location.path("/profile");
+
+            }, function(){
+
+                setError( "Cannot update profile" )
+            })
+
+        }, function(error){
+
         })
+
+    }
+
+    $scope.resetProfile = function(){
+
+      clearError()
+
+      ngDialog.openConfirm({ 
+
+          template: '/partials/dialog_reset_changes.html'
+          
+        }).then(function (success) {
+
+            AuthService.getUser( ).then( function( user ){
+
+                $scope.user = user;
+
+            }, function(){
+
+              setError( "Something went wrong" )
+
+            })
+
+        }, function (error) {
+
+
+        });
 
     }
 

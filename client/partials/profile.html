@@ -8,30 +8,28 @@
 
     <div class="row">
 
-        <!-- LOCAL INFORMATION -->
         <div class="col-sm-12 col-md-6 col-offset-md-3">
             <div class="well">
                 <h3><span class="fa fa-user"></span> Local</h3>
 
                     <p ng-if="user.local.email">
-                        <strong>name</strong>: {{ user.local.name }}<br>
-                        <strong>email</strong>: <input type="email" ng-model="user.local.email" placeholder="Email address" />
-                        <button ng-click="updateProfile()">Save</button>
+                        <strong>name</strong>: <input type="text" ng-model="user.local.name" placeholder="Your full name" /><br>
+                        <strong>email</strong>: <input type="email" ng-model="user.local.email" placeholder="Email address" /><br>
+                        <button ng-click="updateProfile()" class="white">Save</button>
+                        <button ng-click="resetProfile()" class="white">Reset</button>
+
 
                     </p>
 
-                    <a ng-if="user.local.email" href="/api/auth/unlink/local" class="btn btn-danger">Unlink</a>
+                    <a ng-if="user.local.email && (user.facebook || user.google)" href="/api/auth/unlink/local" class="btn btn-danger">Unlink</a>
                     <a ng-if="!user.local.email" href="/connect/local" class="btn btn-danger">Create Recycle Login</a>
 
             </div>
         </div>
 
-        <!-- FACEBOOK INFORMATION -->
         <div class="col-sm-12 col-md-6 col-offset-md-3">
             <div class="well">
                 <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
-
-                <!-- check if the user has this token (is the user authenticated with this social account) -->
 
                     <p ng-if="user.facebook.token">
                         <strong>email</strong>: {{ user.facebook.email }}<br>
@@ -44,7 +42,6 @@
             </div>
         </div>
 
-        <!-- GOOGLE INFORMATION -->
         <div class="col-sm-12 col-md-6 col-offset-md-3">
             <div class="well">
                 <h3 class="text-danger"><span class="fa fa-google-plus"></span> Google+</h3>

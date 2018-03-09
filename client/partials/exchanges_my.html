@@ -87,15 +87,6 @@
                 Mark as complete
             </button>
 
-
-
-            <a ng-if="exchange.sender._id == user._id && !exchange.feedback.sender" href="/feedback/{{ exchange._id }}">
-                <button class="btn" ng-if="exchange.status!='In progress' && exchange.status!='Cancelled before agreement'">Leave Feedback</button>
-            </a>
-            <a ng-if="exchange.sender._id != user._id && !exchange.feedback.recipient" href="/feedback/{{ exchange._id }}">
-                <button class="btn" ng-if="exchange.status!='In progress' && exchange.status!='Cancelled before agreement'">Leave Feedback</button>
-            </a>
-
                                 </div><!-- exchange actions end -->
                             </div>
                     </div>    

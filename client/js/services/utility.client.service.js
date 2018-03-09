@@ -7,7 +7,9 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( ){
       isValidUserName: isValidUserName,
       isValidItemName: isValidItemName,
       isValidTagName: isValidTagName,
-      isValidGroupName: isValidGroupName
+      isValidGroupName: isValidGroupName,
+      isValidPassword: isValidPassword,
+      passwordsMatch: passwordsMatch
     });
 
 
@@ -23,17 +25,27 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( ){
 
     function isValidMessage( message ){
 
-        var regex = /^(?!\s*$).+/
+        var notBlank = /^(?!\s*$).+/
 
-        return ( message.length > 0 && message.match( regex ) ) ? true : false
+        if (!message) return false
+
+        return ( message.length > 0 && message.match( notBlank ) ) ? true : false
 
     }
 
     function isValidUserName( name ){
+
+      if (!name) return false
+
+      var notBlank = /^(?!\s*$).+/
+
+      return ( name.match( notBlank ) ) ? true : false
         
     }
 
     function isValidItemName( name ){
+
+        if (!name) return false
 
         return ( name.length > 2 && name.length < 31 ) ? true : false
         
@@ -41,14 +53,32 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( ){
 
     function isValidTagName( name ){
 
-       return ( name.length > 2 && name.length < 16 ) ? true : false
+      if (!name) return false
+
+      return ( name.length > 2 && name.length < 16 ) ? true : false
         
     }
 
     function isValidGroupName( name ){
 
-       return ( name.length > 3 && name.length < 31 ) ? true : false
+      if (!name) return false
+
+      return ( name.length > 3 && name.length < 31 ) ? true : false
         
+    }
+
+    function isValidPassword( password ){
+
+      //8 chars minimum, lowercase, uppercase, number, special char
+
+      var regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+
+      return ( password.match( regex ) ) ? true : false
+    }   
+
+    function passwordsMatch( one, two ){
+
+      return ( one === two ) ? true : false
     }
 
 });

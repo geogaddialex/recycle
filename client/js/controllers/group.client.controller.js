@@ -1,4 +1,4 @@
-angular.module('myApp').controller('groupController', function( $routeParams, $location, $route, $scope, SocketService, ItemService, GroupService, ConversationService, MessageService, AuthService, UtilityService ){
+angular.module('myApp').controller('groupController', function( $routeParams, $location, $route, $scope, ngDialog, SocketService, ItemService, GroupService, ConversationService, MessageService, AuthService, UtilityService ){
     
     var groupId = $routeParams.id;
     $scope.UtilityService = UtilityService
@@ -104,48 +104,45 @@ angular.module('myApp').controller('groupController', function( $routeParams, $l
 
         }else{
 
-          var conversationToCreate = {
+          ngDialog.openConfirm({ 
 
-            users: group.members
-          }
+            template: '/partials/dialog_create_group.html'
 
-          ConversationService.createConversation( conversationToCreate ).then(function( createdConversation ){
+          }).then(function (success) {
 
-              group.conversation = createdConversation.data;
+              var conversationToCreate = {
 
-              GroupService.createGroup( group ).then( function( ){ 
+                users: group.members
+              }
 
-                $location.path("/myGroups");
+              ConversationService.createConversation( conversationToCreate ).then(function( createdConversation ){
+
+                  group.conversation = createdConversation.data;
+
+                  GroupService.createGroup( group ).then( function( ){ 
+
+                    $location.path("/myGroups");
+
+                  }, function( ){
+
+                      setError( "Cannot create group" )
+
+                  })
 
               }, function( ){
 
-                  setError( "Cannot create group" )
-
+                setError( "Cannot create group" )
               })
 
-          }, function( ){
+          }, function(error){
 
-            setError( "Cannot create group" )
+
           })
 
         }
 
     }
 
-    $scope.deleteGroup = function( ID ){
-
-      clearError()
-
-      GroupService.deleteGroup( ID ).then( function( ){ 
-
-          $route.reload();
-
-       }, function(){
-          
-            setError( "Cannot delete group" )
-
-       })
-    }
 
     $scope.updateGroup = function(){
 
@@ -196,23 +193,34 @@ angular.module('myApp').controller('groupController', function( $routeParams, $l
 
       clearError( )
 
-      GroupService.getGroup( ID ).then( function( group ){
+      ngDialog.openConfirm({ 
 
-        if( $scope.myGroups ){
+          template: '/partials/dialog_leave_group.html'
 
-          var array = $scope.myGroups
-          array.splice( array.indexOf( group ), 1 ) 
+      }).then(function (success) {
 
-        }
+          GroupService.getGroup( ID ).then( function( group ){
 
-        $scope.group = group
+            if( $scope.myGroups ){
 
-        var array = $scope.group.members
-        var userIndex =  array.findIndex(i => i._id === $scope.user._id)
+              var array = $scope.myGroups
+              var groupIndex =  array.findIndex(i => i._id === group._id)
 
-        array.splice( userIndex, 1 )
+              array.splice( groupIndex, 1 ) 
 
-        $scope.updateGroup()
+            }
+
+            $scope.group = group
+
+            var array = $scope.group.members
+            var userIndex =  array.findIndex(i => i._id === $scope.user._id)
+
+            array.splice( userIndex, 1 )
+
+            $scope.updateGroup()
+
+          })
+      }, function(error){
 
       })
 

@@ -31,18 +31,16 @@
         </div> 
 
 
-
     </div><!-- row -->
 
     <div ng-if="viewingOwnItem" class="row">
         <div class="col">
 
-            Add tags:<br>
             <select id="tagSelect" ng-model="selectedTag" ng-change="selectTag(selectedTag)"> 
 
                 <option value="">Select a tag</option>
-                <option ng-repeat="tag in tags" ng-value="tag">{{tag.name}}</option>
                 <option value="addTag">Add new tag</option>
+                <option ng-repeat="tag in tags" ng-value="tag">{{tag.name}}</option>
 
             </select>
 

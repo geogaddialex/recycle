@@ -1,1 +1,1 @@
-angular.module('myApp', ['ngRoute', 'ngMaterial', 'geolocation', 'ngMessages', 'ui.bootstrap'])
+angular.module('myApp', ['ngRoute', 'ngMaterial', 'geolocation', 'ngMessages', 'ngDialog'])
