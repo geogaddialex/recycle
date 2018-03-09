@@ -1,5 +1,8 @@
 <div ng-if="!group">This group does not exist</div>
 
+<div ng-show="error.message" class="alert alert-danger">{{error.message}}</div>
+
+
 <div class="container-fluid content" ng-if="group">
     <div class="row">
 
@@ -67,7 +70,7 @@
     
 
         <div id="messageForm" class="row" ng-if="userInGroup">
-            <input type="text" id="messageInput" placeholder="Type a message" ng-model="message.text" 
+            <input type="text" id="messageInput" placeholder="Type a message" ng-model="message.text" ng-required="true"
                 ng-keydown="$event.keyCode === 13 && sendMessage()" />
 
             <button class="btn" id="messageButton" ng-click="sendMessage( )">Send</button>

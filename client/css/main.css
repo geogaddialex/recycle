@@ -29,6 +29,24 @@ a:hover{
     padding-bottom: 130px;
 }
 
+#searchBar{
+}
+
+#searchBox{
+  width:100%;
+}
+
+#searchBar .row .col{
+  padding:0;
+  margin:0;
+}
+
+.whiteDiv{
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #f2e7d9;
+}
+
 .navbar{
   padding: 0 3%;
 }

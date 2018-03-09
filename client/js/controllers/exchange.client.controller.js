@@ -1,10 +1,10 @@
-angular.module('myApp').controller('exchangeController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', 'ExchangeService', 'MessageService', 'ConversationService', 'FeedbackService', 'UtilityService', 'SocketService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, ExchangeService, MessageService, ConversationService, FeedbackService, UtilityService, SocketService ){
+angular.module('myApp').controller('exchangeController', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, ExchangeService, MessageService, ConversationService, FeedbackService, UtilityService, SocketService ){
 
     var item = $routeParams.item;
     var userID = $routeParams.user;
     var exchangeID = $routeParams.id;
     var path = $location.path();
-
+    $scope.error = {}
     $scope.UtilityService = UtilityService;
 
     //initialise user
@@ -40,7 +40,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
             }).catch( function( err ){
 
-                console.log( "error = " + err );
+                setError( "Could not get items" )
             });
 
             //initialise users dropdown
@@ -56,6 +56,10 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
                     $scope.exchange.recipient = otherUser;
                 }
 
+            }, function(){
+
+                setError( "Could not get users" )
+
             })
 
             //watch select list for changes
@@ -65,6 +69,8 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
                 return $scope.selectedUser;
 
             }), function( selected ){
+
+                clearError()
 
                 if( !selected ){
 
@@ -88,7 +94,8 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
                     }).catch( function( err ){
 
-                        console.log( "error = " + err );
+                        setError( "Could not get recipient's items" )
+
                     });  
                 }
             });
@@ -103,7 +110,9 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
                 $scope.exchanges = exchanges;
 
             }).catch( function( err ){
-                console.log( "error = " + err );
+
+                setError( "Could not get exchanges" )
+
             });
         }
 
@@ -116,8 +125,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
             }).catch( function( err ){
                 
-                console.log( "error = " + err );
-                $scope.myExchanges = {};
+                setError( "Could not get exchanges" )
 
             });
         }
@@ -165,15 +173,20 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
                     }
 
 
+                    FeedbackService.getFeedbackRegarding( $scope.otherUser._id ).then( function( feedback ){
 
-                    FeedbackService.getFeedbackRegarding( $scope.otherUser._id ).then( function( feedbacks ){
+                        $scope.otherUserFeedbacks = feedback
 
-                        $scope.otherUserFeedbacks = feedbacks
+                    }, function(){
+
+                        setError( "Could not get feedback" )
 
                     })
 
                 }).catch( function( err ){
-                    console.log( "couldn't get exchange = " + err );
+
+                    setError( "Could not get exchange" )
+
                 });
             }
         }
@@ -227,7 +240,8 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
 
     $scope.sendOffer = function( exchange ){
-
+        
+        clearError()
 
         var conversationToCreate = {
 
@@ -240,20 +254,26 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
             ExchangeService.createExchange( exchange ).then( function( ){ 
 
-                alert( "Offer sent successfully" );
                 $location.path("/myExchanges");
 
             }, function(){
-                alert( "Offer not sent" );
+                
+                setError( "Could not send offer" )
+
             })
 
-        })
+        }, function(){
 
-       
+            setError( "Could not send offer" )
+
+        })
+ 
 
     }
 
     $scope.addToExchange = function( itemToAdd ){
+
+        clearError()
 
         var recipientHasIt = $scope.options.recipient.find(item => item._id === itemToAdd._id)
         var senderHasIt = $scope.options.sender.find(item => item._id === itemToAdd._id)
@@ -274,7 +294,8 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
         }else{
 
-            console.log("cant find item: " + itemToRemove )
+            setError( "Could not remove item" )
+
 
         }
 
@@ -289,6 +310,8 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
     }
 
     $scope.removeFromExchange = function( itemToRemove ){
+
+        clearError()
 
         var recipientHasIt = $scope.exchange.items.recipient.find(item => item._id === itemToRemove._id)
         var senderHasIt = $scope.exchange.items.sender.find(item => item._id === itemToRemove._id)
@@ -310,7 +333,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
         } else{
 
-            console.log("cant find item: " + itemToRemove )
+            setError( "Could not remove item" )
 
         } 
 
@@ -327,24 +350,40 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     $scope.sendMessage = function( ){
 
-        var messageToCreate = {
+        clearError()
 
-            sender: $scope.user,
-            content: $scope.message
+        if( !UtilityService.isValidMessage( $scope.message.text ) ){
+
+            setError("Messages cannot be empty")
+
+        }else{
+
+            var messageToCreate = {
+
+                sender: $scope.user,
+                content: $scope.message
+            }
+
+            MessageService.createMessage( messageToCreate ).then( function( createdMessage ){ 
+
+                $scope.exchange.conversation.messages.push( createdMessage.data )
+
+                $scope.message = ""
+                amendConversation()
+
+            }, function(){
+
+                setError("Cannot send message")
+
+            })
+
         }
-
-        MessageService.createMessage( messageToCreate ).then( function( createdMessage ){ 
-
-            $scope.exchange.conversation.messages.push( createdMessage.data )
-
-            $scope.message = ""
-            amendConversation()
-
-        })
 
     }
 
     $scope.toggleAcceptance = function(){
+
+        clearError()
 
         if( $scope.exchange.accepted.recipient && $scope.exchange.accepted.sender ){
 
@@ -358,6 +397,8 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     $scope.cancelExchange = function(){
 
+        clearError()
+
         $scope.exchange.status = "Cancelled"
 
         amendExchange()
@@ -365,6 +406,8 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
     }
 
     $scope.cancelExchange = function( ID ){
+
+        clearError()
 
         ExchangeService.getExchange( ID ).then( function( exchange ){
 
@@ -381,12 +424,17 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
             ExchangeService.amendExchange( exchange ).then( function(){
 
 
+            }, function(){
+
+                setError( "Could not cancel exchange" )
             })
 
         })
     }
 
     $scope.completeExchange = function( ID ){
+
+        clearError()
 
         ExchangeService.getExchange( ID ).then( function( exchange ){
 
@@ -395,6 +443,10 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
             ExchangeService.amendExchange( exchange ).then( function(){
 
 
+            }, function(){
+
+                setError( "Could not complete exchange" )
+
             })
 
         })
@@ -402,7 +454,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     $scope.submitFeedback = function( ){
 
-        console.log( JSON.stringify( $scope.feedback ))
+        clearError()
 
         FeedbackService.createFeedback( $scope.feedback ).then( function( createdFeedback ){ 
 
@@ -421,6 +473,10 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
             $scope.feedbackSubmitted = createdFeedback.data
 
 
+        }, function(){
+
+            setError( "Could not submit feedback" )
+
         })
 
     }
@@ -430,42 +486,54 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
     var amendExchange = function( ){
 
+        clearError()
+
         $scope.exchange.lastUpdatedBy = $scope.user
         $scope.exchange.lastModified = Date.now()
 
         ExchangeService.amendExchange( $scope.exchange ).then( function( ){
 
 
-        }, function(){
-            alert( "Exchange not amended" );
+        }, function(){               
+
+            setError( "Could not update exchange" )
+
         })
 
     }
 
     var amendConversation = function( ){
 
+        clearError()
+
         ConversationService.updateConversation( $scope.exchange.conversation ).then( function( ){
 
 
         }, function(){
-            alert( "Exchange not amended" );
+
+            setError( "Could not send message" )
         })
 
     }
 
     var updateConversation = function( ){
 
+        clearError()
+
         ConversationService.getConversation( $scope.exchange.conversation._id ).then( function( retrievedConversation ){
 
             $scope.exchange.conversation = retrievedConversation
 
         }).catch( function( err ){
-            console.log( "couldn't get conversation = " + err );
+
+            setError( "Could not send message" )
         })
 
     }
 
     var updateFeedbackScore = function( ){
+
+        clearError()
 
         UserService.getUser( $scope.otherUser._id ).then(function( user ){
 
@@ -478,7 +546,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
             }, function(){
 
-                alert( "User not updated" );
+                setError( "Could not update feedback score" )
             })
 
         })
@@ -486,6 +554,8 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
     }
 
     var updateOptions = function(){
+
+        clearError()
 
         $scope.options = { 
 
@@ -516,7 +586,7 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
         }).catch( function( err ){
 
-            console.log( "error = " + err );
+            setError( "Could not get items" )
         });
 
         //initialise other users items
@@ -543,9 +613,22 @@ angular.module('myApp').controller('exchangeController', [ '$routeParams', '$loc
 
         }).catch( function( err ){
 
-            console.log( "error = " + err );
+            setError( "Could not get items" )
         });  
     }
 
+    
+    var clearError = function(){
 
-}]);
+      $scope.error.message = undefined
+
+    }
+
+    var setError = function( message ){
+
+      $scope.error.message = message
+
+    }
+
+
+});

@@ -1,4 +1,4 @@
-angular.module( 'myApp' ).factory( 'TagService', [ '$q', '$timeout', '$http', function( $q, $timeout, $http ){
+angular.module( 'myApp' ).factory( 'TagService', function( $q, $timeout, $http ){
 
     return ({
       getTags: getTags,
@@ -39,4 +39,4 @@ angular.module( 'myApp' ).factory( 'TagService', [ '$q', '$timeout', '$http', fu
     }
 
 
-}]);
+});

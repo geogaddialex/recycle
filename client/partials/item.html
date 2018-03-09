@@ -1,7 +1,9 @@
 <div ng-if="!item">This item does not exist</div>
 
+<div ng-show="error.message" class="alert alert-danger">{{error.message}}</div>
 
 <div class="container-fluid content" ng-if="item">
+
     <div class="row">
 
         <div class="col-xs-12 col-sm-offset-3 col-sm-6 item">
@@ -21,17 +23,10 @@
                     </div>
                 </div>
 
-
                 <a class="tag" href="/tags/{{tag.name}}" ng-repeat="tag in item.tags">
                     <span class="glyphicon glyphicon-tag"></span> {{ tag.name }}
                     <span ng-if="viewingOwnItem" ng-click="removeTag( tag, $event)" class="glyphicon glyphicon-remove" title="Remove tag"></span>
                 </a>
-
-                
-                <br><br>
-
-
-                
             
         </div> 
 
@@ -39,24 +34,25 @@
 
     </div><!-- row -->
 
-            <div ng-if="viewingOwnItem" class="row">
-                    <div class="col">
+    <div ng-if="viewingOwnItem" class="row">
+        <div class="col">
 
-                        Add tags:<br>
-                        <select id="tagSelect" ng-model="selectedTag" ng-change="selectTag(selectedTag)"> 
+            Add tags:<br>
+            <select id="tagSelect" ng-model="selectedTag" ng-change="selectTag(selectedTag)"> 
 
-                            <option value="">Select a tag</option>
-                            <option ng-repeat="tag in tags" ng-value="tag">{{tag.name}}</option>
-                            <option value="addTag">Add new tag</option>
+                <option value="">Select a tag</option>
+                <option ng-repeat="tag in tags" ng-value="tag">{{tag.name}}</option>
+                <option value="addTag">Add new tag</option>
 
-                        </select>
+            </select>
 
-                        <input type="text" ng-model="newTag.name" ng-if="selectedTag=='addTag'">
-                        <button ng-click="addTag( newTag.name )" class="white">Add</button><br>
+            <input type="text" ng-model="newTag.name" ng-if="selectedTag=='addTag'">
+            <button ng-click="addTag( newTag.name )" class="white">Add</button><br>
 
 
-                        <button ng-click="updateItem()" class="white">Save</button>
-                        <button ng-click="resetItem()" class="white">Reset</button>
-                    </div>
-                </div>
+            <button ng-click="updateItem()" class="white">Save</button>
+            <button ng-click="resetItem()" class="white">Reset</button>
+        </div>
+    </div>
+    
 </div>

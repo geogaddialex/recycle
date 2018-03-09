@@ -1,0 +1,1 @@
+angular.module('myApp', ['ngRoute', 'ngMaterial', 'geolocation', 'ngMessages', 'ui.bootstrap'])

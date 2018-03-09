@@ -1,4 +1,4 @@
-angular.module( 'myApp' ).factory( 'NotificationService', [ '$q', '$timeout', '$http', function( $q, $timeout, $http ){
+angular.module( 'myApp' ).factory( 'NotificationService', function( $q, $timeout, $http ){
 
     return ({
       getNotifications: getNotifications,
@@ -49,4 +49,4 @@ angular.module( 'myApp' ).factory( 'NotificationService', [ '$q', '$timeout', '$
     
 
 
-}]);
+});

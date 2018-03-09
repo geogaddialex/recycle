@@ -1,6 +1,4 @@
-var myApp = angular.module("myApp", ['ngRoute']);
-
-myApp.config( function( $routeProvider, $locationProvider ){
+angular.module("myApp").config( function( $routeProvider, $locationProvider ){
     $routeProvider
         .when('/', { templateUrl: 'partials/home.html', access: { restricted: true } })
 
@@ -42,7 +40,7 @@ myApp.config( function( $routeProvider, $locationProvider ){
     $locationProvider.html5Mode({ enabled: true, rewriteLinks: false });
 });
 
-myApp.run( function( $rootScope, $location, $route, AuthService ){
+angular.module("myApp").run( function( $rootScope, $location, $route, AuthService ){
 
     $rootScope.location = $location
 

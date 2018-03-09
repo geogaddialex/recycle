@@ -1,4 +1,4 @@
-angular.module( 'myApp' ).factory( 'ExchangeService', [ '$q', '$timeout', '$http', function( $q, $timeout, $http ){
+angular.module( 'myApp' ).factory( 'ExchangeService', function( $q, $timeout, $http ){
 
     return ({
       getExchanges: getExchanges,
@@ -92,4 +92,4 @@ angular.module( 'myApp' ).factory( 'ExchangeService', [ '$q', '$timeout', '$http
     
 
 
-}]);
+});

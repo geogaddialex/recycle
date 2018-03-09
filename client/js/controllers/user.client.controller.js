@@ -1,21 +1,27 @@
-angular.module('myApp').controller('userController', [ '$routeParams', '$location', '$scope', 'ItemService', 'AuthService', 'UserService', 'FeedbackService', 'UtilityService', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, FeedbackService, UtilityService ){
-
+angular.module('myApp').controller('userController', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, FeedbackService, UtilityService ){
 
     $scope.UtilityService = UtilityService
+    $scope.error = {}
 
     if( $location.path() == "/users" ){
+
       UserService.getUsers( ).then( function( users ){
+
         $scope.users = users;
+
+      }, function(){
+
+          setError( "Cannot get users" )
+
       });
     }
 
-    if( $location.path().indexOf( "/users/" ) > -1 ){ //better way to see if there are items after the slash?
+    if( $location.path().indexOf( "/users/" ) > -1 ){
 
       var userID = $routeParams.user;
 
       UserService.getUser( userID ).then( function( user ){
 
-          //this could be bad, might replace authorised user with user being viewed
           $scope.user = user;
 
           ItemService.getItemsBelongingTo( $scope.user._id ).then( function( items ){
@@ -23,8 +29,7 @@ angular.module('myApp').controller('userController', [ '$routeParams', '$locatio
 
           }).catch( function( err ){
 
-            console.log( "error = " + err );
-            $scope.user.items = {};
+              setError( "Cannot get items" )
 
           });  
 
@@ -32,14 +37,30 @@ angular.module('myApp').controller('userController', [ '$routeParams', '$locatio
 
             $scope.feedbacks = feedbacks
 
+          }, function(){
+
+              setError( "Cannot get feedback for user" )
+
           })
 
       }).catch(function( err ){
         
-          console.log("err: " + err)
+          setError( "Cannot get user" )
       });
      
     }
-    
 
-}]);
+
+    var clearError = function(){
+
+      $scope.error.message = undefined
+
+    }
+
+    var setError = function( message ){
+
+      $scope.error.message = message
+
+    }
+    
+});

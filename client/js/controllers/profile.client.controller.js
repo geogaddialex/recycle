@@ -1,19 +1,22 @@
-angular.module('myApp').controller('profileController', [ 'AuthService', 'UserService', 'NotificationService', 'UtilityService', 'SocketService', '$scope', '$location', function( AuthService, UserService, NotificationService, UtilityService, SocketService, $scope, $location ){
+angular.module('myApp').controller('profileController', function( AuthService, UserService, NotificationService, UtilityService, SocketService, $scope, $location ){
 
-    // var path = $location.path()  
-    
+    $scope.UtilityService = UtilityService
+    $scope.error = {}
+
       AuthService.getUser( ).then( function( user ){
         
           $scope.user = user;
 
       }).catch( function( err ){
         
-          console.log( "error = " + err );
+          setError( "Cannot get user" )
       });
   
 
 
     $scope.updateProfile = function(){
+
+        clearError()
 
         UserService.updateUser( $scope.user ).then( function(){
 
@@ -21,10 +24,23 @@ angular.module('myApp').controller('profileController', [ 'AuthService', 'UserSe
 
         }, function(){
 
-            alert( "Profile not updated" );
+            setError( "Cannot update profile" )
         })
+
+    }
+
+
+    var clearError = function(){
+
+      $scope.error.message = undefined
+
+    }
+
+    var setError = function( message ){
+
+      $scope.error.message = message
 
     }
     
     
-}])
+})

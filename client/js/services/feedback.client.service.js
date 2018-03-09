@@ -1,4 +1,4 @@
-angular.module( 'myApp' ).factory( 'FeedbackService', [ '$q', '$timeout', '$http', function( $q, $timeout, $http ){
+angular.module( 'myApp' ).factory( 'FeedbackService', function( $q, $timeout, $http ){
 
     return ({
       getFeedback: getFeedback,
@@ -68,4 +68,4 @@ angular.module( 'myApp' ).factory( 'FeedbackService', [ '$q', '$timeout', '$http
     
 
 
-}]);
+});

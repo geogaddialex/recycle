@@ -1,11 +1,9 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-xs-12">
-            <div ng-if="message">{{message}}</div>
-        </div>
-    </div>
+
     <div class="row addItem">
         <div class="col-xs-12">
+
+            <div ng-show="error.message" class="alert alert-danger">{{error.message}}</div>
 
             <form name="itemForm">
 
@@ -13,17 +11,22 @@
 
                     <input type="text" ng-model="newItem.name"><br>
 
-                Tags:   
+                Location: 
+                    <input type="text" ng-model="newItem.location"/><br>
 
+                Tags:   
                     <select id="tagSelect" ng-model="selectedTag"> 
 
                         <option value="">Select a tag</option>
-                        <option ng-repeat="tag in tags" ng-value="tag">{{tag.name}}</option>
                         <option value="addTag">Add new tag</option>
+                        <option ng-repeat="tag in tags" ng-value="tag">{{tag.name}}</option>
 
                     </select>
 
                     <input type="text" ng-model="newTag.name" ng-if="selectedTag=='addTag'">
+
+                    <!-- <input ng-if="tags" name="tag" id="tag" type="text" placeholder="Enter a tag" ng-model="selectedTag" typeahead="tag for tag in tags | filter:$viewValue" class="form-control"> -->
+
                     <button ng-click="addTag( newTag.name )">Add</button><br>
 
                 

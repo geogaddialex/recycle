@@ -1,7 +1,8 @@
-angular.module('myApp').controller('groupController', [ '$routeParams', '$location', '$route', '$scope', 'SocketService', 'ItemService', 'GroupService', 'ConversationService', 'MessageService', 'AuthService', 'UtilityService', function( $routeParams, $location, $route, $scope, SocketService, ItemService, GroupService, ConversationService, MessageService, AuthService, UtilityService ){
+angular.module('myApp').controller('groupController', function( $routeParams, $location, $route, $scope, SocketService, ItemService, GroupService, ConversationService, MessageService, AuthService, UtilityService ){
     
     var groupId = $routeParams.id;
     $scope.UtilityService = UtilityService
+    $scope.error = {}
 
     AuthService.getUser().then( function(user){
       $scope.user = user;
@@ -22,16 +23,16 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
                     $scope.items = items
 
                 }).catch( function( err ){
-                  console.log( "error = " + err );
+
+                    setError( "Cannot retrieve items" )
+
                 });
 
             }).catch( function( err ){
-              console.log( "error = " + err );
-            });
-
-
+              
+              setError( "Cannot retrieve group" )
+            })
             
-
         }
 
         if( $location.path() == "/groups" ){
@@ -41,7 +42,9 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
             $scope.groups = groups;
 
           }).catch( function( err ){
-              console.log( "error = " + err );
+                            
+              setError( "Cannot retrieve groups" )
+
           });
         }
 
@@ -52,8 +55,9 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
               $scope.myGroups = groups;
 
             }).catch( function( err ){
-              console.log( "error = " + err );
-              $scope.myGroups = {};
+                            
+                setError( "Cannot retrieve groups" )
+
             });
         }
 
@@ -77,7 +81,8 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
     //Socket events
 
     SocketService.on('group.created', function( group ){
-        // alert( "New group added: " + group.name );
+        
+
     });
    
     $scope.$on( '$destroy', function( event ){
@@ -91,41 +96,60 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
 
     $scope.createGroup = function( group ){
 
-        var conversationToCreate = {
+        clearError( )
+
+        if( !UtilityService.isValidGroupName( group.name ) ){
+
+          setError( "Not a valid group name, names must be between 4 and 30 characters" )
+
+        }else{
+
+          var conversationToCreate = {
 
             users: group.members
+          }
+
+          ConversationService.createConversation( conversationToCreate ).then(function( createdConversation ){
+
+              group.conversation = createdConversation.data;
+
+              GroupService.createGroup( group ).then( function( ){ 
+
+                $location.path("/myGroups");
+
+              }, function( ){
+
+                  setError( "Cannot create group" )
+
+              })
+
+          }, function( ){
+
+            setError( "Cannot create group" )
+          })
+
         }
 
-
-        ConversationService.createConversation( conversationToCreate ).then(function( createdConversation ){
-
-            group.conversation = createdConversation.data;
-
-            GroupService.createGroup( group ).then( function( ){ 
-
-              $location.path("/myGroups");
-
-            }, function(){
-              alert( "Group not created" );
-            })
-
-        })
-
-      
     }
 
     $scope.deleteGroup = function( ID ){
+
+      clearError()
 
       GroupService.deleteGroup( ID ).then( function( ){ 
 
           $route.reload();
 
        }, function(){
-          alert( "Group not deleted" );
+          
+            setError( "Cannot delete group" )
+
        })
     }
 
     $scope.updateGroup = function(){
+
+      clearError( )
 
       GroupService.updateGroup( $scope.group ).then( function(){
 
@@ -142,12 +166,16 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
 
       }, function(){
 
-        alert( "Group not updated" );
+          setError( "Cannot update group" )
+
       })
 
     }
 
     $scope.joinGroup = function( ID ){
+
+      clearError( )
+
 
       GroupService.getGroup( ID ).then( function( group ){
 
@@ -156,11 +184,17 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
 
         $scope.updateGroup()
 
+      }, function(){
+
+          setError( "Cannot get group" )
+
       })
 
     }
 
     $scope.leaveGroup = function( ID ){
+
+      clearError( )
 
       GroupService.getGroup( ID ).then( function( group ){
 
@@ -186,20 +220,35 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
 
     $scope.sendMessage = function( ){
 
-        var messageToCreate = {
+      clearError()
 
-            sender: $scope.user,
-            content: $scope.message.text
-        }
+      if( !UtilityService.isValidMessage( $scope.message.text ) ){
 
-        MessageService.createMessage( messageToCreate ).then( function( createdMessage ){ 
+          setError("Messages cannot be empty")
 
-            $scope.group.conversation.messages.push( createdMessage.data )
+      }else{
 
-            $scope.message = ""
-            amendConversation()
+          var messageToCreate = {
 
-        })
+              sender: $scope.user,
+              content: $scope.message.text
+          }
+
+          MessageService.createMessage( messageToCreate ).then( function( createdMessage ){ 
+
+              $scope.group.conversation.messages.push( createdMessage.data )
+
+              $scope.message.text = ""
+              amendConversation()
+
+          }, function(){
+
+              setError( "Cannot create message" )
+
+          })
+      }
+
+        
 
     }
 
@@ -211,12 +260,28 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
 
     var amendConversation = function( ){
 
+        clearError()
+
         ConversationService.updateConversation( $scope.group.conversation ).then( function( ){
 
 
         }, function(){
-            alert( "Exchange not amended" );
+            
+            setError( "Cannot update conversation" )
+
         })
+
+    }
+
+    var clearError = function(){
+
+      $scope.error.message = undefined
+
+    }
+
+    var setError = function( message ){
+
+      $scope.error.message = message
 
     }
 
@@ -224,11 +289,11 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
 
         if( conversation._id == $scope.group.conversation._id ){
 
-                $scope.$applyAsync( function(){
+            $scope.$applyAsync( function(){
 
-                    $scope.group.conversation = conversation;
-                  
-                });
+                $scope.group.conversation = conversation;
+              
+            });
                 
         }
     });
@@ -238,4 +303,4 @@ angular.module('myApp').controller('groupController', [ '$routeParams', '$locati
       SocketService.getSocket().removeAllListeners();
     });
 
-}]);
+});

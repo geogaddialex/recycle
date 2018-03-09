@@ -1,11 +1,10 @@
 <div ng-if="myItems.length < 1">You have not listed any items, click <a href="/items/add">here</a> to do that now</div>
+<div ng-show="error.message" class="alert alert-danger">{{error.message}}</div>
 
 <div class="container-fluid content">
 
     <div class="row">
-        <div class="col">
-
-            <div ng-repeat="item in myItems" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 itemContainer">
+            <div ng-repeat="item in myItems" class="col-xs-12 col-sm-4 col-md-3 itemContainer">
                 <div class="item">
 
                     <div class="row">
@@ -36,12 +35,11 @@
                             <a href="/items/{{ item._id }}"><span class="glyphicon glyphicon-pencil"></span></a>
                         </div>
                         <div class="col-xs-4">
-                            <a ng-click="deleteItem( item._id )"><span class="glyphicon glyphicon-trash"></span></a>
+                            <a ng-click="deleteItem( item._id, $event )"><span class="glyphicon glyphicon-trash"></span></a>
                         </div>
                     </div>
                 
                 </div><!-- item -->
             </div>    
-        </div>
     </div>
 </div>

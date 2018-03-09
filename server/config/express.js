@@ -42,6 +42,7 @@ var groupRoutes = require( '../routes/group.server.routes.js' );
 var notificationRoutes = require( '../routes/notification.server.routes.js' );
 var tagRoutes = require( '../routes/tag.server.routes.js' );
 var authRoutes = require( '../routes/authentication.server.routes.js' )( passport )
+
 app.use('/api/items', itemRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/exchanges', exchangeRoutes);

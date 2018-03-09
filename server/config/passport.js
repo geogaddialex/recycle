@@ -67,7 +67,6 @@ module.exports = function( passport ){
 
     }, function(req, email, password, done) {
 
-        // console.log("email: " + email)
 
         User.findOne({ 'local.email' :  email }, function(err, user) {
 
@@ -76,14 +75,13 @@ module.exports = function( passport ){
             if (err)
                 return done(err);
 
+            //deal with this better
             if (!user){
                 console.log( "ERROR: NO USER: " )
             }
-//deal with
             if (!user.validPassword(password)){
                 console.log("ERROR: INVALID PW")
             }
-//deal with
             return done(null, user);
         });
 

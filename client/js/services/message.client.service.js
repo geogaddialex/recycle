@@ -1,4 +1,4 @@
-angular.module( 'myApp' ).factory( 'MessageService', [ '$q', '$timeout', '$http', function( $q, $timeout, $http ){
+angular.module( 'myApp' ).factory( 'MessageService', function( $q, $timeout, $http ){
 
     return ({
       getMessages: getMessages,
@@ -69,4 +69,4 @@ angular.module( 'myApp' ).factory( 'MessageService', [ '$q', '$timeout', '$http'
 
 
 
-}]);
+});

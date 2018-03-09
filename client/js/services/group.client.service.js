@@ -1,4 +1,4 @@
-angular.module( 'myApp' ).factory( 'GroupService', [ '$q', '$timeout', '$http', function( $q, $timeout, $http ){
+angular.module( 'myApp' ).factory( 'GroupService', function( $q, $timeout, $http ){
 
     return ({
       getGroups: getGroups,
@@ -127,4 +127,4 @@ angular.module( 'myApp' ).factory( 'GroupService', [ '$q', '$timeout', '$http', 
     
 
 
-}]);
+});

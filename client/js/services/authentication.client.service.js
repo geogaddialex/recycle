@@ -1,4 +1,4 @@
-angular.module( 'myApp' ).factory( 'AuthService', [ '$q', '$timeout', '$http', function( $q, $timeout, $http ){
+angular.module( 'myApp' ).factory( 'AuthService', function( $q, $timeout, $http ){
 
   var user = null;
 
@@ -120,4 +120,4 @@ angular.module( 'myApp' ).factory( 'AuthService', [ '$q', '$timeout', '$http', f
         return deferred.promise;
     }
 
-}]);
+});

@@ -1,14 +1,14 @@
-angular.module('myApp').controller('itemController', [ '$routeParams', '$location', '$route', '$scope', 'SocketService', 'ItemService', 'TagService', 'AuthService', 'UtilityService', function( $routeParams, $location, $route, $scope, SocketService, ItemService, TagService, AuthService, UtilityService ){
+angular.module('myApp').controller('itemController', function( $routeParams, $location, $route, $scope, $mdDialog, SocketService, ItemService, TagService, AuthService, UtilityService ){
     
     var itemId = $routeParams.id;
-    $scope.UtilityService = UtilityService
+    var tag = $routeParams.tag;
 
+    $scope.UtilityService = UtilityService
+    $scope.error = {}
 
     AuthService.getUser().then( function(user){
       $scope.user = user;
     
-
-        //initialising different item pages
 
         if( itemId ){
 
@@ -17,7 +17,7 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
             $scope.item = item;
             $scope.viewingOwnItem = $scope.user._id == item.owner._id
 
-              if($scope.viewingOwnItem){
+              if( $scope.viewingOwnItem ){
                 
                 $scope.newTag = {
                   name: ""
@@ -29,13 +29,14 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
                 }).catch( function( err ){
 
-                  console.log( "error getting tags = " + err );
+                  setError("Could not retrieve tags")
                 });
 
               }
 
           }).catch( function( err ){
-            console.log( "error getting item = " + err );
+
+            setError("Could not retrieve item")
           });       
             
         }
@@ -47,7 +48,8 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
             $scope.items = items;
 
           }).catch( function( err ){
-              console.log( "error = " + err );
+
+              setError("Could not retrieve items")
           });
         }
 
@@ -58,8 +60,9 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
               $scope.myItems = items;
 
             }).catch( function( err ){
-              console.log( "error = " + err );
-              $scope.myItems = {};
+
+              setError("Could not retrieve items")
+              
             });
         }
 
@@ -74,19 +77,17 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
               name: ""
             }
 
-
             TagService.getTags(  ).then( function( tags ){
               
               $scope.tags = tags;
 
             }).catch( function( err ){
 
-              console.log( "error = " + err );
+              setError("Could not retrieve tags")
             });
 
         }
 
-        var tag = $routeParams.tag;
 
         if( ($location.path().split('/').indexOf('tags') > -1) && tag){
 
@@ -96,7 +97,7 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
           }).catch( function( err ){
 
-            console.log( "error = " + err );
+            setError("Could not retrieve items")
           });
 
         }
@@ -109,7 +110,7 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
     //Socket events
 
     SocketService.on('item.created', function( item ){
-        // alert( "New item added: " + item.name );
+
     });
    
     $scope.$on( '$destroy', function( event ){
@@ -123,35 +124,81 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
     $scope.createItem = function( item ){
 
-      ItemService.createItem( item ).then( function( ){ 
-          $location.path("/myItems");
-       }, function(){
-          alert( "Item not created" );
-       })
+        clearError()
+
+        if( !UtilityService.isValidItemName( item.name )){
+
+            setError("Not a valid item name, names must be between 3 and 30 characters")
+
+        }else{
+
+            ItemService.createItem( item ).then( function( ){ 
+
+                $location.path("/myItems");
+
+            }, function(){
+                setError("Item not created" );
+            })
+            
+        }
+
+      
     }
 
-    $scope.deleteItem = function( ID ){
+    $scope.deleteItem = function( ID, event ){
 
-      ItemService.deleteItem( ID ).then( function( ){ 
-          $route.reload();
-       }, function(){
-          alert( "Item not deleted" );
-       })
-    }
+      clearError()
+   
+      var confirm = $mdDialog.confirm()
+            .title('Are you sure you want to delete this item?')
+            .textContent('You wont be able to retrieve it once its gone.')
+            .ariaLabel('Deleting item')
+            .targetEvent(event)
+            .ok('Delete')
+            .cancel('Cancel');
+
+      $mdDialog.show( confirm ).then(function() {
+        
+          ItemService.deleteItem( ID ).then( function( ){ 
+
+              $route.reload();
+
+           }, function(){
+
+              setError( "Item not deleted" );
+           })
+
+      })
+
+    };  
+    
 
     $scope.updateItem = function(){
 
-      ItemService.updateItem( $scope.item ).then( function(){
+      clearError()
 
-        $location.path("/myItems");
+      if( !UtilityService.isValidItemName( $scope.item.name )){
 
-      }, function(){
-        alert( "Item not updated" );
-      })
+            setError("Not a valid item name, names must be between 3 and 30 characters")
+
+      }else{
+
+          ItemService.updateItem( $scope.item ).then( function(){
+
+            $location.path("/myItems");
+
+          }, function(){
+
+            setError( "Item could not be updated" );
+          })
+
+      }
 
     }
 
     $scope.resetItem = function(){
+
+      clearError()
 
       ItemService.getItem( itemId ).then( function( item ){
 
@@ -159,27 +206,46 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
       }, function(){
 
+        setError( "Something went wrong" )
+
       })
 
     }
 
     $scope.addTag = function( tagToAdd ){
 
+      clearError()
       var itemToEdit = $scope.item ? $scope.item : $scope.newItem
 
-      if( $scope.selectedTag === "addTag" ){
+      if( !$scope.selectedTag ){
 
-        //need to ensure tag isnt already existing (with different capitalisation etc ) before adding to DB
+        setError("Please select a tag to add")
 
-          TagService.createTag({ name: tagToAdd }).then( function( newTag ){
+      }else if( $scope.selectedTag === "addTag" ){
 
-            itemToEdit.tags.push( newTag.data )
-            $scope.newTag.name = ""
+          if( !UtilityService.isValidTagName( tagToAdd )){
 
-          }, function(){
+              setError("Not a valid tag name, tags must be between 3 and 15 characters")
 
-            alert( "Tag not added" );
-          })
+          }else if( false ){
+
+              //need to ensure tag isnt already existing (with different capitalisation etc ) before adding to DB
+              //if it already exists, just push that tag rather than giving an error
+
+          }else{
+
+              TagService.createTag({ name: tagToAdd }).then( function( newTag ){
+
+                  itemToEdit.tags.push( newTag.data )
+                  $scope.newTag.name = ""
+
+              }, function(){
+
+                setError("Tag couldn't be added")
+              })
+              
+          }
+
 
       }else{
 
@@ -187,10 +253,6 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
 
       }
 
-    }
-
-    $scope.selectTag = function(tag) {
-      $scope.selectedTag = tag
     }
 
     $scope.removeTag = function( tag, event ){
@@ -205,5 +267,22 @@ angular.module('myApp').controller('itemController', [ '$routeParams', '$locatio
       
     }
 
+    $scope.selectTag = function(tag) {
+      $scope.selectedTag = tag
+    }
 
-}]);
+
+    var clearError = function(){
+
+      $scope.error.message = undefined
+
+    }
+
+    var setError = function( message ){
+
+      $scope.error.message = message
+
+    }
+
+
+});

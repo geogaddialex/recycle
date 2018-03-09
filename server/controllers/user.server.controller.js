@@ -8,8 +8,6 @@ exports.list = function( req, res ){
 
     User.find({ }, function( err, users ){
 
-        // users = Object.values(users);
-
         users = Object.keys(users).map(function(key) {
             return users[key];
         });

@@ -1,4 +1,4 @@
-angular.module( 'myApp' ).factory( 'ConversationService', [ '$q', '$timeout', '$http', function( $q, $timeout, $http ){
+angular.module( 'myApp' ).factory( 'ConversationService', function( $q, $timeout, $http ){
 
     return ({
       getConversations: getConversations,
@@ -98,4 +98,4 @@ angular.module( 'myApp' ).factory( 'ConversationService', [ '$q', '$timeout', '$
     
 
 
-}]);
+});

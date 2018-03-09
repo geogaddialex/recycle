@@ -1,20 +1,23 @@
-angular.module('myApp').controller('loginController', ['$scope', '$location', 'AuthService', function ($scope, $location, AuthService) {
+angular.module('myApp').controller('loginController', function ($scope, $location, geolocation, AuthService) {
 
     $scope.loginForm = {};
     $scope.registerForm = {};
     $scope.formToShow = "Log in"
     $scope.formToggleText = "Join"
+    $scope.error = {}
 
 
     $scope.login = function( ){
 
-      AuthService.login( $scope.loginForm.email, $scope.loginForm.password ).then( function( ){
+        clearError()
+
+        AuthService.login( $scope.loginForm.email, $scope.loginForm.password ).then( function( ){
 
           $location.path('/profile');
         
         }).catch(function () {
 
-          $scope.errorMessage = "Invalid email and/or password";
+          setError( "Invalid email and/or passowrd" )
 
         });
 
@@ -22,18 +25,27 @@ angular.module('myApp').controller('loginController', ['$scope', '$location', 'A
 
     $scope.register = function( ){
 
+        // geolocation.getLocation().then(function(data){
+
+        //   var location = {lat: data.coords.latitude, long: data.coords.longitude}
+        // });
+
+      clearError()
+
       AuthService.register( $scope.registerForm.email, $scope.registerForm.password, $scope.registerForm.name ).then( function( ){
 
           $location.path( '/profile' );
 
         }).catch( function( ){
           
-          $scope.errorMessage = "Something went wrong!";
+          setError( "Could not register" )
 
         });
     };
 
     $scope.createLocal = function( ){
+
+      clearError()
 
       AuthService.createLocal( $scope.registerForm.email, $scope.registerForm.password, $scope.registerForm.name ).then( function( ){
 
@@ -41,12 +53,14 @@ angular.module('myApp').controller('loginController', ['$scope', '$location', 'A
 
         }).catch( function( ){
           
-          $scope.errorMessage = "Something went wrong!";
+          setError( "Could not create local account" )
 
         });
     };
 
     $scope.switchForm = function( ){
+
+      clearError()
 
           if( $scope.formToShow == "Join" ){
 
@@ -63,14 +77,48 @@ angular.module('myApp').controller('loginController', ['$scope', '$location', 'A
       
     };
 
-}]);
 
-angular.module('myApp').controller('logoutController', ['$scope', '$location', 'AuthService', function( $scope, $location, AuthService ){
+    var clearError = function(){
+
+      $scope.error.message = undefined
+
+    }
+
+    var setError = function( message ){
+
+      $scope.error.message = message
+
+    }
+
+});
+
+angular.module('myApp').controller('logoutController', function( $scope, $location, AuthService ){
 
     $scope.logout = function( ){
+
+        clearError()
+
         AuthService.logout( ).then( function( ){
+
             $location.path( '/enter' );
+
+        }, function(){
+
+          setError( "Could not log out" )
         });
     };
 
-}]);
+    
+    var clearError = function(){
+
+      $scope.error.message = undefined
+
+    }
+
+    var setError = function( message ){
+
+      $scope.error.message = message
+
+    }
+
+});

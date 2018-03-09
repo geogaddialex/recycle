@@ -1,10 +1,10 @@
-angular.module('myApp').controller('navController', [ 'AuthService', 'UserService', 'NotificationService', 'UtilityService', 'SocketService', '$scope', '$location', function( AuthService, UserService, NotificationService, UtilityService, SocketService, $scope, $location ){
+angular.module('myApp').controller('navController', function( AuthService, UserService, NotificationService, UtilityService, SocketService, $scope, $location ){
 
     var path = $location.path()
 
-    //needed to log in, not sure why
     $scope.authService = AuthService;
     $scope.UtilityService = UtilityService
+    $scope.error = {}
 
     //these two lines needed so that AuthService doesn't try to getUser before logged in (undefined error on login screen)
     AuthService.getUserStatus().then( function(){
@@ -18,16 +18,26 @@ angular.module('myApp').controller('navController', [ 'AuthService', 'UserServic
               $scope.notifications = notifications
               $scope.unreadNotifications = $scope.notifications.some(checkUnread);
 
+            }, function(){
+
+              setError( "Cannot get notifications" )
+
             })
 
           }).catch( function( err ){
-              console.log( "error = " + err );
+
+              setError( "Cannot get user" )
           });
       }
+    }, function(){
+
+        setError( "Cannot get user status" )
     })
 
 
     $scope.markRead = function( event, notification ){
+
+      clearError()
 
       if(event){
 
@@ -44,7 +54,7 @@ angular.module('myApp').controller('navController', [ 'AuthService', 'UserServic
 
       }).catch( function(err){
 
-          console.log("didn't update (mark read)")
+          setError( "Cannot update notifications" )
       })
       
     }
@@ -75,8 +85,10 @@ angular.module('myApp').controller('navController', [ 'AuthService', 'UserServic
 
 
         }
+
       }).catch( function(err){
-        console.log(err)
+
+          setError( "Cannot get user" )
       })
 
         
@@ -94,28 +106,18 @@ angular.module('myApp').controller('navController', [ 'AuthService', 'UserServic
       return !notification.read;
     }
 
-    // var createNotification = function( message, link ){
 
+    var clearError = function(){
 
-    //   var notification = {
+      $scope.error.message = undefined
 
-    //     user: $scope.user,
-    //     message: message,
-    //     link: link
+    }
 
-    //   }
+    var setError = function( message ){
 
-    //   NotificationService.createNotification( notification ).then(function(notification){
+      $scope.error.message = message
 
-
-    //       console.log( "notification created (by service)" )
-
-    //   }).catch(function(err){
-
-    //     console.log("notification not created by service: " + err)
-    //   })
-
-    // }
+    }
+  
     
-    
-}])
+})

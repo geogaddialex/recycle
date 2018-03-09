@@ -1,10 +1,10 @@
+<div ng-show="error.message" class="alert alert-danger">{{error.message}}</div>
+
 <div class="container">
 
     <div class="page-header text-center">
         <h3>Profile</h3>
     </div>
-
-    Is user an admin? <b>{{ user.isAdmin }}</b><br>
 
     <div class="row">
 
@@ -15,7 +15,7 @@
 
                     <p ng-if="user.local.email">
                         <strong>name</strong>: {{ user.local.name }}<br>
-                        <strong>email</strong>: <input type="text" ng-model="user.local.email" placeholder="Email address" />
+                        <strong>email</strong>: <input type="email" ng-model="user.local.email" placeholder="Email address" />
                         <button ng-click="updateProfile()">Save</button>
 
                     </p>

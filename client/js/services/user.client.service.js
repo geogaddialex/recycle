@@ -1,4 +1,4 @@
-angular.module( 'myApp' ).factory( 'UserService', [ '$q', '$timeout', '$http', function( $q, $timeout, $http ){
+angular.module( 'myApp' ).factory( 'UserService', function( $q, $timeout, $http ){
 
   return ({
     getUsers: getUsers,
@@ -63,4 +63,4 @@ angular.module( 'myApp' ).factory( 'UserService', [ '$q', '$timeout', '$http', f
   }
 
 
-}]);
+});

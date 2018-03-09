@@ -1,7 +1,8 @@
-angular.module('myApp').controller('notificationController', [ 'AuthService', 'UserService', 'NotificationService', 'UtilityService', 'SocketService', '$scope', '$location', function( AuthService, UserService, NotificationService, UtilityService, SocketService, $scope, $location ){
+angular.module('myApp').controller('notificationController', function( AuthService, UserService, NotificationService, UtilityService, SocketService, $scope, $location ){
 
     var path = $location.path()
     $scope.UtilityService = UtilityService
+    $scope.error = {}
 
     AuthService.getUser( ).then( function( user ){
       $scope.user = user;
@@ -10,14 +11,22 @@ angular.module('myApp').controller('notificationController', [ 'AuthService', 'U
 
         $scope.notifications = notifications
 
+      }, function(){
+
+        setError( "Cannot get notifications" )
+
       })
 
     }).catch( function( err ){
-        console.log( "error = " + err );
+        
+      setError( "Cannot get user" )
+
     });
 
 
     $scope.markRead = function( event, notification ){
+
+      clearError()
 
       event.preventDefault()
       notification.read = true
@@ -25,6 +34,9 @@ angular.module('myApp').controller('notificationController', [ 'AuthService', 'U
       NotificationService.updateNotification( notification ).then( function( notification ){
 
 
+      }, function(){
+
+        setError( "Cannot update notifications" )
       })
       
     }
@@ -52,5 +64,18 @@ angular.module('myApp').controller('notificationController', [ 'AuthService', 'U
         }
 
     });
+
+
+    var clearError = function(){
+
+      $scope.error.message = undefined
+
+    }
+
+    var setError = function( message ){
+
+      $scope.error.message = message
+
+    }
     
-}])
+})
