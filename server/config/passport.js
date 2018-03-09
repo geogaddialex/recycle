@@ -70,18 +70,18 @@ module.exports = function( passport ){
 
         User.findOne({ 'local.email' :  email }, function(err, user) {
 
-            console.log( JSON.stringify( user, null, 2 ))
-
             if (err)
                 return done(err);
 
-            //deal with this better
             if (!user){
-                console.log( "ERROR: NO USER: " )
+
+                return done(null)
+
+            }else if (!user.validPassword(password)){
+
+                return done(null)
             }
-            if (!user.validPassword(password)){
-                console.log("ERROR: INVALID PW")
-            }
+
             return done(null, user);
         });
 
