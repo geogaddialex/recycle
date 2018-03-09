@@ -9,6 +9,7 @@
 
   "dependencies": {
     "angular": "^1.6.6",
+    "bcrypt-nodejs": "latest",
     "body-parser": "~1.15.2",
     "cookie-parser": "~1.4.3",
     "datejs": "^1.0.0-rc3",
