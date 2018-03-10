@@ -102,29 +102,6 @@ exports.listGroups = function( req, res ){
     })
 }
 
-exports.findUserByID = function( id, callback ){
-
-    User.findOne({ '_id':  id }, function( err, user ){
-        if( err ){  
-            console.log( err ); 
-            callback( null );
-        }
-
-        if( !user ){
-            callback( null );
-    
-        } else {
-            callback( user );
-        }
-    });
-}
-
-// exports.validEmail = function( email ){
-// 	var match = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-    
-// 	return match.test( email );
-// };
-
 exports.lookupUser = function(req, res, next) {
 
     var id = req.params.id;
@@ -145,21 +122,20 @@ exports.lookupUser = function(req, res, next) {
     });
 }
 
-exports.lookupUserByUsername = function(req, res, next) {
+exports.lookupUserByEmail = function(req, res, next) {
 
-    var username = req.params.username;
+    User.findOne({ 'local.email' :  req.params.email }, function( err, user ){
 
-    User.findOne({ 'username':  username }, function( err, user ){
         if( err ){  
-            console.log( err ); 
+            console.log( "Error: " + err ); 
             return res.status(500).json({ errors: "Could not retrieve user" });
         }
 
         if( !user ){
             console.log( "No user found" );
             return res.status(404).json({ errors: "No such user" });
-        }
-
+        } 
+        
         req.user = user;
         next();
     });

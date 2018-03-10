@@ -36,7 +36,8 @@ module.exports = function( passport ){
 
                 if( user ){
 
-//deal with
+                    return done(null)
+
                 } else {
 
                     var newUser            = new User();

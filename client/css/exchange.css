@@ -1,22 +1,11 @@
-
-
-#exchangeStages{
-	height:40px;
-	line-height: 40px;
-	font-size: 16px;
-}
-
-.exchangeStageButton{
-}
-
-#exchangeFooter, #feedbackFooter {
+#exchangeFooter {
     position: fixed;
     bottom: 0;
     right: 0;
     left:0;
 }
 
-#messenger, #otherUserInfo, #feedback, #userInfo, #members{
+#messenger, #otherUserInfo, #userInfo, #members{
 	background-color: white;
 	border-radius: 5px;
 	border: 1px solid #f2e7d9;
@@ -34,6 +23,7 @@
 #feedbackTable{
 	margin: 0 auto;
 }
+
 #feedbackTable tr th{
 	padding:0 15px;
 	font-weight: normal;
@@ -45,14 +35,6 @@
 
 .message{
 	margin: 2px;
-}
-
-.oneExchange{
-	background-color:white;
-	text-align: center;
-	padding: 5px;
-	overflow:hidden;
-	box-shadow: 0 0 5px #e4ceb4;
 }
 
 .exchangeItem{
@@ -68,7 +50,7 @@
 	background-color:white;
 	border-radius: 5px;
 	border: 1px solid #f2e7d9;
-	overflow: hidden;
+	padding:5px;
 }
 
 .exchange{
@@ -89,6 +71,10 @@
 #exchangeDecision{
 	margin-top:20px;
 	margin-bottom: 20px;
+}
+
+.exchangeAction {
+	width:100px;
 }
 
 button{

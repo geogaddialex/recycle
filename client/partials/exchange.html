@@ -3,23 +3,7 @@
 
 <div class="container-fluid content exchangeContainer" ng-if="exchange && otherUser && user">
 
-    <div class="row" id="exchangeStages">
-        
-        <a ng-click="showDiv='negotiate'" class="exchangeStageButton">
-            <div class="col-xs-4">1. Negotiate<span ng-if="exchange.status=='Agreed' || exchange.status=='Completed'"> (Done!)</span></div>
-        </a>
-        <a ng-click="exchange.status=='Agreed' ? showDiv='swap' : alert('Negotiate first')" class="exchangeStageButton">
-            <div class="col-xs-4">2. Meet and swap<span ng-if="exchange.status=='Completed'"> (Done!)</span></div>
-        </a>
-        <a ng-click="exchange.status=='Completed' ? showDiv='feedback' : alert('Complete first')" class="exchangeStageButton">
-            <div class="col-xs-4">3. Leave feedback</div>
-        </a>
-
-    </div>
-
-
-    <div class="row" id="exchangeItems" ng-if="showDiv==='negotiate'">
-
+    <div class="row" id="exchangeItems">
 
 
         <div class="col-xs-2" id="myItems" ng-if="exchange.status=='In progress'">
@@ -180,56 +164,51 @@
         </div>
 
 
+    <div ng-if="exchange.status=='Agreed'" class="whiteDiv row">
 
-    </div><!-- negotiateDiv -->
+        <div class="col-xs-8 col-xs-offset-2">
 
-    <div ng-if="showDiv==='swap'">
+            <div class="row"><h5>Feedback</h5></div>
+        
+            <div id="feedbackForm" class="row" ng-show="!feedbackSubmitted.timestamp">
 
-        Go meet them and swap!!
+                How did you rate the experience of this exchange?
+                <table id="feedbackTable">
+                    <tr>
+                        <th><span class="glyphicon glyphicon-thumbs-down red"></span></th>
+                        <th><span class="glyphicon glyphicon-minus yellow"></span></th>
+                        <th><span class="glyphicon glyphicon-thumbs-up green"></span></th>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" name="feedbackRating" value="0" ng-model="feedback.rating"></td>
+                        <td><input type="radio" name="feedbackRating" value="1" ng-model="feedback.rating"></td>
+                        <td><input type="radio" name="feedbackRating" value="2" ng-model="feedback.rating"></td>
+                    </tr>
+                </table>
 
-    </div>    
+               
+                <input type="text" placeholder="Leave a comment" ng-model="feedback.comment"/><br>
 
+                <button class="btn" ng-click="submitFeedback( )">Submit Feedback</button>
+            </div>
 
+            <div class="row" ng-show="feedbackSubmitted.timestamp">
+                Thanks, feedback submitted: 
 
+                [{{ UtilityService.formatTimestamp( feedbackSubmitted.timestamp ) }}]
+                        <span ng-if="feedbackSubmitted.rating === 2" class="glyphicon glyphicon-thumbs-up green"></span>
+                        <span ng-if="feedbackSubmitted.rating === 1" class="glyphicon glyphicon-minus yellow"></span>
+                        <span ng-if="feedbackSubmitted.rating === 0" class="glyphicon glyphicon-thumbs-down red"></span>
+                "{{ feedbackSubmitted.comment }}"<br><br>
 
-    <div ng-if="showDiv==='feedback'">
-
-        <div class="row"><h5>Feedback</h5></div>
-    
-        <div id="feedbackForm" class="row" ng-show="!feedbackSubmitted.timestamp">
-
-            How did you rate the experience of this exchange?
-            <table id="feedbackTable">
-                <tr>
-                    <th><span class="glyphicon glyphicon-thumbs-up green"></span></th>
-                    <th><span class="glyphicon glyphicon-minus yellow"></span></th>
-                    <th><span class="glyphicon glyphicon-thumbs-down red"></span></th>
-                </tr>
-                <tr>
-                    <td><input type="radio" name="feedbackRating" value="0" ng-model="feedback.rating"></td>
-                    <td><input type="radio" name="feedbackRating" value="1" ng-model="feedback.rating"></td>
-                    <td><input type="radio" name="feedbackRating" value="2" ng-model="feedback.rating"></td>
-                </tr>
-            </table>
-
-           
-            <input type="text" id="messageInput" placeholder="Type a message" ng-model="feedback.comment"/><br>
-
-            <button class="btn" id="messageButton" ng-click="submitFeedback( )">Submit Feedback</button>
-        </div>
-
-        <div class="row" ng-show="feedbackSubmitted.timestamp">
-            Thanks, feedback submitted!<br><br>
-
-            Rating: {{ feedbackSubmitted.rating }}<br>
-            Comment: {{ feedbackSubmitted.comment }}<br><br>
-
+            </div>
         </div>
 
     </div>
 
 
 </div>
+
 
 
 

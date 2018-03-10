@@ -422,15 +422,8 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
         ExchangeService.getExchange( ID ).then( function( exchange ){
 
-            if(exchange.status == "In progress"){
-
-                exchange.status = "Cancelled before reaching agreement"
-
-            }else{
-
-                exchange.status = "Cancelled after reaching agreement"
-            }
-
+            exchange.status = "Cancelled"
+            exchange.lastUpdatedBy = $scope.user
 
             ExchangeService.amendExchange( exchange ).then( function(){
 
@@ -438,26 +431,6 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
             }, function(){
 
                 setError( "Could not cancel exchange" )
-            })
-
-        })
-    }
-
-    $scope.completeExchange = function( ID ){
-
-        clearError()
-
-        ExchangeService.getExchange( ID ).then( function( exchange ){
-
-            exchange.status = "Completed"
-
-            ExchangeService.amendExchange( exchange ).then( function(){
-
-
-            }, function(){
-
-                setError( "Could not complete exchange" )
-
             })
 
         })
@@ -482,6 +455,9 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
             updateFeedbackScore()
 
             $scope.feedbackSubmitted = createdFeedback.data
+
+            createdFeedback.data.author = $scope.user
+            $scope.otherUserFeedbacks.push( createdFeedback.data )
 
 
         }, function(){
@@ -546,20 +522,33 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
         clearError()
 
-        UserService.getUser( $scope.otherUser._id ).then(function( user ){
+        // UserService.getUser( $scope.otherUser._id ).then(function( user ){
 
-            user.feedback.count += 1
-            user.feedback.total = parseFloat( $scope.feedback.rating ) + parseFloat( user.feedback.total )
-            user.feedback.score = +((user.feedback.total/user.feedback.count*50).toFixed(2));
+        //     user.feedback.count += 1
+        //     user.feedback.total = parseFloat( $scope.feedback.rating ) + parseFloat( user.feedback.total )
+        //     user.feedback.score = +((user.feedback.total/user.feedback.count*50).toFixed(2));
 
-            UserService.updateUser( user ).then(function(){
+        //     UserService.updateUser( user ).then(function(){
 
 
-            }, function(){
+        //     }, function(){
 
-                setError( "Could not update feedback score" )
-            })
+        //         setError( "Could not update feedback score" )
+        //     })
 
+        // })
+
+
+        $scope.otherUser.feedback.count += 1
+        $scope.otherUser.feedback.total = parseFloat( $scope.feedback.rating ) + parseFloat( $scope.otherUser.feedback.total )
+        $scope.otherUser.feedback.score = +(($scope.otherUser.feedback.total/$scope.otherUser.feedback.count*50).toFixed(2));
+
+        UserService.updateUser( $scope.otherUser ).then(function(){
+
+
+        }, function(){
+
+            setError( "Could not update feedback score" )
         })
 
     }

@@ -42,6 +42,10 @@ angular.module('myApp').controller('loginController', function ($scope, $locatio
 
         setError( "Please enter a name" )
       
+      }else if( !UtilityService.isValidEmail( $scope.registerForm.email ) ){
+
+        setError( "Please enter a valid email address" )
+
       }else if( !UtilityService.isValidPassword( $scope.registerForm.password )){
 
         setError( "Password invalid, please make sure your password contains an uppercase letter, a lowercase letter, a number and a special character.")
@@ -52,15 +56,30 @@ angular.module('myApp').controller('loginController', function ($scope, $locatio
 
       }else{
 
-        AuthService.register( $scope.registerForm.email, $scope.registerForm.password, $scope.registerForm.name ).then( function( ){
+        UtilityService.isEmailTaken( $scope.registerForm.email ).then( function( result ){
 
-          $location.path( '/profile' );
+          if( result === true ){
 
-        }).catch( function( ){
-          
-          setError( "Could not register" )
+              setError( "The email you have entered is already in use" )
 
-        });
+          }else{
+
+            AuthService.register( $scope.registerForm.email, $scope.registerForm.password, $scope.registerForm.name ).then( function( ){
+
+              $location.path( '/profile' );
+
+            }).catch( function( ){
+              
+              setError( "Could not register" )
+
+            });
+
+          }
+
+        },function(){
+
+
+        })
 
       }
 

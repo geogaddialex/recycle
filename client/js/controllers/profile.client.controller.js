@@ -5,7 +5,8 @@ angular.module('myApp').controller('profileController', function( ngDialog, Auth
 
       AuthService.getUser( ).then( function( user ){
         
-          $scope.user = user;
+          $scope.user = user
+          $scope.originalUser = user
 
       }).catch( function( err ){
         
@@ -18,25 +19,53 @@ angular.module('myApp').controller('profileController', function( ngDialog, Auth
 
         clearError()
 
-        ngDialog.openConfirm({ 
+        if( !UtilityService.isValidUserName( $scope.user.local.name ) ){
 
-            template: '/partials/dialog_save_changes.html'
+            setError( "Your name cannot be empty" )
 
-        }).then(function (success) {
+        }else if( !UtilityService.isValidEmail( $scope.user.local.email ) ){
 
-            UserService.updateUser( $scope.user ).then( function(){
+            setError( "Please enter a valid email address" )
 
-                $location.path("/profile");
+        }else{
 
-            }, function(){
+            UtilityService.isEmailTaken( $scope.user.local.email ).then( function( result ){
 
-                setError( "Cannot update profile" )
+                if( result === true && $scope.user.local.email != $scope.originalUser.local.email ){
+
+                    setError( "The email you have entered is already in use" )
+
+                }else{
+
+                    ngDialog.openConfirm({ 
+
+                        template: '/partials/dialog_save_changes.html'
+
+                    }).then(function (success) {
+
+                        UserService.updateUser( $scope.user ).then( function(){
+
+                            $location.path("/profile");
+
+                        }, function(){
+
+                            setError( "Cannot update profile" )
+                        })
+
+                    }, function(error){
+
+                    })
+                }
+
+
+            },function(){
+
+
             })
 
-        }, function(error){
+        }
 
-        })
-
+      
     }
 
     $scope.resetProfile = function(){
@@ -48,16 +77,8 @@ angular.module('myApp').controller('profileController', function( ngDialog, Auth
           template: '/partials/dialog_reset_changes.html'
           
         }).then(function (success) {
-
-            AuthService.getUser( ).then( function( user ){
-
-                $scope.user = user;
-
-            }, function(){
-
-              setError( "Something went wrong" )
-
-            })
+            
+            $scope.user = $scope.originalUser;
 
         }, function (error) {
 

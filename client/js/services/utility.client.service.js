@@ -1,4 +1,4 @@
-angular.module( 'myApp' ).factory( 'UtilityService', function( ){
+angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http ){
 
     return ({
       formatTimestamp: formatTimestamp,
@@ -9,7 +9,9 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( ){
       isValidTagName: isValidTagName,
       isValidGroupName: isValidGroupName,
       isValidPassword: isValidPassword,
-      passwordsMatch: passwordsMatch
+      isValidEmail: isValidEmail,
+      passwordsMatch: passwordsMatch,
+      isEmailTaken: isEmailTaken
     });
 
 
@@ -76,9 +78,48 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( ){
       return ( password.match( regex ) ) ? true : false
     }   
 
+    function isValidEmail( email ){
+
+      var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return ( regex.test( email ) ) ? true : false
+    }   
+
     function passwordsMatch( one, two ){
 
       return ( one === two ) ? true : false
+    }
+
+
+    function isEmailTaken( email ){
+
+      var deferred = $q.defer();
+
+      $http({
+
+          url: "/api/users/byEmail/"+email, 
+          method: "GET"
+
+       }).then(
+
+        function successCallback( res ) {
+
+            if( res.data ){
+
+              deferred.resolve( true );
+
+            } else {
+
+              deferred.resolve( false );
+
+            }
+
+        }, function errorCallback( res ){
+
+          deferred.resolve( false );
+        }
+      );
+
+      return deferred.promise;
     }
 
 });
