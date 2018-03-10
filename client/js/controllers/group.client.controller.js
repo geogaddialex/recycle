@@ -100,7 +100,7 @@ angular.module('myApp').controller('groupController', function( $routeParams, $l
 
         if( !UtilityService.isValidGroupName( group.name ) ){
 
-          setError( "Not a valid group name, names must be between 4 and 30 characters" )
+          setError( "Not a valid group name, names must be between 4 and 40 characters" )
 
         }else{
 

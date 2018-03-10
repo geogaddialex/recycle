@@ -254,7 +254,7 @@
 
         <div id="messageForm" class="row">
             <input type="text" id="messageInput" placeholder="Type a message" 
-            ng-model="message" ng-keydown="$event.keyCode === 13 && sendMessage()" ng-required="true"/>
+            ng-model="message.text" ng-keydown="$event.keyCode === 13 && sendMessage()" ng-required="true"/>
 
             <button class="btn" id="messageButton" ng-click="sendMessage( )">Send</button>
         </div>

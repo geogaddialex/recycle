@@ -27,16 +27,33 @@ angular.module('myApp').controller('notificationController', function( AuthServi
     $scope.markRead = function( event, notification ){
 
       clearError()
-
       event.preventDefault()
+      event.stopPropagation()
       notification.read = true
 
-      NotificationService.updateNotification( notification ).then( function( notification ){
+      NotificationService.updateNotification( notification ).then( function(  ){
 
 
       }, function(){
 
         setError( "Cannot update notifications" )
+      })
+      
+    }
+
+    $scope.markReadAndView = function( event, notification ){
+
+      clearError()
+      event.preventDefault()
+      notification.read = true
+
+      NotificationService.updateNotification( notification ).then( function( ){
+
+          $location.path( notification.link );
+
+      }).catch( function(err){
+
+          setError( "Cannot update notifications" )
       })
       
     }

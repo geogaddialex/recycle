@@ -63,7 +63,7 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( ){
 
       if (!name) return false
 
-      return ( name.length > 3 && name.length < 31 ) ? true : false
+      return ( name.length > 3 && name.length < 41 ) ? true : false
         
     }
 

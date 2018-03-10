@@ -138,6 +138,7 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
                 ExchangeService.getExchange( exchangeID ).then( function( exchange ){
 
+                    $scope.message = { text: "" }
                     $scope.exchange = exchange
                     $scope.userIsSender = $scope.user._id == exchange.sender._id
                     $scope.otherUser = $scope.userIsSender ? exchange.recipient : exchange.sender
@@ -371,14 +372,14 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
             var messageToCreate = {
 
                 sender: $scope.user,
-                content: $scope.message
+                content: $scope.message.text
             }
 
             MessageService.createMessage( messageToCreate ).then( function( createdMessage ){ 
 
                 $scope.exchange.conversation.messages.push( createdMessage.data )
 
-                $scope.message = ""
+                $scope.message = { text: "" }
                 amendConversation()
 
             }, function(){

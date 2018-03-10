@@ -10,7 +10,7 @@
                         
                     <div ng-repeat="notification in notifications | orderBy: '-createdAt' ">
 
-                        <a href="{{notification.link}}" ng-class="{'unreadNotification': !notification.read}">
+                        <a ng-click="markReadAndView( $event, notification )" ng-class="{'unreadNotification': !notification.read}">
                             [{{ UtilityService.formatTimestamp( notification.createdAt, 'short') }}] {{ notification.message }}
                             <span ng-if="!notification.read" ng-click="markRead( $event, notification)" class="glyphicon glyphicon-remove" title="Mark read"></span>
                         </a>

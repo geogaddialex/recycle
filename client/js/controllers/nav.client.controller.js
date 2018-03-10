@@ -1,4 +1,4 @@
-angular.module('myApp').controller('navController', function( AuthService, UserService, NotificationService, UtilityService, SocketService, $scope, $location ){
+angular.module('myApp').controller('navController', function( $location, AuthService, UserService, NotificationService, UtilityService, SocketService, $scope, $location ){
 
     var path = $location.path()
 
@@ -38,19 +38,32 @@ angular.module('myApp').controller('navController', function( AuthService, UserS
     $scope.markRead = function( event, notification ){
 
       clearError()
-
-      if(event){
-
-        event.preventDefault()
-        event.stopPropagation()
-
-      }
-
+      event.preventDefault()
+      event.stopPropagation()
       notification.read = true
 
       NotificationService.updateNotification( notification ).then( function( ){
 
           $scope.unreadNotifications = $scope.notifications.some(checkUnread);
+
+      }).catch( function(err){
+
+          setError( "Cannot update notifications" )
+      })
+      
+    }
+
+    $scope.markReadAndView = function( event, notification ){
+
+      clearError()
+      event.preventDefault()
+      event.stopPropagation()
+      notification.read = true
+
+      NotificationService.updateNotification( notification ).then( function( ){
+
+          $scope.unreadNotifications = $scope.notifications.some(checkUnread);
+          $location.path( notification.link );
 
       }).catch( function(err){
 

@@ -78,7 +78,8 @@
                     <ul class="dropdown-menu">
 
                         <li ng-repeat="notification in notifications | filter:{ read: 'false'} | orderBy: '-createdAt' | limitTo:10">
-                            <a href="{{notification.link}}" ng-click="markRead( notification )" ng-class="{'unreadNotification': !notification.read}">
+                            
+                            <a ng-click="markReadAndView( $event, notification )" ng-class="{'unreadNotification': !notification.read}">
                                 [{{ UtilityService.formatTimestamp( notification.createdAt, 'short') }}] {{ notification.message }}
                                 <span ng-if="!notification.read" ng-click="markRead( $event, notification )" 
                                     class="glyphicon glyphicon-remove tooltip-test" title="Mark read"></span>
