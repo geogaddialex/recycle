@@ -8,6 +8,7 @@ angular.module( 'myApp' ).factory( 'ItemService', function( $q, $timeout, $http 
       updateItem: updateItem,
       getItemsBelongingTo: getItemsBelongingTo,
       getItemsWithTag: getItemsWithTag,
+      getItemsMatchingSearch: getItemsMatchingSearch
     });
 
 
@@ -127,6 +128,33 @@ angular.module( 'myApp' ).factory( 'ItemService', function( $q, $timeout, $http 
       return deferred.promise;
     }
     
+    function getItemsMatchingSearch( query ){
+       
+      var deferred = $q.defer();
+      var url = '/api/items/search/'+query
+
+      $http.get( url ).then(
+        function successCallback( res ) {
+
+            if( res.data.items ){
+              deferred.resolve( res.data.items );
+            } else {
+              deferred.reject();
+            }
+
+        }, function errorCallback( res ){
+
+          console.log( "error: " + res.data );
+
+          deferred.reject();
+        }
+        
+      ).catch( function( err ){
+        console.log( "caught error: " + err );
+      });
+
+      return deferred.promise;
+    }
 
 
 });

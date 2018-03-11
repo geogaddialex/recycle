@@ -15,6 +15,7 @@ angular.module("myApp").config( function( $routeProvider, $locationProvider ){
         .when('/myItems', { templateUrl: 'partials/items_my.html', controller: 'itemController', access: { restricted: true } })
 
         .when('/tags/:tag', { templateUrl: 'partials/tag.html', controller: 'itemController', access: { restricted: true } })
+        .when('/tags', { templateUrl: 'partials/tags.html', controller: 'tagController', access: { restricted: true } })
 
         .when('/myExchanges', { templateUrl: 'partials/exchanges_my.html', controller: 'exchangeController', access: { restricted: true } })
         .when('/exchanges', { templateUrl: 'partials/exchanges.html', controller: 'exchangeController', access: { restricted: true } })
@@ -31,7 +32,8 @@ angular.module("myApp").config( function( $routeProvider, $locationProvider ){
         .when('/groups/:id', { templateUrl: 'partials/group.html', controller: 'groupController', access: { restricted: true } })
 
         .when('/notifications', { templateUrl: 'partials/notifications.html', controller: 'notificationController', access: { restricted: true } })
-        .when('/tags', { templateUrl: 'partials/tags.html', controller: 'tagController', access: { restricted: true } })
+        .when('/search/:query', { templateUrl: 'partials/search.html', controller: 'itemController', access: { restricted: true } })
+
         
         .when('/help', { templateUrl: 'partials/help.html', access: { restricted: false } })
         

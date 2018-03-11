@@ -76,3 +76,19 @@ exports.update = function( req, res ){
         res.status( 200 ).json({ message: "Item updated!", item });
     });
 };
+
+exports.getItemsMatchingSearch = function( req, res ){
+
+    var query = req.params.query
+
+    Item.find({ name: { "$regex": query, "$options": "i" } }).populate('owner tags').exec( function( err, items ){
+
+        if( err ){
+            return res.status( 500 );
+        }
+        
+        res.json({ items: items });
+            
+    })
+
+}

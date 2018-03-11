@@ -4,6 +4,9 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', items.list );
+
+router.get('/search/:query', items.getItemsMatchingSearch );
+
 router.get('/:id', items.getOne );
 
 router.post('/', items.create );

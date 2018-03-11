@@ -172,7 +172,7 @@
         
             <div id="feedbackForm" class="row" ng-show="!feedbackSubmitted.timestamp">
 
-                How did you rate the experience of this exchange?
+                How did you rate this exchange?
                 <table id="feedbackTable">
                     <tr>
                         <th><span class="glyphicon glyphicon-thumbs-down red"></span></th>
@@ -193,9 +193,8 @@
             </div>
 
             <div class="row" ng-show="feedbackSubmitted.timestamp">
-                Thanks, feedback submitted: 
+                Feedback submitted: 
 
-                [{{ UtilityService.formatTimestamp( feedbackSubmitted.timestamp ) }}]
                         <span ng-if="feedbackSubmitted.rating === 2" class="glyphicon glyphicon-thumbs-up green"></span>
                         <span ng-if="feedbackSubmitted.rating === 1" class="glyphicon glyphicon-minus yellow"></span>
                         <span ng-if="feedbackSubmitted.rating === 0" class="glyphicon glyphicon-thumbs-down red"></span>
@@ -254,20 +253,14 @@
        <div id="displayFeedback" ng-if="otherUserFeedbacks.length > 0">
 
             <table>
-                <tr>
-                    <th>Date</th>
-                    <th>User</th>                        
+                <tr>                     
                     <th>Rating</th>
                     <th>Comment</th>
+                    <th>User</th>   
+                    <th>Date</th>
                 </tr>
 
                 <tr ng-repeat="feedbackToDisplay in otherUserFeedbacks  | orderBy : '-timestamp'">
-
-                    <td >
-                        {{ UtilityService.formatTimestamp(feedbackToDisplay.timestamp, 'short') }}
-                    </td>
-
-                    <td>{{ UtilityService.getUserName( feedbackToDisplay.author ) }}</td>
 
                     <td class="feedbackRating">
                         <span ng-if="feedbackToDisplay.rating === 2" class="glyphicon glyphicon-thumbs-up green"></span>
@@ -275,7 +268,17 @@
                         <span ng-if="feedbackToDisplay.rating === 0" class="glyphicon glyphicon-thumbs-down red"></span>
                     </td>
 
-                    <td>{{ feedbackToDisplay.comment }}</td> 
+                    <td>"{{ feedbackToDisplay.comment }}"</td> 
+
+                    <td>
+                        <a href="/users/{{feedbackToDisplay.author._id}}">
+                            {{ UtilityService.getUserName( feedbackToDisplay.author ) }}
+                        </a> ({{feedbackToDisplay.author.feedback.score}}% <span class="glyphicon glyphicon-thumbs-up green"></span>)
+                    </td>
+
+                    <td>
+                        {{ UtilityService.formatTimestamp(feedbackToDisplay.timestamp, 'short') }}
+                    </td>
                 </tr>
             </table>
 

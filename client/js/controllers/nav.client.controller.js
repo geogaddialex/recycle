@@ -72,6 +72,16 @@ angular.module('myApp').controller('navController', function( $location, AuthSer
       
     }
 
+    $scope.search = function( query ){
+
+      if( UtilityService.isValidMessage( query ) ){
+
+          $location.path( "/search/"+query );
+
+      }
+
+    }
+
 
     SocketService.on('notification.created', function( notification ){
 

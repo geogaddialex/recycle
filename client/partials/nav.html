@@ -1,4 +1,6 @@
-<nav ng-controller="navController as ctrl" class="navbar navbar-default navbar-fixed-top">
+<div ng-controller="navController as ctrl">
+
+<nav class="navbar navbar-default navbar-fixed-top">
 
 
 <div class="container-fluid">
@@ -114,3 +116,26 @@
 
 
 </nav>
+
+<nav class="navbar navbar-default searchNav" id="whenLoggedIn" ng-if="authService.isLoggedIn()">
+
+    <div class="container-fluid">
+
+        <div class="row">
+                            
+                <div class="col-xs-11 col">
+                    <input type="text" id="searchBox" class="" placeholder="Search" 
+                    ng-model="search.text" ng-keydown="$event.keyCode === 13 && search(search.text)">
+                </div>
+                
+                <div class="col-xs-1 col">
+                    <button id="searchButton" ng-click="search(search.text)">Go</button>
+                </div>
+
+        </div>
+
+    </div>
+
+</nav>
+
+</div>

@@ -2,14 +2,11 @@
 
 <div class="container">
 
-    <div class="page-header text-center">
-        <h3>Profile</h3>
-    </div>
+    <h3>Profile</h3>
 
     <div class="row">
 
-        <div class="col-sm-12 col-md-6 col-offset-md-3">
-            <div class="well">
+        <div class="col-sm-12 col-md-4 whiteDiv profileSection">
                 <h3><span class="fa fa-user"></span> Local</h3>
 
                     <p ng-if="user.local">
@@ -23,11 +20,9 @@
                     <a ng-if="user.local && (user.facebook || user.google)" href="/api/auth/unlink/local" class="btn btn-danger">Unlink</a>
                     <a ng-if="!user.local" href="/connect/local" class="btn btn-danger">Create Recycle Login</a>
 
-            </div>
         </div>
 
-        <div class="col-sm-12 col-md-6 col-offset-md-3">
-            <div class="well">
+        <div class="col-sm-12 col-md-4 whiteDiv profileSection">
                 <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
 
                     <p ng-if="user.facebook.token">
@@ -37,12 +32,9 @@
 
                     <a ng-if="user.facebook.token" href="/api/auth/unlink/facebook" class="btn btn-danger">Unlink</a>
                     <a ng-if="!user.facebook.token" href="/api/auth/connect/facebook" class="btn btn-danger">Connect Facebook</a>
-
-            </div>
         </div>
 
-        <div class="col-sm-12 col-md-6 col-offset-md-3">
-            <div class="well">
+        <div class="col-sm-12 col-md-4 whiteDiv profileSection">
                 <h3 class="text-danger"><span class="fa fa-google-plus"></span> Google+</h3>
 
                     <p ng-if="user.google.token">
@@ -52,9 +44,62 @@
 
                     <a ng-if="user.google.token" href="/api/auth/unlink/google" class="btn btn-danger">Unlink</a>
                     <a ng-if="!user.google.token" href="/api/auth/connect/google" class="btn btn-danger">Connect Google</a>
-
-            </div>
         </div>
 
     </div>
+
+    <div class="row">
+        
+
+        <div class="col-xs-12 whiteDiv">
+
+            <h4>Your feedback</h4>
+
+
+            Feedback score: <b>{{ user.feedback.score }}%</b> 
+            <span class="glyphicon glyphicon-thumbs-up green"></span>
+            ({{ user.feedback.count }} completed exchanges)
+            
+            <br><br>
+
+           <div id="displayFeedback" ng-if="feedbacks.length > 0">
+
+                <table>
+                    <tr>                       
+                        <th>Rating</th>
+                        <th>Comment</th>
+                        <th>User</th> 
+                        <th>Date</th>
+                    </tr>
+
+                    <tr ng-repeat="feedbackToDisplay in feedbacks  | orderBy : '-timestamp'">
+
+
+                        <td class="feedbackRating">
+                            <span ng-if="feedbackToDisplay.rating === 2" class="glyphicon glyphicon-thumbs-up green"></span>
+                            <span ng-if="feedbackToDisplay.rating === 1" class="glyphicon glyphicon-minus yellow"></span>
+                            <span ng-if="feedbackToDisplay.rating === 0" class="glyphicon glyphicon-thumbs-down red"></span>
+                        </td>
+
+                        <td>"{{ feedbackToDisplay.comment }}"</td> 
+
+                        <td>
+                            <a href="/users/{{feedbackToDisplay.author._id}}">
+                                {{ UtilityService.getUserName( feedbackToDisplay.author ) }}
+                            </a> ({{feedbackToDisplay.author.feedback.score}}% <span class="glyphicon glyphicon-thumbs-up green"></span>)
+                        </td>
+
+
+                        <td>
+                            {{ UtilityService.formatTimestamp(feedbackToDisplay.timestamp, 'short') }}
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>

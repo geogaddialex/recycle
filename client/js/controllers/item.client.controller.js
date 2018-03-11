@@ -2,6 +2,7 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
     
     var itemId = $routeParams.id;
     var tag = $routeParams.tag;
+    var query = $routeParams.query;
 
     $scope.UtilityService = UtilityService
     $scope.error = {}
@@ -92,6 +93,19 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
         if( ($location.path().split('/').indexOf('tags') > -1) && tag){
 
           ItemService.getItemsWithTag( tag ).then( function( items ){
+              
+            $scope.items = items;
+
+          }).catch( function( err ){
+
+            setError("Could not retrieve items")
+          });
+
+        }
+
+        if( ($location.path().split('/').indexOf('search') > -1) && query){
+
+          ItemService.getItemsMatchingSearch( query ).then( function( items ){
               
             $scope.items = items;
 

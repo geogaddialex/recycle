@@ -1,0 +1,68 @@
+<div ng-if="items.length < 1" class="alert alert-danger">No items match your search</div>
+<div ng-show="error.message" class="alert alert-danger">{{error.message}}</div>
+
+<div class="container-fluid content">
+
+    <div class="row" ng-show="items">
+                
+            
+        <div ng-repeat="item in items">
+
+            
+            <div class="col-xs-12 col-sm-4 col-md-3 itemContainer">
+                <a href="/items/{{ item._id }}">
+            
+                <div class="item">
+
+                    <div class="row">
+                        <div class="col imageContainer">
+                            <img src="/images/none.jpg" class="itemImage"><br>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col itemName">
+                            <a href="/items/{{ item._id }}">{{ item.name }}</a><br>
+                            <a href="/users/{{ item.owner._id }}">{{ UtilityService.getUserName( item.owner ) }}</a><br>
+                            <a href="/newExchange/{{ item.owner._id }}/{{ item._id }}">Make an offer</a>
+                            
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col itemTags">
+                            <a class="tag" href="/tags/{{tag.name}}" ng-repeat="tag in item.tags">
+                                <span class="glyphicon glyphicon-tag"></span> {{ tag.name }}
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-xs-4">
+                            <a href="/viewInfo/{{ item._id }}">
+                                <span title="View info" class="glyphicon glyphicon-info-sign"></span>
+                            </a>    
+                        </div>
+
+                        <div class="col-xs-4"></div>
+                        
+                        <div class="col-xs-4">
+                            <a href="/showLocation/{{ item._id }}">
+                                <span title="Show location" class="glyphicon glyphicon-map-marker"></span>
+                            </a>
+                        </div>
+
+                    </div>
+                
+                </div><!-- item -->
+                </a>
+            </div>
+
+
+        </div><!-- ng-repeat -->
+
+
+    </div><!-- row -->
+
+</div><!-- content -->

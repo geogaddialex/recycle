@@ -1,4 +1,4 @@
-angular.module('myApp').controller('profileController', function( ngDialog, AuthService, UserService, NotificationService, UtilityService, SocketService, $scope, $location ){
+angular.module('myApp').controller('profileController', function( ngDialog, AuthService, UserService, NotificationService, FeedbackService, UtilityService, SocketService, $scope, $location ){
 
     $scope.UtilityService = UtilityService
     $scope.error = {}
@@ -7,6 +7,16 @@ angular.module('myApp').controller('profileController', function( ngDialog, Auth
         
           $scope.user = user
           $scope.originalUser = user
+
+          FeedbackService.getFeedbackRegarding( user._id ).then( function( feedbacks ){
+
+            $scope.feedbacks = feedbacks
+
+          }, function(){
+
+              setError( "Cannot get feedback for user" )
+
+          })
 
       }).catch( function( err ){
         

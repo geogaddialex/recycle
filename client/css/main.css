@@ -5,13 +5,13 @@ html, body {
 body{
 	overflow-x:hidden;
 	background-color: #F9F4EE;
-	padding-top:60px !important;
+	padding-top:55px !important;
 }
 
 a{
   text-decoration: none;
 }
-
+ 
 a button {
   color: #333333 !important;
 }
@@ -29,23 +29,36 @@ a:hover{
     padding-bottom: 130px;
 }
 
-#searchBar{
-}
-
 #searchBox{
   width:100%;
+  border-radius: 5px;
+  border:1px solid #cccccc;
+  height: 40px;
 }
 
-#searchBar .row .col{
+#searchButton{
+  height:40px;
+  width:100%;
+  background-color: #BD081C;
+  color:white;
+  border:0 !important;
+
+}
+
+.searchNav{
+  height:40px;
+  min-height: 42px;
+  margin-bottom: 10px;
+}
+
+.searchNav .container-fluid .row .col{
   padding:0;
-  margin:0;
 }
 
 .whiteDiv{
   background-color: white;
   border-radius: 5px;
   border: 1px solid #f2e7d9;
-  margin:5px;
   padding:5px;
 }
 
