@@ -161,7 +161,7 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
                   console.log( JSON.stringify( newImage,null,2))
 
-                  item.image = newImage.path
+                  item.image = newImage.filename
 
                   ItemService.createItem( item ).then( function( ){ 
 

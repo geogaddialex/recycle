@@ -12,7 +12,7 @@
 
                 <div ng-if="viewingOwnItem">
 
-                     <div class="form-group">
+                    <div class="form-group">
 
                         <label for="itemName">Name</label>
 
@@ -22,7 +22,9 @@
 
                     <div class="row">
                         <div class="col imageContainer">
-                            <img src="/images/none.jpg" class="itemImage"><br>
+                            <label for="itemImage">Image</label>
+                            <img ng-if="!item.image" src="/images/none.jpg" class="itemImage">
+                            <img ng-if="item.image" src="/images/uploads/{{item.image}}" class="itemImage">
                         </div>
                     </div>
 

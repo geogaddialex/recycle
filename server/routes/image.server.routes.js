@@ -4,12 +4,41 @@ var express = require('express');
 var router = express.Router();
 var multer = require('multer')
 
-var upload = multer({
+var storage = multer.diskStorage({
 
-  dest: 'client/images/uploads/',
-  limits: { fileSize: 1000000 },
+  destination: function( req, file, callback ){
 
-}).single('image')
+    callback(null, 'client/images/uploads/');
+
+  },
+  filename: function(req, file, callback){
+
+    var filename = Date.now();
+
+    switch( file.mimetype ){
+
+      case 'image/png':
+      	filename = filename + ".png";
+      	break;
+      case 'image/jpeg':
+      	filename = filename + ".jpeg";
+      	break;
+      default:
+      	break;
+    }
+
+    callback(null, filename);
+  }
+});
+
+var upload = multer({ storage: storage}).single('image');
+
+// var upload = multer({
+
+//   dest: 'client/images/uploads/',
+//   limits: { fileSize: 1000000 },
+
+// }).single('image')
 
 // router.get('/', images.list );
 // router.get('/:id', images.getOne );

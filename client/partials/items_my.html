@@ -9,7 +9,10 @@
 
                     <div class="row">
                         <div class="col imageContainer">
-                            <a href="/items/{{ item._id }}"><img src="{{item.image}}" class="itemImage"></a><br>
+                            <a href="/items/{{ item._id }}">
+                                <img ng-if="!item.image" src="/images/none.jpg" class="itemImage">
+                                <img ng-if="item.image" src="/images/uploads/{{item.image}}" class="itemImage">
+                            </a>
                         </div>
                     </div>
                     <div class="row">
