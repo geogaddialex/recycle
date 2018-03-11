@@ -1,16 +1,21 @@
 <div ng-show="error.message" class="alert alert-danger">{{error.message}}</div>
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-xs-12">
-            <div ng-if="message">{{message}}</div>
-        </div>
-    </div>
-    <div class="row addItem">
+
+
+    <div class="row whiteDiv">
         <div class="col-xs-12">
 
-            <form name="groupForm">
-                Group Name: <input type="text" ng-model="group.name">
+            <form name="groupForm" id="groupForm">
+
+                <div class="form-group">
+
+                    <label for="groupName">Name</label>
+
+                    <input type="text" class="form-control" id="groupName" placeholder="Group name" ng-model="group.name">
+
+                </div>
+
                 <button ng-click="createGroup( group )">Add this group</button>
             </form>
 

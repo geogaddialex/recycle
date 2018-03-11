@@ -36,6 +36,7 @@ angular.module("myApp").config( function( $routeProvider, $locationProvider ){
 
         
         .when('/help', { templateUrl: 'partials/help.html', access: { restricted: false } })
+        .when('/uploadImage', { templateUrl: 'partials/upload_image.html', access: { restricted: false } })
         
         .otherwise({ templateUrl: 'partials/404.html', access: { restricted: true } });
 

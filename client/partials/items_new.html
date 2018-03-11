@@ -1,33 +1,71 @@
 <div class="container-fluid">
 
-    <div class="row addItem">
+    <div class="row whiteDiv">
         <div class="col-xs-12">
 
             <div ng-show="error.message" class="alert alert-danger">{{error.message}}</div>
 
-            <form name="itemForm">
+            <form id="itemForm" name="itemForm">
 
-                Item Name: 
+                    <div class="form-group">
 
-                    <input type="text" ng-model="newItem.name"><br>
+                        <label for="itemName">Name</label>
 
-                Location: 
-                    <input type="text" ng-model="newItem.location"/><br>
+                        <input type="text" class="form-control" id="itemName" placeholder="Item name" ng-model="newItem.name">
 
-                Tags:   
-                    <select id="tagSelect" ng-model="selectedTag"> 
+                    </div>
 
-                        <option value="">Select a tag</option>
-                        <option value="addTag">Add new tag</option>
-                        <option ng-repeat="tag in tags" ng-value="tag">{{tag.name}}</option>
+                    <div class="form-group">
 
-                    </select>
+                        <label for="itemCondition">Condition</label>
 
-                    <input type="text" ng-model="newTag.name" ng-if="selectedTag=='addTag'">
+                        <select class="form-control" id="itemCondition" ng-model="newItem.condition"> 
 
-                    <!-- <input ng-if="tags" name="tag" id="tag" type="text" placeholder="Enter a tag" ng-model="selectedTag" typeahead="tag for tag in tags | filter:$viewValue" class="form-control"> -->
+                            <option value="">Select condition</option>
+                            <option value="new">New</option>
+                            <option value="used">Used</option>
 
-                    <button ng-click="addTag( newTag.name )">Add</button><br>
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="itemDescription">Description</label>
+
+                        <textarea rows="4" class="form-control" id="itemDescription" placeholder="Item description" ng-model="newItem.description"></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="itemLocation">Location</label>
+
+                        <input type="text" class="form-control" id="itemLocation" placeholder="Item location" ng-model="newItem.location">
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="itemTags">Tags</label>
+
+                        <select id="itemTags" class="form-control" ng-model="selectedTag"> 
+
+                            <option value="">Select a tag</option>
+                            <option value="addTag">Add new tag</option>
+                            <option ng-repeat="tag in tags" ng-value="tag">{{tag.name}}</option>
+
+                        </select>
+
+                        <input type="text" ng-model="newTag.name" ng-if="selectedTag=='addTag'">
+                        <button ng-click="addTag( newTag.name )">Add Tag</button><br>
+
+                    </div>
+
+
 
                 
                 <div ng-if="newItem.tags.length>0">

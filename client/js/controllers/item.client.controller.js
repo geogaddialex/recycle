@@ -145,6 +145,10 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
             setError("Not a valid item name, names must be between 3 and 30 characters")
 
+        }else if( !$scope.newItem.condition ){
+
+            setError("Please select an item condition")
+
         }else{
 
             ngDialog.openConfirm({ 

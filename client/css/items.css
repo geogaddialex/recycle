@@ -57,3 +57,7 @@
 .itemTags > span {
   display: inline-block;
 }
+
+#itemForm, #groupForm, #itemForm .form-group input, #groupForm .form-group input{
+	text-align: left;
+}
