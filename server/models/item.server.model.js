@@ -8,7 +8,8 @@ var itemSchema = mongoose.Schema({
     description: { type: String, default: "" },
     location: { type: String },
     createdAt: { type: Date, default: Date.now },
-    tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}]
+    tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}],
+    image: { type: String }
 });
 
 module.exports = mongoose.model( 'Item', itemSchema );

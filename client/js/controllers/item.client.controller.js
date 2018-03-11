@@ -1,4 +1,4 @@
-angular.module('myApp').controller('itemController', function( $routeParams, $location, $route, $scope, $http, ngDialog, SocketService, ItemService, TagService, AuthService, UtilityService ){
+angular.module('myApp').controller('itemController', function( $routeParams, $location, $route, $scope, $http, ngDialog, SocketService, ItemService, TagService, AuthService, UtilityService, ImageService ){
     
     var itemId = $routeParams.id;
     var tag = $routeParams.tag;
@@ -151,21 +151,32 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
         }else{
 
-            $scope.uploadImage( $scope.newItem.image )
-
             ngDialog.openConfirm({ 
 
                 template: '/partials/dialog_create_item.html'
 
             }).then(function (success) {
 
+              ImageService.uploadImage( item.image ).then( function( newImage ){
+
+                  console.log( JSON.stringify( newImage,null,2))
+
+                  item.image = newImage.path
+
                   ItemService.createItem( item ).then( function( ){ 
 
                       $location.path("/myItems");
 
                   }, function(){
+
                       setError("Item not created" );
                   })
+
+              }, function(){
+
+                  setError("Image couldn't be uploaded")
+              })
+
 
             }, function (error) {
 
@@ -356,29 +367,6 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
     $scope.selectTag = function(tag) {
       $scope.selectedTag = tag
     }
-
-    $scope.uploadImage = function( image ){
-
-        var image = $scope.image
-
-        var formData = new FormData();
-        formData.append('image', image );
-
-        $http.post("/api/images", formData, {
-
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
-
-        }).then( function( ){
-
-          console.log( JSON.stringify( image,null,2 ) )
-
-        }, function(){
-          
-          console.log("error!");
-
-        });
-    };
 
 
     var clearError = function(){
