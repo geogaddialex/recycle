@@ -1,4 +1,4 @@
-angular.module('myApp').controller('itemController', function( $routeParams, $location, $route, $scope, ngDialog, SocketService, ItemService, TagService, AuthService, UtilityService ){
+angular.module('myApp').controller('itemController', function( $routeParams, $location, $route, $scope, $http, ngDialog, SocketService, ItemService, TagService, AuthService, UtilityService ){
     
     var itemId = $routeParams.id;
     var tag = $routeParams.tag;
@@ -150,6 +150,8 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
             setError("Please select an item condition")
 
         }else{
+
+            $scope.uploadImage( $scope.newItem.image )
 
             ngDialog.openConfirm({ 
 
@@ -354,6 +356,29 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
     $scope.selectTag = function(tag) {
       $scope.selectedTag = tag
     }
+
+    $scope.uploadImage = function( image ){
+
+        var image = $scope.image
+
+        var formData = new FormData();
+        formData.append('image', image );
+
+        $http.post("/api/images", formData, {
+
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+
+        }).then( function( ){
+
+          console.log( JSON.stringify( image,null,2 ) )
+
+        }, function(){
+          
+          console.log("error!");
+
+        });
+    };
 
 
     var clearError = function(){
