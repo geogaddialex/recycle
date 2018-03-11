@@ -122,4 +122,37 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http ){
       return deferred.promise;
     }
 
+
+    function isValidLocation( location ){
+
+      var deferred = $q.defer();
+
+      $http({
+
+          url: "/api/users/byEmail/"+email, 
+          method: "GET"
+
+       }).then(
+
+        function successCallback( res ) {
+
+            if( res.data ){
+
+              deferred.resolve( true );
+
+            } else {
+
+              deferred.resolve( false );
+
+            }
+
+        }, function errorCallback( res ){
+
+          deferred.resolve( false );
+        }
+      );
+
+      return deferred.promise;
+    }
+
 });

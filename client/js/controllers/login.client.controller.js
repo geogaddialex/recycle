@@ -1,4 +1,4 @@
-angular.module('myApp').controller('loginController', function ($scope, $location, geolocation, AuthService, UtilityService) {
+angular.module('myApp').controller('loginController', function ($scope, $location, AuthService, UtilityService, LocationService) {
 
     $scope.loginForm = {};
     $scope.registerForm = {};
@@ -11,6 +11,16 @@ angular.module('myApp').controller('loginController', function ($scope, $locatio
       confirmPassword: "",
       name: ""
     }
+
+     LocationService.getLocations( ).then(function( locations ){
+
+          $scope.locations = locations
+
+      }, function(){
+
+          setError("Cannot get locations")
+
+      })
 
 
     $scope.login = function( ){
@@ -31,11 +41,6 @@ angular.module('myApp').controller('loginController', function ($scope, $locatio
 
     $scope.register = function( ){
 
-        // geolocation.getLocation().then(function(data){
-
-        //   var location = {lat: data.coords.latitude, long: data.coords.longitude}
-        // });
-
       clearError()
 
       if( !UtilityService.isValidUserName( $scope.registerForm.name ) ){
@@ -54,6 +59,10 @@ angular.module('myApp').controller('loginController', function ($scope, $locatio
 
         setError( "The passwords you have entered do not match" )
 
+      }else if( !$scope.registerForm.location || !$scope.registerForm.location.name ){
+
+        setError( "The location entered isn't recognised, please use a location from the list provided" )
+
       }else{
 
         UtilityService.isEmailTaken( $scope.registerForm.email ).then( function( result ){
@@ -64,7 +73,7 @@ angular.module('myApp').controller('loginController', function ($scope, $locatio
 
           }else{
 
-            AuthService.register( $scope.registerForm.email, $scope.registerForm.password, $scope.registerForm.name ).then( function( ){
+            AuthService.register( $scope.registerForm ).then( function( ){
 
               $location.path( '/profile' );
 

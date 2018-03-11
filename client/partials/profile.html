@@ -5,56 +5,11 @@
     <h3>Profile</h3>
 
     <div class="row">
-
-        <div class="col-sm-12 col-md-4 whiteDiv profileSection">
-                <h3><span class="fa fa-user"></span> Local</h3>
-
-                    <p ng-if="user.local">
-                        <strong>name</strong>: <input type="text" ng-model="user.local.name" placeholder="Your full name" /><br>
-                        <strong>email</strong>: <input type="email" ng-model="user.local.email" placeholder="Email address" /><br>
-                        <button ng-click="updateProfile()" class="white">Save</button>
-                        <button ng-click="resetProfile()" class="white">Reset</button>
-
-                    </p>
-
-                    <a ng-if="user.local && (user.facebook || user.google)" href="/api/auth/unlink/local" class="btn btn-danger">Unlink</a>
-                    <a ng-if="!user.local" href="/connect/local" class="btn btn-danger">Create Recycle Login</a>
-
-        </div>
-
-        <div class="col-sm-12 col-md-4 whiteDiv profileSection">
-                <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
-
-                    <p ng-if="user.facebook.token">
-                        <strong>email</strong>: {{ user.facebook.email }}<br>
-                        <strong>name</strong>: {{ user.facebook.name }}<br>
-                    </p>
-
-                    <a ng-if="user.facebook.token" href="/api/auth/unlink/facebook" class="btn btn-danger">Unlink</a>
-                    <a ng-if="!user.facebook.token" href="/api/auth/connect/facebook" class="btn btn-danger">Connect Facebook</a>
-        </div>
-
-        <div class="col-sm-12 col-md-4 whiteDiv profileSection">
-                <h3 class="text-danger"><span class="fa fa-google-plus"></span> Google+</h3>
-
-                    <p ng-if="user.google.token">
-                        <strong>email</strong>: {{ user.google.email }}<br>
-                        <strong>name</strong>: {{ user.google.name }}
-                    </p>
-
-                    <a ng-if="user.google.token" href="/api/auth/unlink/google" class="btn btn-danger">Unlink</a>
-                    <a ng-if="!user.google.token" href="/api/auth/connect/google" class="btn btn-danger">Connect Google</a>
-        </div>
-
-    </div>
-
-    <div class="row">
         
 
         <div class="col-xs-12 whiteDiv">
 
             <h4>Your feedback</h4>
-
 
             Feedback score: <b>{{ user.feedback.score }}%</b> 
             <span class="glyphicon glyphicon-thumbs-up green"></span>
@@ -98,6 +53,73 @@
 
             </div>
 
+        </div>
+
+    </div>
+
+    
+
+    <div class="row">
+        <div class="col whiteDiv">
+
+            <div class="form-group">
+
+                <h4>Your location</h4>
+
+                <input type="text" name="location" ng-model="user.location" class="form-control"
+        uib-typeahead="location as location.name for location in locations | filter:$viewValue | orderBy:'name' | limitTo:8">
+
+                <button ng-click="updateLocation()" class="white">Save</button>
+                <button ng-click="reset()" class="white">Reset</button>
+
+            </div>  
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-12 col-md-4 whiteDiv profileSection">
+                <h3><span class="fa fa-user"></span> Local</h3>
+
+                    <p ng-if="user.local">
+                        <div class="form-group">
+                            <label>Full name</label>
+                            <input type="text" ng-model="user.local.name" placeholder="Your full name" class="form-control"/>
+                            <label>Email</label>
+                            <input type="email" ng-model="user.local.email" placeholder="Email address" class="form-control"/>
+                            <button ng-click="updateLocal()" class="white">Save</button>
+                            <button ng-click="resetLocal()" class="white">Reset</button>
+                        </div>
+
+                    </p>
+
+                    <a ng-if="user.local && (user.facebook || user.google)" href="/api/auth/unlink/local" class="btn btn-danger">Unlink</a>
+                    <a ng-if="!user.local" href="/connect/local" class="btn btn-danger">Create Recycle Login</a>
+
+        </div>
+
+        <div class="col-sm-12 col-md-4 whiteDiv profileSection">
+                <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
+
+                    <p ng-if="user.facebook.token">
+                        <strong>email</strong>: {{ user.facebook.email }}<br>
+                        <strong>name</strong>: {{ user.facebook.name }}<br>
+                    </p>
+
+                    <a ng-if="user.facebook.token" href="/api/auth/unlink/facebook" class="btn btn-danger">Unlink</a>
+                    <a ng-if="!user.facebook.token" href="/api/auth/connect/facebook" class="btn btn-danger">Connect Facebook</a>
+        </div>
+
+        <div class="col-sm-12 col-md-4 whiteDiv profileSection">
+                <h3 class="text-danger"><span class="fa fa-google-plus"></span> Google+</h3>
+
+                    <p ng-if="user.google.token">
+                        <strong>email</strong>: {{ user.google.email }}<br>
+                        <strong>name</strong>: {{ user.google.name }}
+                    </p>
+
+                    <a ng-if="user.google.token" href="/api/auth/unlink/google" class="btn btn-danger">Unlink</a>
+                    <a ng-if="!user.google.token" href="/api/auth/connect/google" class="btn btn-danger">Connect Google</a>
         </div>
 
     </div>

@@ -57,11 +57,11 @@ angular.module( 'myApp' ).factory( 'AuthService', function( $q, $timeout, $http 
       return deferred.promise;
     }
 
-    function register( email, password, name ){
+    function register( formData ){
 
         var deferred = $q.defer();
 
-        $http.post( '/api/auth/register', { email: email, password: password, name: name } ).then(
+        $http.post( '/api/auth/register', { email: formData.email, password: formData.password, name: formData.name, location: formData.location } ).then(
           function successCallback( res ){
             deferred.resolve();
         }, function errorCallback( res ){

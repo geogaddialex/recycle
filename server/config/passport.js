@@ -11,7 +11,10 @@ module.exports = function( passport ){
     });
 
     passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
+
+        User.findById(id)
+        .populate('location')
+        .exec( function(err, user) {
             done(err, user);
         });
     });
@@ -40,11 +43,12 @@ module.exports = function( passport ){
 
                 } else {
 
-                    var newUser            = new User();
+                    var newUser                 = new User();
 
-                    newUser.local.email      = email;
+                    newUser.local.email         = email;
                     newUser.local.password      = newUser.generateHash(password);
-                    newUser.local.name         = req.body.name
+                    newUser.local.name          = req.body.name
+                    newUser.location            = req.body.location    
 
                     newUser.save(function(err) {
                         if (err)

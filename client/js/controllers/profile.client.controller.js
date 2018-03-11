@@ -1,4 +1,4 @@
-angular.module('myApp').controller('profileController', function( ngDialog, AuthService, UserService, NotificationService, FeedbackService, UtilityService, SocketService, $scope, $location ){
+angular.module('myApp').controller('profileController', function( ngDialog, AuthService, UserService, NotificationService, FeedbackService, LocationService, UtilityService, SocketService, $scope, $location ){
 
     $scope.UtilityService = UtilityService
     $scope.error = {}
@@ -7,6 +7,16 @@ angular.module('myApp').controller('profileController', function( ngDialog, Auth
         
           $scope.user = user
           $scope.originalUser = user
+          
+          LocationService.getLocations( ).then(function( locations ){
+
+              $scope.locations = locations
+
+          }, function(){
+
+              setError("Cannot get locations")
+
+          })
 
           FeedbackService.getFeedbackRegarding( user._id ).then( function( feedbacks ){
 
@@ -25,7 +35,7 @@ angular.module('myApp').controller('profileController', function( ngDialog, Auth
   
 
 
-    $scope.updateProfile = function(){
+    $scope.updateLocal = function(){
 
         clearError()
 
@@ -78,7 +88,40 @@ angular.module('myApp').controller('profileController', function( ngDialog, Auth
       
     }
 
-    $scope.resetProfile = function(){
+    $scope.updateLocation = function(){
+
+      clearError()
+      
+      if( !$scope.user.location || !$scope.user.location.name ){
+
+          setError( "The location entered isn't recognised, please use a location from the list provided" )
+
+      }else{
+
+          ngDialog.openConfirm({ 
+
+              template: '/partials/dialog_save_changes.html'
+
+          }).then(function (success) {
+
+              UserService.updateUser( $scope.user ).then( function(){
+
+                  $location.path("/profile");
+
+              }, function(){
+
+                  setError( "Cannot update profile" )
+              })
+
+          }, function(error){
+
+          })
+      }
+
+      
+    }
+
+    $scope.reset = function(){
 
       clearError()
 

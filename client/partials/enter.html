@@ -15,8 +15,15 @@
                             <input type="text" name="name" id="joinName" class="form-control loginInput" placeholder="Full name"
                             ng-model="registerForm.name" ng-required="true">
                         </div>
+
                         <div class="form-group">
-                            <input type="email" name="email" id="joinEmail" class="form-control loginInput" placeholder="Email Address" value=""
+                <input type="text" name="location" ng-model="registerForm.location" class="form-control loginInput" placeholder="Location" ng-required="true"
+        uib-typeahead="location as location.name for location in locations | filter:$viewValue | orderBy:'name' | limitTo:8">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="email" name="email" id="joinEmail" class="form-control loginInput" placeholder="Email Address" 
+                            value=""
                             ng-model="registerForm.email"
                             ng-required="true">
                         </div>

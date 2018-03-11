@@ -1,7 +1,11 @@
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
+var Location = require( './location.server.model' );
+
 
 var userSchema = mongoose.Schema({
+
+    location: { type: mongoose.Schema.Types.ObjectId, ref: 'Location'},
 
     local: {
 

@@ -41,6 +41,7 @@ var feedbackRoutes = require( '../routes/feedback.server.routes.js' );
 var groupRoutes = require( '../routes/group.server.routes.js' );
 var notificationRoutes = require( '../routes/notification.server.routes.js' );
 var tagRoutes = require( '../routes/tag.server.routes.js' );
+var locationRoutes = require( '../routes/location.server.routes.js' );
 var imageRoutes = require( '../routes/image.server.routes.js' );
 var authRoutes = require( '../routes/authentication.server.routes.js' )( passport )
 
@@ -53,6 +54,7 @@ app.use('/api/feedback', feedbackRoutes);
 app.use('/api/groups', groupRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/tags', tagRoutes);
+app.use('/api/locations', locationRoutes);
 app.use('/api/images', imageRoutes);
 app.use('/api/auth', authRoutes);
 
