@@ -20,6 +20,31 @@ angular.module('myApp').controller('tagController', function( AuthService, UserS
 
     });
 
+    $scope.filterDistance = function( item ){
+
+        if( !item.owner.location ){
+          return true
+        }
+
+        if( !$scope.user.maxDistance ){
+          return true
+        }
+
+        var userLocation = {
+          "latitude": $scope.user.location.lat,
+          "longitude": $scope.user.location.lng
+        };
+        var itemLocation = {
+          "latitude": item.owner.location.lat,
+          "longitude": item.owner.location.lng
+        };
+
+        var distance = UtilityService.metresToMiles( $haversine.distance(userLocation, itemLocation) )
+        var maxDistance = $scope.user.maxDistance
+
+        return ( distance <= maxDistance )
+    };
+
     var clearError = function(){
 
       $scope.error.message = undefined

@@ -121,8 +121,7 @@ module.exports = function( passport ){
     // locally --------------------------------
         router.post('/connect/local', passport.authenticate('local-signup', {
             successRedirect : '/profile',
-            failureRedirect : '/connect/local', // redirect back to the signup page if there is an error
-            failureFlash : true // allow flash messages
+            failureRedirect : '/connect/local' // redirect back to the signup page if there is an error
         }));
 
     // facebook -------------------------------

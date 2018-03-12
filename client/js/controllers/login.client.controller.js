@@ -1,26 +1,16 @@
 angular.module('myApp').controller('loginController', function ($scope, $location, AuthService, UtilityService, LocationService) {
 
     $scope.loginForm = {};
-    $scope.registerForm = {};
     $scope.formToShow = "Log in"
     $scope.formToggleText = "Join"
     $scope.error = {}
+
     $scope.registerForm = {
       email: "",
       password: "",
       confirmPassword: "",
       name: ""
     }
-
-     LocationService.getLocations( ).then(function( locations ){
-
-          $scope.locations = locations
-
-      }, function(){
-
-          setError("Cannot get locations")
-
-      })
 
 
     $scope.login = function( ){
@@ -114,17 +104,27 @@ angular.module('myApp').controller('loginController', function ($scope, $locatio
 
       clearError()
 
-          if( $scope.formToShow == "Join" ){
+      if( $scope.formToShow == "Join" ){
 
-              $scope.formToShow = "Log in"
-              $scope.formToggleText = "Join"
-          
-          }else{
+          $scope.formToShow = "Log in"
+          $scope.formToggleText = "Join"
+      
+      }else{
 
-              $scope.formToShow = "Join"
-              $scope.formToggleText = "Log in"
+          LocationService.getLocations( ).then(function( locations ){
 
-          }
+              $scope.locations = locations
+
+          }, function(){
+
+              setError("Cannot get locations")
+
+          })
+
+          $scope.formToShow = "Join"
+          $scope.formToggleText = "Log in"
+
+      }
           
       
     };

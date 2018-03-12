@@ -3,7 +3,16 @@ var Item = require( '../models/item.server.model' );
 
 exports.getOne = function( req, res ){ 
 
-    Item.findById( req.params.id ).populate('owner tags').exec( function( err, item ){
+    Item.findById( req.params.id )
+    .populate('tags')
+    .populate({ 
+        path: 'owner',
+        populate: {
+            path: 'location',
+            model: 'Location',
+        } 
+    })
+    .exec( function( err, item ){
 
         if( err ){  
             return res.status(500).json({ errors: "Could not retrieve item" });
@@ -23,7 +32,16 @@ exports.getOne = function( req, res ){
 
 exports.list = function( req, res ){
 
-    Item.find({ }).populate('owner tags').exec( function( err, items ){
+    Item.find({ })
+    .populate('tags')
+    .populate({ 
+        path: 'owner',
+        populate: {
+            path: 'location',
+            model: 'Location',
+        } 
+    })
+    .exec( function( err, items ){
 
         if( err ){
             return res.status( 500 );
@@ -81,7 +99,16 @@ exports.getItemsMatchingSearch = function( req, res ){
 
     var query = req.params.query
 
-    Item.find({ name: { "$regex": query, "$options": "i" } }).populate('owner tags').exec( function( err, items ){
+    Item.find({ name: { "$regex": query, "$options": "i" } })
+    .populate('tags')
+    .populate({ 
+        path: 'owner',
+        populate: {
+            path: 'location',
+            model: 'Location',
+        } 
+    })
+    .exec( function( err, items ){
 
         if( err ){
             return res.status( 500 );

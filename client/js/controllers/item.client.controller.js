@@ -1,4 +1,4 @@
-angular.module('myApp').controller('itemController', function( $routeParams, $location, $route, $scope, $http, ngDialog, SocketService, ItemService, TagService, AuthService, UtilityService, ImageService ){
+angular.module('myApp').controller('itemController', function( $routeParams, $location, $route, $scope, $http, $haversine, ngDialog, SocketService, ItemService, TagService, AuthService, UtilityService, ImageService ){
     
     var itemId = $routeParams.id;
     var tag = $routeParams.tag;
@@ -9,8 +9,8 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
     AuthService.getUser().then( function(user){
       $scope.user = user;
-    
 
+           
         if( itemId ){
 
           ItemService.getItem( itemId ).then( function( item ){
@@ -363,6 +363,31 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
       tags.splice( tagIndex, 1 )
       
     }
+
+    $scope.filterDistance = function( item ){
+
+        if( !item.owner.location ){
+          return true
+        }
+
+        if( !$scope.user.maxDistance ){
+          return true
+        }
+
+        var userLocation = {
+          "latitude": $scope.user.location.lat,
+          "longitude": $scope.user.location.lng
+        };
+        var itemLocation = {
+          "latitude": item.owner.location.lat,
+          "longitude": item.owner.location.lng
+        };
+
+        var distance = UtilityService.metresToMiles( $haversine.distance(userLocation, itemLocation) )
+        var maxDistance = $scope.user.maxDistance
+
+        return ( distance <= maxDistance )
+    };
 
     $scope.selectTag = function(tag) {
       $scope.selectedTag = tag

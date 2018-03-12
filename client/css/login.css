@@ -16,8 +16,8 @@
   margin: 10px;
 }
 
-.loginInput {
-   text-align:center;
+.loginInput, .loginButton {
+   text-align:center !important;
 }
 
 /*::-webkit-input-placeholder {
@@ -46,5 +46,18 @@
 }
 
 .profileSection{
-	height:220px;
+	height:250px;
+	
+}
+
+.googleSection, .facebookSection{
+	height:250px;
+	line-height: 250px;
+	text-align: center;
+}
+
+.profileSection span {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
 }

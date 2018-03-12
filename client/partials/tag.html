@@ -8,7 +8,7 @@
             <div ng-if="items.length<1">No items have this tag</div>
             <div ng-if="!items">This tag doesn't exist</div>
 
-            <div ng-repeat="item in items" class="col-xs-12 col-sm-4 col-md-3 itemContainer">
+            <div ng-repeat="item in items | filter: filterDistance" class="col-xs-12 col-sm-4 col-md-3 itemContainer">
                 <div class="item">
 
                     <div class="row">

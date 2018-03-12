@@ -1,4 +1,4 @@
-<div ng-if="!group">This group does not exist</div>
+<div ng-if="!group" class="alert alert-danger">This group does not exist</div>
 
 <div ng-show="error.message" class="alert alert-danger">{{error.message}}</div>
 
@@ -15,7 +15,7 @@
 
                 <div ng-show="items">
                         
-                    <div ng-repeat="item in items" ng-if="item.owner._id != user._id" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 itemContainer">
+                    <div ng-repeat="item in items | filter: filterDistance" ng-if="item.owner._id != user._id" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 itemContainer">
                         <div class="item">
 
                             <div class="row">

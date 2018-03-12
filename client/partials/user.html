@@ -1,4 +1,4 @@
-<div ng-if="!user">This user does not exist</div>
+<div ng-if="!user" class="alert alert-danger">This user does not exist</div>
 <div ng-show="error.message" class="alert alert-danger">{{error.message}}</div>
 
 <div class="container-fluid" ng-if="user">

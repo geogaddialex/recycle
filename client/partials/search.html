@@ -6,7 +6,7 @@
     <div class="row" ng-show="items">
                 
             
-        <div ng-repeat="item in items">
+        <div ng-repeat="item in items | filter: filterDistance">
 
             
             <div class="col-xs-12 col-sm-4 col-md-3 itemContainer">

@@ -1,4 +1,4 @@
-<div ng-if="items.length < 1">Nobody else has listed any items, click <a href="/myItems">here</a> to view your own</div>
+<div ng-if="items.length < 1" class="alert alert-danger">Nobody else has listed any items, click <a href="/myItems">here</a> to view your own</div>
 <div ng-show="error.message" class="alert alert-danger">{{error.message}}</div>
 
 <div class="container-fluid content">
@@ -6,7 +6,7 @@
     <div class="row" ng-show="items">
                 
             
-        <div ng-repeat="item in items" ng-show="item.owner._id != user._id">
+        <div ng-repeat="item in items | filter: filterDistance" ng-show="item.owner._id != user._id">
 
             
             <div class="col-xs-12 col-sm-4 col-md-3 itemContainer">

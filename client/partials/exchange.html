@@ -1,4 +1,5 @@
-<div ng-if="!exchange">This exchange does not exist</div>
+<div ng-if="!exchange" class="alert alert-danger">This exchange does not exist</div>
+
 <div ng-show="error.message" class="alert alert-danger">{{error.message}}</div>
 
 <div class="container-fluid content exchangeContainer" ng-if="exchange && otherUser && user">
@@ -187,7 +188,7 @@
                 </table>
 
                
-                <input type="text" placeholder="Leave a comment" ng-model="feedback.comment"/><br>
+                <textarea type="text" rows="3" placeholder="Leave a comment" ng-model="feedback.comment"/></textarea>
 
                 <button class="btn" ng-click="submitFeedback( )">Submit Feedback</button>
             </div>
@@ -232,7 +233,7 @@
 
         <div id="messageForm" class="row">
             <input type="text" id="messageInput" placeholder="Type a message" 
-            ng-model="message.text" ng-keydown="$event.keyCode === 13 && sendMessage()" ng-required="true"/>
+            ng-model="message.text" ng-keydown="$event.keyCode === 13 && sendMessage()"/>
 
             <button class="btn" id="messageButton" ng-click="sendMessage( )">Send</button>
         </div>

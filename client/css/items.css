@@ -58,6 +58,6 @@
   display: inline-block;
 }
 
-#itemForm, #groupForm, #itemForm .form-group input, #groupForm .form-group input{
+.form-group, .form-group input{
 	text-align: left;
 }

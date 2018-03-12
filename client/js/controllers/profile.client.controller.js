@@ -7,6 +7,10 @@ angular.module('myApp').controller('profileController', function( ngDialog, Auth
         
           $scope.user = user
           $scope.originalUser = user
+
+          if( !user.location ){
+            setError( "Please set your location to access the rest of the site" )
+          }
           
           LocationService.getLocations( ).then(function( locations ){
 

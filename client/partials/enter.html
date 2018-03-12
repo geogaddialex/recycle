@@ -17,11 +17,6 @@
                         </div>
 
                         <div class="form-group">
-                <input type="text" name="location" ng-model="registerForm.location" class="form-control loginInput" placeholder="Location" ng-required="true"
-        uib-typeahead="location as location.name for location in locations | filter:$viewValue | orderBy:'name' | limitTo:8">
-                        </div>
-
-                        <div class="form-group">
                             <input type="email" name="email" id="joinEmail" class="form-control loginInput" placeholder="Email Address" 
                             value=""
                             ng-model="registerForm.email"
@@ -34,9 +29,14 @@
                         <div class="form-group">
                             <input type="password" name="confirm-password" id="confirm-password" class="form-control loginInput" placeholder="Confirm Password" ng-model="registerForm.confirmPassword" ng-required="true">
                         </div>
+
+                        <div class="form-group">
+                <input type="text" name="location" ng-model="registerForm.location" class="form-control loginInput" placeholder="Location" ng-required="true"
+        uib-typeahead="location as location.name for location in locations | filter:$viewValue | orderBy:'name' | limitTo:8">
+                        </div>
                         
                         <div class="form-group">
-                            <input type="submit" name="register-submit" id="register-submit" class="form-control button" value="Join" 
+                            <input type="submit" name="register-submit" id="register-submit" class="form-control button loginButton" value="Join" 
                             style="background-color:#BD081C;color:white;font-weight:2px">
                         </div>
 
@@ -51,13 +51,13 @@
                             <input type="password" name="password" id="loginPassword" class="form-control loginInput" placeholder="Password" ng-model="loginForm.password">
                         </div>
                         <div class="form-group">
-                            <input type="submit" name="login-submit" id="login-submit" class="form-control button" value="Log In"
+                            <input type="submit" name="login-submit" id="login-submit" class="form-control button loginButton" value="Log In"
                             style="background-color:#BD081C;color:white;font-weight:2px">
                         </div>
 
                     </form>
 
-                    <div class="form-group">
+                    <div class="form-group loginInput">
                         or
                     </div>
                     <div class="form-group">
@@ -66,12 +66,12 @@
                     </div>
                     <div class="form-group">
                         <a href="/api/auth/facebook">
-                            <input type="button" class="form-control button" style="background-color:#3b5998;color:white;font-weight:2px" value="Continue with Facebook">
+                            <input type="button" class="form-control loginButton button" style="background-color:#3b5998;color:white;font-weight:2px" value="Continue with Facebook">
                         </a>
                     </div>
                     <div class="form-group">
                         <a href="/api/auth/google">
-                            <input type="button" class="form-control button" style="background-color:#4285F4;color:white;font-weight:2px" value="Continue with Google">
+                            <input type="button" class="form-control loginButton button" style="background-color:#4285F4;color:white;font-weight:2px" value="Continue with Google">
                         </a>
                     </div>
 

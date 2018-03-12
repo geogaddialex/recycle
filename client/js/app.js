@@ -1,1 +1,1 @@
-angular.module('myApp', ['ngRoute', 'ngMaterial', 'geolocation', 'ngMessages', 'ngDialog', 'ui.bootstrap'])
+angular.module('myApp', ['ngRoute', 'ngMaterial', 'geolocation', 'ngMessages', 'ngDialog', 'ui.bootstrap', "dahr.ng-haversine" ])

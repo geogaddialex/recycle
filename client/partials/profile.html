@@ -64,10 +64,12 @@
 
             <div class="form-group">
 
-                <h4>Your location</h4>
-
+                <label>Your location</label>
                 <input type="text" name="location" ng-model="user.location" class="form-control"
         uib-typeahead="location as location.name for location in locations | filter:$viewValue | orderBy:'name' | limitTo:8">
+        
+                <label>How many miles do you want to see items within?</label>
+                <input type="number" name="maxDistance" ng-model="user.maxDistance" class="form-control">
 
                 <button ng-click="updateLocation()" class="white">Save</button>
                 <button ng-click="reset()" class="white">Reset</button>
@@ -79,10 +81,10 @@
     <div class="row">
 
         <div class="col-sm-12 col-md-4 whiteDiv profileSection">
-                <h3><span class="fa fa-user"></span> Local</h3>
 
-                    <p ng-if="user.local">
-                        <div class="form-group">
+                <h5>Local</h5>
+
+                        <div class="form-group" ng-if="user.local">
                             <label>Full name</label>
                             <input type="text" ng-model="user.local.name" placeholder="Your full name" class="form-control"/>
                             <label>Email</label>
@@ -91,15 +93,13 @@
                             <button ng-click="resetLocal()" class="white">Reset</button>
                         </div>
 
-                    </p>
-
                     <a ng-if="user.local && (user.facebook || user.google)" href="/api/auth/unlink/local" class="btn btn-danger">Unlink</a>
                     <a ng-if="!user.local" href="/connect/local" class="btn btn-danger">Create Recycle Login</a>
-
         </div>
 
-        <div class="col-sm-12 col-md-4 whiteDiv profileSection">
-                <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
+        <div class="col-sm-12 col-md-4 whiteDiv profileSection facebookSection">
+            <span>
+                <h5 class="text-primary">Facebook</h5>
 
                     <p ng-if="user.facebook.token">
                         <strong>email</strong>: {{ user.facebook.email }}<br>
@@ -108,10 +108,12 @@
 
                     <a ng-if="user.facebook.token" href="/api/auth/unlink/facebook" class="btn btn-danger">Unlink</a>
                     <a ng-if="!user.facebook.token" href="/api/auth/connect/facebook" class="btn btn-danger">Connect Facebook</a>
+                </span>
         </div>
 
-        <div class="col-sm-12 col-md-4 whiteDiv profileSection">
-                <h3 class="text-danger"><span class="fa fa-google-plus"></span> Google+</h3>
+        <div class="col-sm-12 col-md-4 whiteDiv profileSection googleSection">
+            <span>
+                <h5 class="text-danger">Google</h5>
 
                     <p ng-if="user.google.token">
                         <strong>email</strong>: {{ user.google.email }}<br>
@@ -120,7 +122,7 @@
 
                     <a ng-if="user.google.token" href="/api/auth/unlink/google" class="btn btn-danger">Unlink</a>
                     <a ng-if="!user.google.token" href="/api/auth/connect/google" class="btn btn-danger">Connect Google</a>
-        </div>
+        </span></div>
 
     </div>
 

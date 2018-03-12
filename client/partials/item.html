@@ -1,4 +1,4 @@
-<div ng-if="!item">This item does not exist</div>
+<div ng-if="!item" class="alert alert-danger">This item does not exist</div>
 
 <div ng-show="error.message" class="alert alert-danger">{{error.message}}</div>
 
@@ -38,6 +38,8 @@
                 </div>
 
                 <div ng-if="!viewingOwnItem">
+
+                    {{ item.owner.location.name }} ({{ distance }} miles away)
                     
                     <h3>{{ item.name }}</h3>
                     <div class="row">

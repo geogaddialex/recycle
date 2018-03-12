@@ -11,8 +11,13 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http ){
       isValidPassword: isValidPassword,
       isValidEmail: isValidEmail,
       passwordsMatch: passwordsMatch,
-      isEmailTaken: isEmailTaken
+      isEmailTaken: isEmailTaken,
+      metresToMiles: metresToMiles
     });
+
+    function metresToMiles( metres ){
+      return (metres*0.000621371).toFixed(0)
+    }
 
 
     function formatTimestamp( date, format ){

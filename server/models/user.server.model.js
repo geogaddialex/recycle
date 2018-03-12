@@ -6,6 +6,7 @@ var Location = require( './location.server.model' );
 var userSchema = mongoose.Schema({
 
     location: { type: mongoose.Schema.Types.ObjectId, ref: 'Location'},
+    maxDistance: { type: Number, default: 1500 },
 
     local: {
 
