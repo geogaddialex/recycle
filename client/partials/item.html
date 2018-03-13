@@ -44,7 +44,8 @@
                     <h3>{{ item.name }}</h3>
                     <div class="row">
                         <div class="col imageContainer">
-                            <img src="/images/none.jpg" class="itemImage"><br>
+                            <img ng-if="!item.image" src="/images/none.jpg" class="itemImage">
+                            <img ng-if="item.image" src="/images/uploads/{{item.image}}" class="itemImage">
                         </div>
                     </div>
                     <div class="row">

@@ -1,4 +1,4 @@
-angular.module('myApp').controller('tagController', function( AuthService, UserService, TagService, UtilityService, SocketService, $scope, $location ){
+angular.module('myApp').controller('tagController', function( AuthService, UserService, TagService, UtilityService, SocketService, $scope, $location, $haversine ){
 
 	$scope.UtilityService = UtilityService
     $scope.error = {}
@@ -21,14 +21,6 @@ angular.module('myApp').controller('tagController', function( AuthService, UserS
     });
 
     $scope.filterDistance = function( item ){
-
-        if( !item.owner.location ){
-          return true
-        }
-
-        if( !$scope.user.maxDistance ){
-          return true
-        }
 
         var userLocation = {
           "latitude": $scope.user.location.lat,

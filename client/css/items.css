@@ -32,6 +32,12 @@
 	max-width:100%;
 }
 
+.itemImageSmall{
+	max-height: 250px;
+	max-width: 200px;
+	max-width: 100%;
+}
+
 .itemName{
 	margin:5px;
 }

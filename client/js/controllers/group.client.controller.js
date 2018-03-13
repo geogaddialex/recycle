@@ -1,4 +1,4 @@
-angular.module('myApp').controller('groupController', function( $routeParams, $location, $route, $scope, ngDialog, SocketService, ItemService, GroupService, ConversationService, MessageService, AuthService, UtilityService ){
+angular.module('myApp').controller('groupController', function( $routeParams, $location, $route, $scope, $haversine, ngDialog, SocketService, ItemService, GroupService, ConversationService, MessageService, AuthService, UtilityService ){
     
     var groupId = $routeParams.id;
     $scope.UtilityService = UtilityService
@@ -267,14 +267,6 @@ angular.module('myApp').controller('groupController', function( $routeParams, $l
     }
 
     $scope.filterDistance = function( item ){
-
-        if( !item.owner.location ){
-          return true
-        }
-
-        if( !$scope.user.maxDistance ){
-          return true
-        }
 
         var userLocation = {
           "latitude": $scope.user.location.lat,

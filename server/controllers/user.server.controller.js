@@ -41,7 +41,7 @@ exports.listItems = function( req, res ){
 
     var user = req.user;
 
-    Item.find({owner: user}).populate('owner tags').exec( function( err, items ){
+    Item.find({owner: user, removed: false }).populate('owner tags').exec( function( err, items ){
 
         if( err ){
             console.log( "error: " + err );

@@ -13,7 +13,8 @@
 
                     <div class="row">
                         <div class="col imageContainer">
-                            <a href="/items/{{ item._id }}"><img src="/images/none.jpg" class="itemImage"></a><br>
+                            <img ng-if="!item.image" src="/images/none.jpg" class="itemImageSmall">
+                            <img ng-if="item.image" src="/images/uploads/{{item.image}}" class="itemImageSmall">
                         </div>
                     </div>
                     <div class="row">

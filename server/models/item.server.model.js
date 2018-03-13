@@ -9,7 +9,8 @@ var itemSchema = mongoose.Schema({
     location: { type: String },
     createdAt: { type: Date, default: Date.now },
     tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}],
-    image: { type: String }
+    image: { type: String },
+    removed: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model( 'Item', itemSchema );

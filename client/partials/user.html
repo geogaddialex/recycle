@@ -55,12 +55,13 @@
     <div class="row">
                 
         <div ng-if="user.items">
-            <div ng-repeat="item in user.items" class="col-xs-12 col-sm-4 col-md-3 itemContainer">
+            <div ng-repeat="item in user.items | filter: filterDistance" class="col-xs-12 col-sm-4 col-md-3 itemContainer">
                 <div class="item">
 
                     <div class="row">
                         <div class="col imageContainer">
-                            <a href="/items/{{item._id}}"><img src="/images/none.jpg" class="itemImage"></a><br>
+                            <img ng-if="!item.image" src="/images/none.jpg" class="itemImageSmall">
+                            <img ng-if="item.image" src="/images/uploads/{{item.image}}" class="itemImageSmall">                        
                         </div>
                     </div>
                     <div class="row">

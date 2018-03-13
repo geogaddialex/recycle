@@ -162,7 +162,8 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
                         rating: null,
                         comment: null,
                         author: $scope.user,
-                        subject: $scope.otherUser
+                        subject: $scope.otherUser,
+                        exchangeHappened: null
                     }
 
                     if( $scope.userIsSender ){
@@ -454,6 +455,12 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
             amendExchange()
             updateFeedbackScore()
 
+            console.log( "exchangeHappened: " + $scope.feedback.exchangeHappened )
+            if( $scope.feedback.exchangeHappened ){
+
+                removeSwappedItems( $scope.exchange, $scope.userIsSender )
+            }
+
             $scope.feedbackSubmitted = createdFeedback.data
 
             createdFeedback.data.author = $scope.user
@@ -617,6 +624,35 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
         });  
     }
 
+    var removeSwappedItems = function( exchange, userIsSender ){
+
+        var items = userIsSender ? exchange.items.sender : exchange.items.recipient
+
+        console.log( JSON.stringify( items, null, 2))
+        console.log( "length: " + items.length)
+
+
+        for(var x=0; x<items.length; x++){
+
+
+            items[x].removed = true
+
+            console.log("item " + x + ": " + JSON.stringify(items[x],null,2))
+            
+            ItemService.updateItem( items[x] ).then(function(){
+
+                console.log( "removed " + items[x].name )
+
+            },function(){
+
+                console.log( "couldn't remove " + items[x].name )
+
+
+            })
+
+        }
+
+    }
     
     var clearError = function(){
 

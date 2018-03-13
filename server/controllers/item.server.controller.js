@@ -32,7 +32,7 @@ exports.getOne = function( req, res ){
 
 exports.list = function( req, res ){
 
-    Item.find({ })
+    Item.find({ removed: false })
     .populate('tags')
     .populate({ 
         path: 'owner',
@@ -99,7 +99,7 @@ exports.getItemsMatchingSearch = function( req, res ){
 
     var query = req.params.query
 
-    Item.find({ name: { "$regex": query, "$options": "i" } })
+    Item.find({ name: { "$regex": query, "$options": "i" }, removed:false })
     .populate('tags')
     .populate({ 
         path: 'owner',

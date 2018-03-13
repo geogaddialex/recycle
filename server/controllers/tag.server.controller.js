@@ -68,7 +68,15 @@ exports.getItems = function( req, res ){
 
     var tag = req.tag;
 
-    Item.find({ tags: tag._id }).populate('owner tags').exec( function( err, items ){
+    Item.find({ tags: tag._id, removed: false })
+    .populate('tags')
+    .populate({ 
+        path: 'owner',
+        populate: {
+            path: 'location',
+            model: 'Location',
+        } 
+    }).exec( function( err, items ){
 
         if( err ){
             return res.status( 500 );

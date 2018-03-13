@@ -159,8 +159,6 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
               ImageService.uploadImage( item.image ).then( function( newImage ){
 
-                  console.log( JSON.stringify( newImage,null,2))
-
                   item.image = newImage.filename
 
                   ItemService.createItem( item ).then( function( ){ 
@@ -365,14 +363,6 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
     }
 
     $scope.filterDistance = function( item ){
-
-        if( !item.owner.location ){
-          return true
-        }
-
-        if( !$scope.user.maxDistance ){
-          return true
-        }
 
         var userLocation = {
           "latitude": $scope.user.location.lat,

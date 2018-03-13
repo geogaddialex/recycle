@@ -97,8 +97,15 @@ exports.getItems = function( req, res ){
 
     var group = req.group;
 
-    Item.find({ owner : {$in : group.members }})
-    .populate('owner')
+    Item.find({ owner : {$in : group.members }, removed: false})
+    .populate('tags')
+    .populate({ 
+        path: 'owner',
+        populate: {
+            path: 'location',
+            model: 'Location',
+        } 
+    })
     .exec( function( err, items ){
 
         if( err ){

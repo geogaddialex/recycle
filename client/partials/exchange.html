@@ -173,7 +173,7 @@
         
             <div id="feedbackForm" class="row" ng-show="!feedbackSubmitted.timestamp">
 
-                How did you rate this exchange?
+                <label>How did you rate this exchange?</label>
                 <table id="feedbackTable">
                     <tr>
                         <th><span class="glyphicon glyphicon-thumbs-down red"></span></th>
@@ -187,8 +187,24 @@
                     </tr>
                 </table>
 
-               
-                <textarea type="text" rows="3" placeholder="Leave a comment" ng-model="feedback.comment"/></textarea>
+                                <label>Leave a comment</label><br>
+                <textarea type="text" rows="3" cols="50" placeholder="Leave a comment" ng-model="feedback.comment" ng-class="form-control"/></textarea>
+                <br>
+
+                <label>Did you swap items?</label><br>
+
+<!--                  <div class="btn-group" data-toggle="buttons">
+                  <label class="btn btn-primary"> -->
+                    <input type="radio" name="exchangeSuccess" ng-model="feedback.exchangeHappened" value="1">Yes
+<!--                   </label>
+                  <label class="btn btn-primary"> -->
+                    <input type="radio" name="exchangeSuccess" ng-model="feedback.exchangeHappened" value="0">No
+                 <!--  </label>
+                </div> -->
+
+
+                <br>
+
 
                 <button class="btn" ng-click="submitFeedback( )">Submit Feedback</button>
             </div>
