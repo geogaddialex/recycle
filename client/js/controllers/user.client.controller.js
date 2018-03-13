@@ -1,7 +1,12 @@
-angular.module('myApp').controller('userController', function( $routeParams, $location, $scope, ItemService, AuthService, UserService, FeedbackService, UtilityService ){
+angular.module('myApp').controller('userController', function( $routeParams, $location, $scope, ngDialog, ItemService, AuthService, UserService, FeedbackService, UtilityService ){
 
     $scope.UtilityService = UtilityService
     $scope.error = {}
+
+    AuthService.getUser().then( function( user ){
+
+      $scope.userThatsViewing = user
+    })
 
     if( $location.path() == "/users" ){
 
@@ -48,6 +53,24 @@ angular.module('myApp').controller('userController', function( $routeParams, $lo
           setError( "Cannot get user" )
       });
      
+    }
+
+    $scope.showInfo = function( item ){
+
+        ngDialog.open({ 
+
+          template: '/partials/dialog_item_details.html',
+          controller: 'itemDetailsController',
+          data: { item: item, user: $scope.userThatsViewing }
+          
+        })
+
+    }
+
+
+    $scope.showAllFeedback = function( user ){
+
+        $location.path( '/users/'+user._id+'/feedback' )
     }
 
 

@@ -8,6 +8,7 @@ angular.module("myApp").config( function( $routeProvider, $locationProvider ){
 
         .when('/users', { templateUrl: 'partials/users.html', controller: 'userController', restricted: true })
         .when('/users/:user', { templateUrl: 'partials/user.html', controller: 'userController', restricted: true })
+        .when('/users/:user/feedback', { templateUrl: 'partials/feedback.html', controller: 'userController', restricted: true })
 
         .when('/items', { templateUrl: 'partials/items_browse.html', controller: 'itemController', restricted: true })
         .when('/items/add', { templateUrl: 'partials/items_new.html', controller: 'itemController', restricted: true })

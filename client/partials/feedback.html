@@ -1,0 +1,35 @@
+<div class="container-fluid content" id="displayFeedback" ng-if="feedbacks.length > 0">
+
+                <table>
+                    <tr>                       
+                        <th>Rating</th>
+                        <th>Comment</th>
+                        <th>User</th> 
+                        <th>Date</th>
+                    </tr>
+
+                    <tr ng-repeat="feedbackToDisplay in feedbacks  | orderBy : '-timestamp'">
+
+
+                        <td class="feedbackRating">
+                            <span ng-if="feedbackToDisplay.rating === 2" class="glyphicon glyphicon-thumbs-up green"></span>
+                            <span ng-if="feedbackToDisplay.rating === 1" class="glyphicon glyphicon-minus yellow"></span>
+                            <span ng-if="feedbackToDisplay.rating === 0" class="glyphicon glyphicon-thumbs-down red"></span>
+                        </td>
+
+                        <td>"{{ feedbackToDisplay.comment }}"</td> 
+
+                        <td>
+                            <a href="/users/{{feedbackToDisplay.author._id}}">
+                                {{ UtilityService.getUserName( feedbackToDisplay.author ) }}
+                            </a> ({{feedbackToDisplay.author.feedback.score}}% <span class="glyphicon glyphicon-thumbs-up green"></span>)
+                        </td>
+
+
+                        <td>
+                            {{ UtilityService.formatTimestamp(feedbackToDisplay.timestamp, 'short') }}
+                        </td>
+                    </tr>
+                </table>
+
+            </div>

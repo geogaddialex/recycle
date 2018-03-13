@@ -1,4 +1,4 @@
-angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http ){
+angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http, $haversine ){
 
     return ({
       formatTimestamp: formatTimestamp,
@@ -12,7 +12,8 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http ){
       isValidEmail: isValidEmail,
       passwordsMatch: passwordsMatch,
       isEmailTaken: isEmailTaken,
-      metresToMiles: metresToMiles
+      metresToMiles: metresToMiles,
+      calculateDistance: calculateDistance
     });
 
     function metresToMiles( metres ){
@@ -158,6 +159,21 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http ){
       );
 
       return deferred.promise;
+    }
+
+    function calculateDistance( user1, user2 ){
+
+        var user1Location = {
+          "latitude": user1.location.lat,
+          "longitude": user1.location.lng
+        };
+        var user2Location = {
+          "latitude": user2.location.lat,
+          "longitude": user2.location.lng
+        };
+
+        return metresToMiles( $haversine.distance(user1Location, user2Location) )
+
     }
 
 });

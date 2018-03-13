@@ -1,0 +1,50 @@
+<style>
+    .ngdialog{
+        margin-top:-130px;
+    }
+
+    .userInfo{
+        padding:10px;
+    }
+</style>
+
+<div>
+	<h3>{{ item.name }}</h3>
+    <div class="row">
+        <div class="col imageContainer">
+            <img ng-if="!item.image" src="/images/none.jpg" class="itemImage">
+            <img ng-if="item.image" src="/images/uploads/{{item.image}}" class="itemImage">
+        </div>
+    </div>
+    
+    <br>
+
+    <div class="row userInfo" ng-if="item.owner._id != user._id">
+        <div class="col">
+            <a href="/users/{{item.owner._id}}">{{ UtilityService.getUserName( item.owner ) }}</a> (<b>{{ user.feedback.score }}%</b> <span class="glyphicon glyphicon-thumbs-up green"></span> - {{ user.feedback.count }} completed exchanges)
+
+           <br>{{ item.owner.location.name }} ({{ UtilityService.calculateDistance( user, item.owner ) }} miles away)<br>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+              <label for="comment">Description</label>
+              <textarea class="form-control" rows="5" id="comment" readonly>{{item.description}}</textarea>
+            </div> 
+        </div>
+    </div>
+
+
+    <div class="row" ng-if="item.tags.length>0">
+        <div class="col">
+            <div class="form-group">
+                <label>Tags</label><br>
+                <a class="tag" href="/tags/{{tag.name}}" ng-repeat="tag in item.tags">
+                    <span class="glyphicon glyphicon-tag"></span> {{ tag.name }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -32,14 +32,12 @@
 
                         <label for="itemDescription">Description</label>
 
-                        <textarea rows="4" class="form-control" id="itemDescription" placeholder="Item description" ng-model="item.description"></textarea>
+                        <textarea rows="8" class="form-control" id="itemDescription" placeholder="Item description" ng-model="item.description"></textarea>
 
                     </div>
                 </div>
 
                 <div ng-if="!viewingOwnItem">
-
-                    {{ item.owner.location.name }} ({{ distance }} miles away)
                     
                     <h3>{{ item.name }}</h3>
                     <div class="row">
@@ -48,34 +46,48 @@
                             <img ng-if="item.image" src="/images/uploads/{{item.image}}" class="itemImage">
                         </div>
                     </div>
+                                        <br>
+
                     <div class="row">
                         <div class="col">
-                            Belongs to: <a href="/users/{{item.owner._id}}">{{ UtilityService.getUserName( item.owner ) }}</a><br>
+                            <a href="/users/{{item.owner._id}}">{{ UtilityService.getUserName( item.owner ) }}</a> (<b>{{ user.feedback.score }}%</b> <span class="glyphicon glyphicon-thumbs-up green"></span> - {{ user.feedback.count }} completed exchanges)
+
+                           <br>{{ item.owner.location.name }} ({{ UtilityService.calculateDistance( user, item.owner ) }} miles away)<br>
+            
+
                             <a href="/newExchange/{{item.owner._id}}/{{item._id}}">Make an offer</a>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col">
-                            {{item.description}}
+                            <div class="form-group">
+                              <label for="comment">Description</label>
+                              <textarea class="form-control" rows="8" id="comment" readonly>{{item.description}}</textarea>
+                            </div> 
                         </div>
                     </div>
+
+                    
 
                 </div>
             </form>
 
-                
-            <a class="tag" href="/tags/{{tag.name}}" ng-repeat="tag in item.tags">
-                <span class="glyphicon glyphicon-tag"></span> {{ tag.name }}
-                <span ng-if="viewingOwnItem" ng-click="removeTag( tag, $event)" class="glyphicon glyphicon-remove" title="Remove tag"></span>
-            </a>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label ng-if="item.tags.length>0 || tags.length>0">Tags</label><br>
+                                <a class="tag" href="/tags/{{tag.name}}" ng-repeat="tag in item.tags">
+                                    <span class="glyphicon glyphicon-tag"></span> {{ tag.name }}
+                                    <span ng-if="viewingOwnItem" ng-click="removeTag( tag, $event)" class="glyphicon glyphicon-remove" title="Remove tag"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
 
-            
-        </div> 
 
 
-    </div><!-- row -->
-
-    <div ng-if="viewingOwnItem" class="row">
+<div ng-if="viewingOwnItem" class="row">
         <div class="col">
 
             <select id="tagSelect" ng-model="selectedTag" ng-change="selectTag(selectedTag)"> 
@@ -87,12 +99,19 @@
             </select>
 
             <input type="text" ng-model="newTag.name" ng-if="selectedTag=='addTag'">
-            <button ng-click="addTag( newTag.name )" class="whiteBackground">Add</button><br>
+            <button ng-click="addTag( newTag.name )">Add</button><br>
 
 
-            <button ng-click="updateItem()" class="whiteBackground">Save</button>
-            <button ng-click="resetItem()" class="whiteBackground">Reset</button>
+            <button ng-click="updateItem()">Save</button>
+            <button ng-click="resetItem()">Reset</button>
         </div>
     </div>
+            
+        </div> 
+
+
+    </div><!-- row -->
+
+    
     
 </div>

@@ -2,6 +2,7 @@ angular.module('myApp').controller('profileController', function( ngDialog, Auth
 
     $scope.UtilityService = UtilityService
     $scope.error = {}
+    $scope.success = {}
 
       AuthService.getUser( ).then( function( user ){
         
@@ -69,7 +70,7 @@ angular.module('myApp').controller('profileController', function( ngDialog, Auth
 
                         UserService.updateUser( $scope.user ).then( function(){
 
-                            $location.path("/profile");
+                            setSuccess( "Profile updated successfully")
 
                         }, function(){
 
@@ -110,7 +111,7 @@ angular.module('myApp').controller('profileController', function( ngDialog, Auth
 
               UserService.updateUser( $scope.user ).then( function(){
 
-                  $location.path("/profile");
+                  setSuccess( "Location updated successfully")
 
               }, function(){
 
@@ -144,6 +145,10 @@ angular.module('myApp').controller('profileController', function( ngDialog, Auth
 
     }
 
+    $scope.showAllFeedback = function( user ){
+
+        $location.path( '/users/'+user._id+'/feedback' )
+    }
 
     var clearError = function(){
 
@@ -153,7 +158,21 @@ angular.module('myApp').controller('profileController', function( ngDialog, Auth
 
     var setError = function( message ){
 
+      clearSuccess()
       $scope.error.message = message
+
+    }
+
+    var clearSuccess = function(){
+
+      $scope.success.message = undefined
+
+    }
+
+    var setSuccess = function( message ){
+
+      clearError()
+      $scope.success.message = message
 
     }
     

@@ -1,4 +1,5 @@
 <div ng-show="error.message" class="alert alert-danger">{{error.message}}</div>
+<div ng-show="success.message" class="alert alert-success">{{success.message}}</div>
 
 <div class="container">
 
@@ -27,7 +28,7 @@
                         <th>Date</th>
                     </tr>
 
-                    <tr ng-repeat="feedbackToDisplay in feedbacks  | orderBy : '-timestamp'">
+                    <tr ng-repeat="feedbackToDisplay in feedbacks  | orderBy : '-timestamp' | limitTo: 5">
 
 
                         <td class="feedbackRating">
@@ -50,6 +51,9 @@
                         </td>
                     </tr>
                 </table>
+
+                <button ng-if="feedbacks.length> 5" ng-click="showAllFeedback( user )">Show all ({{ feedbacks.length }})</button>
+
 
             </div>
 
@@ -102,7 +106,6 @@
                 <h5 class="text-primary">Facebook</h5>
 
                     <p ng-if="user.facebook.token">
-                        <strong>email</strong>: {{ user.facebook.email }}<br>
                         <strong>name</strong>: {{ user.facebook.name }}<br>
                     </p>
 

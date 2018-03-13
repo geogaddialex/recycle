@@ -350,6 +350,18 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
     }
 
+    $scope.showInfo = function( item ){
+
+        ngDialog.open({ 
+
+          template: '/partials/dialog_item_details.html',
+          controller: 'itemDetailsController',
+          data: { item: item, user: $scope.user }
+          
+        })
+
+    }
+
     $scope.removeTag = function( tag, event ){
 
       event.preventDefault()

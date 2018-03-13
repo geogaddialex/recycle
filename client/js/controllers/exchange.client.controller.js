@@ -475,6 +475,23 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
     }
 
+    $scope.showAllFeedback = function( user ){
+
+        $location.path( '/users/'+user._id+'/feedback' )
+    }
+
+    $scope.showInfo = function( item ){
+
+        ngDialog.open({ 
+
+          template: '/partials/dialog_item_details.html',
+          controller: 'itemDetailsController',
+          data: { item: item, user: $scope.user }
+          
+        })
+
+    }
+
 
     // Private functions -------------------------------------------------------------------------------------------
 
@@ -528,23 +545,6 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
     var updateFeedbackScore = function( ){
 
         clearError()
-
-        // UserService.getUser( $scope.otherUser._id ).then(function( user ){
-
-        //     user.feedback.count += 1
-        //     user.feedback.total = parseFloat( $scope.feedback.rating ) + parseFloat( user.feedback.total )
-        //     user.feedback.score = +((user.feedback.total/user.feedback.count*50).toFixed(2));
-
-        //     UserService.updateUser( user ).then(function(){
-
-
-        //     }, function(){
-
-        //         setError( "Could not update feedback score" )
-        //     })
-
-        // })
-
 
         $scope.otherUser.feedback.count += 1
         $scope.otherUser.feedback.total = parseFloat( $scope.feedback.rating ) + parseFloat( $scope.otherUser.feedback.total )

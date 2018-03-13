@@ -277,7 +277,7 @@
                     <th>Date</th>
                 </tr>
 
-                <tr ng-repeat="feedbackToDisplay in otherUserFeedbacks  | orderBy : '-timestamp'">
+                <tr ng-repeat="feedbackToDisplay in otherUserFeedbacks  | orderBy : '-timestamp' | limitTo: 3 ">
 
                     <td class="feedbackRating">
                         <span ng-if="feedbackToDisplay.rating === 2" class="glyphicon glyphicon-thumbs-up green"></span>
@@ -298,6 +298,8 @@
                     </td>
                 </tr>
             </table>
+
+            <button ng-click="showAllFeedback( otherUser )">Show all ({{ otherUserFeedbacks.length }})</button>
 
         </div>
 

@@ -23,16 +23,8 @@
                     </div>
 
                     <div class="row">
-                        <div class="col itemTags">
-                            <a class="tag" href="/tags/{{tag.name}}" ng-repeat="tag in item.tags">
-                                <span class="glyphicon glyphicon-tag"></span>{{ tag.name }}
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-xs-4">
-                            <a href="/viewInfo/{{ item._id }}"><span class="glyphicon glyphicon-info-sign"></span></a>    
+                            <span title="View info" class="glyphicon glyphicon-info-sign" ng-click="showInfo(item)"></span>
                         </div>
                         <div class="col-xs-4">
                             <a href="/items/{{ item._id }}"><span class="glyphicon glyphicon-pencil"></span></a>

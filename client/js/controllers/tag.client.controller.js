@@ -1,4 +1,4 @@
-angular.module('myApp').controller('tagController', function( AuthService, UserService, TagService, UtilityService, SocketService, $scope, $location, $haversine ){
+angular.module('myApp').controller('tagController', function( AuthService, ngDialog, UserService, TagService, UtilityService, SocketService, $scope, $location, $haversine ){
 
 	$scope.UtilityService = UtilityService
     $scope.error = {}
@@ -11,6 +11,10 @@ angular.module('myApp').controller('tagController', function( AuthService, UserS
 
     	setError( "Cannot get tags" )
 
+    })
+
+    AuthService.getUser().then( function(user){
+      $scope.user = user;
     })
 
     SocketService.on('tag.created', function( tag ){
@@ -36,6 +40,18 @@ angular.module('myApp').controller('tagController', function( AuthService, UserS
 
         return ( distance <= maxDistance )
     };
+
+    $scope.showInfo = function( item ){
+
+        ngDialog.open({ 
+
+          template: '/partials/dialog_item_details.html',
+          controller: 'itemDetailsController',
+          data: { item: item, user: $scope.user }
+          
+        })
+
+    }
 
     var clearError = function(){
 

@@ -283,6 +283,18 @@ angular.module('myApp').controller('groupController', function( $routeParams, $l
         return ( distance <= maxDistance )
     };
 
+    $scope.showInfo = function( item ){
+
+        ngDialog.open({ 
+
+          template: '/partials/dialog_item_details.html',
+          controller: 'itemDetailsController',
+          data: { item: item, user: $scope.user }
+          
+        })
+
+    }
+
     var amendConversation = function( ){
 
         clearError()

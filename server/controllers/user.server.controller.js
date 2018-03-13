@@ -41,7 +41,16 @@ exports.listItems = function( req, res ){
 
     var user = req.user;
 
-    Item.find({owner: user, removed: false }).populate('owner tags').exec( function( err, items ){
+    Item.find({owner: user, removed: false })
+    .populate('tags')
+    .populate({ 
+        path: 'owner',
+        populate: {
+            path: 'location',
+            model: 'Location',
+        } 
+    })
+    .exec( function( err, items ){
 
         if( err ){
             console.log( "error: " + err );
@@ -106,7 +115,7 @@ exports.lookupUser = function(req, res, next) {
 
     var id = req.params.id;
 
-    User.findOne({ '_id': id }, function( err, user ){
+    User.findOne({ '_id': id }).populate('location').exec( function( err, user ){
         if( err ){  
             console.log( err ); 
             return res.status(500).json({ errors: "Could not retrieve user" });
