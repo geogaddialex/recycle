@@ -4,13 +4,15 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', users.list );
+router.patch('/:id', users.update );
+router.put('/:id', users.update );
+
 router.get('/byEmail/:email', users.lookupUserByEmail, function( req, res ){ res.json( req.user ); });
 router.get('/:id', users.lookupUser, function( req, res ){ res.json( req.user ); });
 router.get('/:id/items', users.lookupUser, users.listItems );
 router.get('/:id/exchanges', users.lookupUser, users.listExchanges );
 router.get('/:id/feedback', users.lookupUser, users.listFeedback );
 router.get('/:id/groups', users.lookupUser, users.listGroups );
-router.patch('/:id', users.update );
-router.delete('/:id', users.lookupUser, function( req, res ){ });
+
 
 module.exports = router;

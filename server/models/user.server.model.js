@@ -43,6 +43,19 @@ var userSchema = mongoose.Schema({
 
 });
 
+userSchema.pre('validate', function( next ){
+
+  if( !(this.local || this.facebook || this.google) ){
+    
+    this.invalidate('local', 'User must have at least one of local, facebook or google login details', this.local);  
+
+  }else{
+  
+    next();
+  }
+
+});
+
 
 userSchema.methods.generateHash = function(password) {
 

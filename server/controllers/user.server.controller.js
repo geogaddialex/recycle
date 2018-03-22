@@ -26,14 +26,14 @@ exports.update = function( req, res ){
 
     var id = req.params.id;
 
-    User.findByIdAndUpdate(id, { $set: req.body }, (err, user) => {  
+    User.findByIdAndUpdate(id, { $set: req.body }, {new: true}, (err, user) => {  
 
         if( err ){
             console.log( "error: " + err );
             return res.status(500).json({ errors: "Could not update user" });
         } 
 
-        res.status( 200 ).json( user );
+        res.status( 200 ).json({ message: "User updated!", user });
     });
 };
 
