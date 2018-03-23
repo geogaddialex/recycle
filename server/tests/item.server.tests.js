@@ -2,6 +2,8 @@ process.env.NODE_ENV = 'test';
 let server = require('../../server');
 let Item = require('../models/item.server.model');
 let User = require('../models/user.server.model');
+let Conversation = require('../models/conversation.server.model');
+let Group = require('../models/group.server.model');
 
 let mongoose = require("mongoose");
 let Mockgoose = require('mockgoose').Mockgoose;
@@ -21,10 +23,32 @@ let user = new User({
     }
 })
 
+let conversation = new Conversation({
+    users: [ user ]
+})
+
+let group = new Group({
+    name: "group name",
+    members: [user],
+    conversation: conversation
+})
+
 before( function(done){
 
     user.save(function (err) { done(err) })
 })
+
+before( function(done){
+
+    conversation.save(function (err) { done(err) })
+})
+
+before( function(done){
+
+    group.save(function (err) { done(err) })
+})
+
+
 
 
 
@@ -67,35 +91,58 @@ describe('\nItem tests----------------------------------------------------------
                 .send( item )
                 .end((err, res) => {
 
-                    res.should.have.status(200);
+                    console.log( JSON.stringify( res.body,null,2))
+
+                    res.should.have.status(500);
                     res.body.should.be.a('object');
                     res.body.should.have.property('errors');
-                    res.body.errors.name.should.have.property('kind').eql('required');
-                  done();
-                });
-        });
-
-
-        it('it should not POST an item without a condition', (done) => {
-            
-            let item = {
-                name: "chair",
-                owner: user
-            }
-
-            chai.request(server)
-                .post( '/api/items' )
-                .send( item )
-                .end((err, res) => {
-
-                    res.should.have.status(200);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('errors');
-                    res.body.errors.condition.should.have.property('kind').eql('required');
                     done();
                 });
         });
 
+
+        it('it should not POST an item with a name of length < 3', (done) => {
+            
+            let item = {
+                condition: "New",
+                owner: user,
+                name: "a"
+            }
+
+            chai.request(server)
+                .post( '/api/items' )
+                .send( item )
+                .end((err, res) => {
+
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                    done();
+                });
+        });
+
+        it('it should not POST an item with a name of length > 30', (done) => {
+            
+            let item = {
+                condition: "New",
+                owner: user,
+                name: "12345123451234512345123451234512345"
+            }
+
+            chai.request(server)
+                .post( '/api/items' )
+                .send( item )
+                .end((err, res) => {
+
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                    done();
+                });
+        });
+
+
+
         it('it should not POST an item without a condition', (done) => {
             
             let item = {
@@ -108,10 +155,48 @@ describe('\nItem tests----------------------------------------------------------
                 .send( item )
                 .end((err, res) => {
 
-                    res.should.have.status(200);
+                    res.should.have.status(500);
                     res.body.should.be.a('object');
                     res.body.should.have.property('errors');
-                    res.body.errors.condition.should.have.property('kind').eql('required');
+                    done();
+                });
+        });
+
+        it('it should not POST an item with an invalid condition', (done) => {
+            
+            let item = {
+                name: "chair",
+                owner: user,
+                condition: "invalid"
+            }
+
+            chai.request(server)
+                .post( '/api/items' )
+                .send( item )
+                .end((err, res) => {
+
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                    done();
+                });
+        });
+
+        it('it should not POST an item without an owner', (done) => {
+            
+            let item = {
+                name: "chair",
+                condition: "New"
+            }
+
+            chai.request(server)
+                .post( '/api/items' )
+                .send( item )
+                .end((err, res) => {
+
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
                   done();
                 });
         });
@@ -130,7 +215,6 @@ describe('\nItem tests----------------------------------------------------------
                 .send(item)
                 .end((err, res) => {
 
-                    console.log(JSON.stringify(res.body,null,2))
                     res.should.have.status(200);
                     res.body.item.should.be.a('object');  
                     res.body.item.should.have.property('name');
@@ -177,6 +261,27 @@ describe('\nItem tests----------------------------------------------------------
 
     describe('/PUT/item/:id', () => {
 
+        it('it should not UPDATE an item with an invalid condition', (done) => {
+
+            let item = new Item({
+                owner: user,
+                name: "Some item name",
+                condition: "New"
+            })
+
+            item.save((err, item) => {
+                    chai.request(server)
+                    .put('/api/items/' + item._id)
+                    .send({ condition: "different" })
+                    .end((err, res) => {
+                        res.should.have.status(500);
+                        res.body.should.be.a('object');
+                        res.body.should.have.property('errors');
+                      done();
+                    });
+              });
+        });
+
         it('it should UPDATE an item given the id', (done) => {
 
             let item = new Item({
@@ -198,6 +303,8 @@ describe('\nItem tests----------------------------------------------------------
                     });
               });
         });
+
+
 
     });
 
@@ -230,7 +337,7 @@ describe('\nItem tests----------------------------------------------------------
     });
 
 
-    describe('/GET/items/forUser/:id', () => {
+    describe('/GET/items/user/:id', () => {
 
         it('it should GET all items owned by the specified user', (done) => {
 
@@ -242,7 +349,7 @@ describe('\nItem tests----------------------------------------------------------
 
             item.save((err, item) => {
                 chai.request(server)
-                .get('/api/items/forUser/' + user._id)
+                .get('/api/items/user/' + user._id)
                 .send(item)
                 .end((err, res) => {
                     res.should.have.status(200);
@@ -258,5 +365,68 @@ describe('\nItem tests----------------------------------------------------------
     });
 
 
+    // this can't find the group, maybe it's not going into the db
+
+    // describe('/GET/items/group/:id', () => {
+
+    //     it('it should GET all items owned by members of the specified group', (done) => {
+
+    //         let item = new Item({
+    //             owner: user,
+    //             name: "Some item name",
+    //             condition: "New"
+    //         })
+
+    //         console.log( "group: " + JSON.stringify( group,null,2))
+    //         console.log( "conversation: " + JSON.stringify( conversation,null,2))
+    //         console.log( "user: " + JSON.stringify( user,null,2))
+
+    //         item.save((err, item) => {
+    //             chai.request(server)
+    //             .get('/api/items/group/' + group._id)
+    //             .send(item)
+    //             .end((err, res) => {
+    //                 res.should.have.status(200);
+    //                 res.body.items.should.be.a('array');
+    //                 res.body.items.length.should.be.eql(1);
+    //                 done();
+    //             });
+    //         });
+    //     });
+
+    // });
+
+
+});
+
+after( function(done){   
+
+    User.remove({}, (err) => {
+        done()
+    })
+
+});
+
+after( function(done){   
+
+    Group.remove({}, (err) => {
+        done()
+    })
+
+});
+
+after( function(done){   
+
+    Conversation.remove({}, (err) => {
+        done()
+    })
+
+});
+
+after( function(done){   
+
+    Item.remove({}, (err) => {
+        done()
+    })
 
 });

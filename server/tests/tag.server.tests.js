@@ -63,6 +63,44 @@ describe('\nTag tests-----------------------------------------------------------
                 });
         });
 
+        it('it should not POST a tag with name length > 15', (done) => {
+
+            
+            let tag = {
+                name: "1234123412341234"
+            }
+
+            chai.request(server)
+                .post( '/api/tags' )
+                .send( tag )
+                .end((err, res) => {
+
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                    done();
+                });
+        });
+
+        it('it should not POST a tag with name length < 3', (done) => {
+
+            
+            let tag = {
+                name: "ab"
+            }
+
+            chai.request(server)
+                .post( '/api/tags' )
+                .send( tag )
+                .end((err, res) => {
+                    
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                    done();
+                });
+        });
+
 
         it('it should POST a tag ', (done) => {
             

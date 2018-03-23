@@ -231,6 +231,12 @@ describe('\nGroup tests---------------------------------------------------------
 
     });
 
+
+
+    //get groups for user
+
+    
+
 });
 
 after( function(done){

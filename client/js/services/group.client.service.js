@@ -67,7 +67,7 @@ angular.module( 'myApp' ).factory( 'GroupService', function( $q, $timeout, $http
     function getItemsForGroup( id ){
        
       var deferred = $q.defer();
-      var url = '/api/groups/'+id+'/items'
+      var url = '/api/items/group/'+id
 
       $http.get( url ).then(
         function successCallback( res ) {

@@ -6,6 +6,7 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http, $haver
       isValidMessage: isValidMessage,
       isValidUserName: isValidUserName,
       isValidItemName: isValidItemName,
+      isValidItemDescription: isValidItemDescription,
       isValidTagName: isValidTagName,
       isValidGroupName: isValidGroupName,
       isValidPassword: isValidPassword,
@@ -56,6 +57,12 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http, $haver
         if (!name) return false
 
         return ( name.length > 2 && name.length < 31 ) ? true : false
+        
+    }
+
+    function isValidItemDescription( desc ){
+
+        return ( !desc || desc.length < 500  ) ? true : false
         
     }
 

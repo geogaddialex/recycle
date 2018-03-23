@@ -146,7 +146,11 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
             setError("Not a valid item name, names must be between 3 and 30 characters")
 
-        }else if( !$scope.newItem.condition ){
+        }else if( !UtilityService.isValidItemDescription( $scope.newItem.description )){
+
+            setError("Not a valid item description, they must be less than 500 characters")
+
+        }else if( !item.condition ){
 
             setError("Please select an item condition")
 
@@ -158,9 +162,27 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
             }).then(function (success) {
 
-              ImageService.uploadImage( item.image ).then( function( newImage ){
+              if( item.image ){
 
-                  item.image = newImage.filename
+                  ImageService.uploadImage( item.image ).then( function( newImage ){
+
+                      item.image = newImage.filename
+
+                      ItemService.createItem( item ).then( function( ){ 
+
+                          $location.path("/myItems");
+
+                      }, function(){
+
+                          setError("Item not created" );
+                      })
+
+                  }, function(){
+
+                      setError("Image couldn't be uploaded")
+                  })
+
+              }else{
 
                   ItemService.createItem( item ).then( function( ){ 
 
@@ -171,10 +193,9 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
                       setError("Item not created" );
                   })
 
-              }, function(){
+              }
 
-                  setError("Image couldn't be uploaded")
-              })
+              
 
 
             }, function (error) {

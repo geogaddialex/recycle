@@ -6,7 +6,6 @@ var router = express.Router();
 router.post('/', tags.create );
 router.get('/', tags.list );
 router.get('/:tag', tags.lookupTag, function( req, res ){ res.json( req.tag ) });
-router.get('/:tag/items', tags.lookupTag, tags.getItems );
 
 
 module.exports = router;

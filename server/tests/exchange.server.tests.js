@@ -6,6 +6,7 @@ let User = require('../models/user.server.model');
 let Item = require('../models/item.server.model');
 let Notification = require('../models/notification.server.model');
 let Tag = require('../models/tag.server.model');
+let Conversation = require('../models/conversation.server.model');
 
 var Mongoose = require("mongoose").Mongoose;
 var mongoose = new Mongoose();
@@ -26,7 +27,11 @@ let user = new User({
 let item = new Item({
     name: "myItem",
     owner: user,
-    condition: "new"
+    condition: "New"
+})
+
+let conversation = new Conversation({
+    users: [ user ]
 })
 
 before( function(done){
@@ -39,6 +44,10 @@ before( function(done){
     item.save(function (err) { done(err) })
 })
 
+before( function(done){
+
+    conversation.save(function (err) { done(err) })
+})
 
 describe('\nExchange tests-----------------------------------------------------------------------\n', () => {
 
@@ -72,11 +81,14 @@ describe('\nExchange tests------------------------------------------------------
         it('it should not POST an exchange without any items', (done) => {
 
             
-            let exchange = {
+            let exchange = new Exchange({
                 items: { sender: [], recipient: [] },
                 sender: user,
-                recipient: user
-            }
+                lastUpdatedBy: user,
+                recipient: user,
+                conversation: conversation,
+                status: "In progress"
+            })
 
             chai.request(server)
                 .post( '/api/exchanges' )
@@ -87,7 +99,7 @@ describe('\nExchange tests------------------------------------------------------
                     res.body.should.be.a('object');
                     res.body.should.have.property('errors');
 
-                  done();
+                    done();
                 });
         });
 
@@ -95,10 +107,13 @@ describe('\nExchange tests------------------------------------------------------
         it('it should not POST an exchange without a sender', (done) => {
 
             
-            let exchange = {
-                items: { sender: [new ObjectId('4edd40c86762e0fb12000003')], recipient: [new ObjectId('4edd40c86762e0fb12000004'),new ObjectId('4edd40c86762e0fb12000005')] },
-                recipient: user
-            }
+            let exchange = new Exchange({
+                items: { sender: [item], recipient: [item, item] },
+                lastUpdatedBy: user,
+                recipient: user,
+                conversation: conversation,
+                status: "In progress"
+            })
 
             chai.request(server)
                 .post( '/api/exchanges' )
@@ -117,10 +132,36 @@ describe('\nExchange tests------------------------------------------------------
         it('it should not POST an exchange without a recipient', (done) => {
 
             
-            let exchange = {
-                items: { sender: [new ObjectId('4edd40c86762e0fb12000003')], recipient: [new ObjectId('4edd40c86762e0fb12000004'),new ObjectId('4edd40c86762e0fb12000005')] },
-                sender: user
-            }
+            let exchange = new Exchange({
+                items: { sender: [item], recipient: [item, item] },
+                sender: user,
+                lastUpdatedBy: user,
+                conversation: conversation,
+                status: "In progress"
+            })
+
+            chai.request(server)
+                .post( '/api/exchanges' )
+                .send( exchange )
+                .end((err, res) => {
+
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                  done();
+                });
+        });
+
+        it('it should not POST an exchange without a conversation', (done) => {
+
+            
+            let exchange = new Exchange({
+                items: { sender: [item], recipient: [item, item] },
+                recipient: user,
+                sender: user,
+                lastUpdatedBy: user,
+                status: "In progress"
+            })
 
             chai.request(server)
                 .post( '/api/exchanges' )
@@ -137,11 +178,14 @@ describe('\nExchange tests------------------------------------------------------
 
         it('it should POST an exchange', (done) => {
             
-            let exchange = {
-                items: { sender: [new ObjectId('4edd40c86762e0fb12000003')], recipient: [new ObjectId('4edd40c86762e0fb12000003'),new ObjectId('4edd40c86762e0fb12000003')] },
+            let exchange = new Exchange({
+                items: { sender: [item], recipient: [item, item] },
                 sender: user,
-                recipient: user
-            }
+                lastUpdatedBy: user,
+                recipient: user,
+                conversation: conversation,
+                status: "In progress"
+            })
 
             chai.request(server)
                 .post('/api/exchanges')
@@ -167,9 +211,12 @@ describe('\nExchange tests------------------------------------------------------
         it('it should GET an exchange by the given id', (done) => {
             
             let exchange = new Exchange({
-                items: { sender: [new ObjectId('4edd40c86762e0fb12000003')], recipient: [new ObjectId('4edd40c86762e0fb12000003'),new ObjectId('4edd40c86762e0fb12000003')] },
+                items: { sender: [item], recipient: [item, item] },
                 sender: user,
-                recipient: user
+                lastUpdatedBy: user,
+                recipient: user,
+                conversation: conversation,
+                status: "In progress"
             })
 
             exchange.save((err, exchange) => {
@@ -195,13 +242,42 @@ describe('\nExchange tests------------------------------------------------------
 
     describe('/PUT/exchanges/:id', () => {
 
+        it('it should not UPDATE an exchange with an invalid status', (done) => {
+
+            let exchange = new Exchange({
+                items: { sender: [item], recipient: [item, item] },
+                sender: user,
+                lastUpdatedBy: user,
+                recipient: user,
+                conversation: conversation,
+                status: "In progress"
+            })
+
+            exchange.save((err, exchange) => {
+
+                    chai.request(server)
+                    .put('/api/exchanges/' + exchange._id)
+                    .send({ status: "different" })
+                    .end((err, res) => {
+
+                        res.should.have.status(500);
+                        res.body.should.be.a('object');
+                        res.body.should.have.property('errors');
+
+                        done();
+                    });
+              });
+        });
+
         it('it should UPDATE an exchange given the id', (done) => {
 
             let exchange = new Exchange({
                 items: { sender: [item], recipient: [item, item] },
                 sender: user,
                 lastUpdatedBy: user,
-                recipient: user
+                recipient: user,
+                conversation: conversation,
+                status: "In progress"
             })
 
             exchange.save((err, exchange) => {
@@ -233,7 +309,9 @@ describe('\nExchange tests------------------------------------------------------
                 items: { sender: [item], recipient: [item, item] },
                 sender: user,
                 lastUpdatedBy: user,
-                recipient: user
+                recipient: user,
+                conversation: conversation,
+                status: "In progress"
             })
 
             exchange.save((err, item) => {
@@ -290,6 +368,14 @@ after( function(done){
 after( function(done){
 
     Tag.remove({}, (err) => {
+        done()
+    })
+
+});
+
+after( function(done){
+
+    Conversation.remove({}, (err) => {
         done()
     })
 

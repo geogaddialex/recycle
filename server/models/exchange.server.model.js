@@ -8,7 +8,7 @@ var exchangeSchema = mongoose.Schema({
 
 	recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 	sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-	lastUpdatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+	lastUpdatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 	created: { type: Date, default: Date.now },
 	lastModified: { type: Date, default: Date.now },
 
@@ -17,10 +17,13 @@ var exchangeSchema = mongoose.Schema({
 		recipient: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }]
 	},
 	
-    conversation: { type: mongoose.Schema.Types.ObjectId, ref: 'Conversation' },
+    conversation: { type: mongoose.Schema.Types.ObjectId, ref: 'Conversation', required: true },
 
-    accepted: { recipient:0, sender: 0 },
-    status: {type: String, default: 'In progress'},
+    accepted: { 
+    	recipient: { type: Number, default: 0 },
+    	sender: { type: Number, default: 1 }
+    },
+    status: {type: String, enum: ['In progress', 'Completed', 'Cancelled'], required: true},
 
     feedback:  { 
 		sender: { type: mongoose.Schema.Types.ObjectId, ref: 'Feedback' },

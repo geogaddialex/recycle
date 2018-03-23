@@ -10,7 +10,5 @@ router.put('/:id', groups.update );
 router.get('/forUser/:id', users.lookupUser, groups.forUser );
 
 router.get('/:id', groups.lookupGroup, function( req, res ){ res.json( req.group ); });
-router.get('/:id/items', groups.lookupGroup, groups.getItems );
-
 
 module.exports = router;

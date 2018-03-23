@@ -2,7 +2,7 @@ var Conversation = require( '../models/conversation.server.model' );
 
 exports.create = function( req, res ){
 
-    var conversation = new Conversation({ users: req.body.users, messages: [] });
+    var conversation = new Conversation({ messages: [] });
 
     conversation.save( function( err ){
         if( err ){
@@ -22,7 +22,7 @@ exports.create = function( req, res ){
 
 exports.update = function( req, res ){
 
-    Conversation.findByIdAndUpdate(req.params.id, { $set: req.body }, {new: true})
+    Conversation.findByIdAndUpdate(req.params.id, { $set: req.body }, {new: true, runValidators: true})
     .populate({path: 'messages', populate: { path: 'sender' }})
     .exec( function(err, conversation){  
 

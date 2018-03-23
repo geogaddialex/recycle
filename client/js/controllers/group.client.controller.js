@@ -110,12 +110,7 @@ angular.module('myApp').controller('groupController', function( $routeParams, $l
 
           }).then(function (success) {
 
-              var conversationToCreate = {
-
-                users: group.members
-              }
-
-              ConversationService.createConversation( conversationToCreate ).then(function( createdConversation ){
+              ConversationService.createConversation( ).then(function( createdConversation ){
 
                   group.conversation = createdConversation.data;
 

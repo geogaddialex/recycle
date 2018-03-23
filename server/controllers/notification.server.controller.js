@@ -36,7 +36,7 @@ exports.update = function( req, res ){
 
     var id = req.params.id;
 
-    Notification.findByIdAndUpdate(id, { $set: req.body }, {new: true}, (err, notification) => {  
+    Notification.findByIdAndUpdate(id, { $set: req.body }, {new: true, runValidators: true}, (err, notification) => {  
 
         if( err ){
             console.log( "error: " + err );

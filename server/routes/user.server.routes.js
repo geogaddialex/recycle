@@ -6,7 +6,6 @@ var router = express.Router();
 router.get('/', users.list );
 router.put('/:id', users.update );
 
-router.get('/byEmail/:email', users.lookupUserByEmail, function( req, res ){ res.json( req.user ); });
 router.get('/:id', users.lookupUser, function( req, res ){ res.json( req.user ); });
 
 module.exports = router;

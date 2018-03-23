@@ -26,7 +26,7 @@ exports.update = function( req, res ){
 
     var id = req.params.id;
 
-    User.findByIdAndUpdate(id, { $set: req.body }, {new: true}, (err, user) => {  
+    User.findByIdAndUpdate(id, { $set: req.body }, {new: true, runValidators: true}, (err, user) => {  
 
         if( err ){
             console.log( "error: " + err );
@@ -46,25 +46,6 @@ exports.lookupUser = function(req, res, next) {
     User.findOne({ '_id': id }).populate('location').exec( function( err, user ){
         if( err ){  
             console.log( err ); 
-            return res.status(500).json({ errors: "Could not retrieve user" });
-        }
-
-        if( !user ){
-            console.log( "No user found" );
-            return res.status(404).json({ errors: "No such user" });
-        } 
-        
-        req.user = user;
-        next();
-    });
-}
-
-exports.lookupUserByEmail = function(req, res, next) {
-
-    User.findOne({ 'local.email' :  req.params.email }, function( err, user ){
-
-        if( err ){  
-            console.log( "Error: " + err ); 
             return res.status(500).json({ errors: "Could not retrieve user" });
         }
 

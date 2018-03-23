@@ -36,7 +36,7 @@ exports.create = function( req, res ){
 
 exports.update = function( req, res ){
 
-    Group.findByIdAndUpdate(req.params.id, { $set: req.body }, {new: true}).
+    Group.findByIdAndUpdate(req.params.id, { $set: req.body }, {new: true, runValidators: true}).
     populate('members conversation')
     .exec(function( err, group ){  
 
@@ -49,30 +49,6 @@ exports.update = function( req, res ){
     });
 };
 
-
-exports.getItems = function( req, res ){
-
-    var group = req.group;
-
-    Item.find({ owner : {$in : group.members }, removed: false})
-    .populate('tags')
-    .populate({ 
-        path: 'owner',
-        populate: {
-            path: 'location',
-            model: 'Location',
-        } 
-    })
-    .exec( function( err, items ){
-
-        if( err ){
-            return res.status( 500 );
-        }
-        
-        res.status( 200 ).json({ items: items });
-            
-    })
-}
 
 exports.lookupGroup = function(req, res, next) {
 

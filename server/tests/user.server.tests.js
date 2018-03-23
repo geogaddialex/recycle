@@ -20,11 +20,6 @@ describe('\nUser tests----------------------------------------------------------
         });     
     });
 
-/*
-* Test the /GET route
-*/
-
-    //should get empty array
     describe('/GET all users', () => {
         it('it should GET all the users', (done) => {
           chai.request(server)
@@ -39,10 +34,7 @@ describe('\nUser tests----------------------------------------------------------
     });
 
 
-/*
-* Test the /GET/:id route
-*/
-    describe('/GET/:id user', () => {
+    describe('/GET/user/:id', () => {
 
         it('it should GET a user by the given id', (done) => {
 
@@ -64,6 +56,8 @@ describe('\nUser tests----------------------------------------------------------
                     res.should.have.status(200);
                     res.body.should.be.a('object');  
                     res.body.local.should.have.property('name');
+                    res.body.local.should.have.property('email');
+                    res.body.local.should.have.property('password');
                     res.body.should.have.property('_id').eql(user.id);
                   done();
                 });
@@ -73,10 +67,8 @@ describe('\nUser tests----------------------------------------------------------
     });
 
 
-/*
-* Test the /PUT/:id route
-*/
-    describe('/PUT/:id user', () => {
+
+    describe('/PUT/user/:id', () => {
 
         it('it should UPDATE a user given the id', (done) => {
 

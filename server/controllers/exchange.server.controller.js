@@ -68,7 +68,7 @@ exports.create = function( req, res ){
 
 exports.update = function( req, res ){
 
-    Exchange.findByIdAndUpdate(req.params.id, { $set: req.body }, {new: true}) 
+    Exchange.findByIdAndUpdate(req.params.id, { $set: req.body }, {new: true, runValidators: true}) 
         .populate('recipient sender items.sender items.recipient conversation conversation.messages')
         .exec( function( err, exchange ){  
 

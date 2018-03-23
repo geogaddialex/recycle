@@ -4,7 +4,6 @@ var Message = require( './message.server.model' );
 
 var conversationSchema = mongoose.Schema({
 
-	users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 	messages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Message' }],
 	initiated: { type: Date, default: Date.now }
 	

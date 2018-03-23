@@ -30,63 +30,6 @@ exports.create = function( req, res ){
     });
 };
 
-exports.delete = function( req, res ){
-
-    var id = req.params.id;
-
-    Tag.findByIdAndRemove(id, (err, tag) => {  
-
-        if( err ){
-            console.log( "error: " + err );
-            return res.status(500).json({ errors: "Could not delete tag" });
-        } 
-
-        console.log("tag deleted: " + tag);
-        res.status( 200 ).json({tag: tag});
-    });
-
-};
-
-exports.update = function( req, res ){
-
-    var id = req.params.id;
-
-    Tag.findByIdAndUpdate(id, { $set: req.body }, (err, tag) => {  
-
-        if( err ){
-            console.log( "error: " + err );
-            return res.status(500).json({ errors: "Could not update tag" });
-        } 
-
-        console.log("tag updated: " + tag);
-        res.status( 200 ).json({ message: "Tag updated!", tag });
-    });
-};
-
-
-exports.getItems = function( req, res ){
-
-    var tag = req.tag;
-
-    Item.find({ tags: tag._id, removed: false })
-    .populate('tags')
-    .populate({ 
-        path: 'owner',
-        populate: {
-            path: 'location',
-            model: 'Location',
-        } 
-    }).exec( function( err, items ){
-
-        if( err ){
-            return res.status( 500 );
-        }
-        
-        res.json({items: items});
-            
-    })
-};
-
 
 exports.lookupTag = function(req, res, next) {
 

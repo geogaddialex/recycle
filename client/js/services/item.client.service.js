@@ -75,7 +75,7 @@ angular.module( 'myApp' ).factory( 'ItemService', function( $q, $timeout, $http 
     function getItemsBelongingTo( id ){
        
       var deferred = $q.defer();
-      var url = '/api/users/'+id+'/items'
+      var url = '/api/items/user/'+id
 
       $http.get( url ).then(
         function successCallback( res ) {
@@ -103,7 +103,7 @@ angular.module( 'myApp' ).factory( 'ItemService', function( $q, $timeout, $http 
     function getItemsWithTag( tag ){
        
       var deferred = $q.defer();
-      var url = '/api/tags/'+tag+'/items'
+      var url = '/api/items/tag/'+tag
 
       $http.get( url ).then(
         function successCallback( res ) {

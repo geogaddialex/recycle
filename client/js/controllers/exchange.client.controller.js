@@ -21,6 +21,7 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
                 lastUpdatedBy: $scope.user,
                 items: { sender: [], recipient: [] },
                 accepted: { sender: true, recipient: false },
+                status: "In progress"
             }  
 
             $scope.options = {
@@ -245,40 +246,48 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
         
         clearError()
 
-        ngDialog.openConfirm({ 
+        if( !exchange.recipient ){
 
-            template: '/partials/dialog_create_exchange.html'
+            setError( "Please select a user to send the offer to" )
 
-        }).then(function (success) {
+        }else if( exchange.items.recipient.length < 1 && exchange.items.recipient.length < 1 ){
 
-            var conversationToCreate = {
+            setError( "At least one item must be selected to send an offer (you can request or offer an item for nothing in return)" )
 
-                users: [ exchange.sender, exchange.recipient ]
-            }
+        }else{
 
-            ConversationService.createConversation( conversationToCreate ).then(function( createdConversation ){
+            ngDialog.openConfirm({ 
 
-                exchange.conversation = createdConversation.data;
+                template: '/partials/dialog_create_exchange.html'
 
-                ExchangeService.createExchange( exchange ).then( function( ){ 
+            }).then(function (success) {
 
-                    $location.path("/myExchanges");
+                ConversationService.createConversation( ).then(function( createdConversation ){
+
+                    exchange.conversation = createdConversation.data.conversation;
+                    ExchangeService.createExchange( exchange ).then( function( ){ 
+
+                        $location.path("/myExchanges");
+
+                    }, function(){
+                        
+                        setError( "Could not send offer" )
+
+                    })
 
                 }, function(){
-                    
+
                     setError( "Could not send offer" )
 
                 })
 
-            }, function(){
-
-                setError( "Could not send offer" )
+            }, function(error){
 
             })
 
-        }, function(error){
+        }
 
-        })
+        
  
 
     }

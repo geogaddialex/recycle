@@ -56,7 +56,6 @@ describe('\nConversation tests--------------------------------------------------
         it('it should POST a conversation ', (done) => {
             
             let conversation = {
-                users: [ user ],
                 messages: [ message ]
             }
 
@@ -67,7 +66,6 @@ describe('\nConversation tests--------------------------------------------------
 
                     res.should.have.status(201);
                     res.body.conversation.should.be.a('object');  
-                    res.body.conversation.should.have.property('users');
                     res.body.conversation.should.have.property('messages');
                     res.body.should.have.property('message').eql('Conversation successfully added!');
 
@@ -87,7 +85,6 @@ describe('\nConversation tests--------------------------------------------------
         it('it should GET a conversation by the given id', (done) => {
             
             let conversation = new Conversation({
-                users: [ user ],
                 messages: [ message ]
             })
 
@@ -99,7 +96,6 @@ describe('\nConversation tests--------------------------------------------------
 
                     res.should.have.status(200);
                     res.body.should.be.a('object');  
-                    res.body.should.have.property('users');
                     res.body.should.have.property('_id').eql(conversation.id);
                   done();
                 });
@@ -118,7 +114,6 @@ describe('\nConversation tests--------------------------------------------------
         it('it should UPDATE an conversation given the id', (done) => {
 
             let conversation = new Conversation({
-                users: [ user ],
                 messages: [ message ]
             })
 

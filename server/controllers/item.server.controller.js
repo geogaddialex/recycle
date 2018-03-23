@@ -59,7 +59,7 @@ exports.create = function( req, res ){
     item.save( function( err ){
         if( err ){
             console.log( "error: " + err );
-            return res.send(err);
+            return res.status(500).json({ errors: "Could not create item" });
         } 
 
         var socketio = req.app.get('socketio');
@@ -82,7 +82,7 @@ exports.update = function( req, res ){
 
     var id = req.params.id;
 
-    Item.findByIdAndUpdate(id, { $set: req.body }, {new: true}, (err, item) => {  
+    Item.findByIdAndUpdate(id, { $set: req.body }, {new: true, runValidators: true}, (err, item) => {  
 
         if( err ){
             console.log( "error: " + err );
@@ -118,7 +118,54 @@ exports.forUser = function( req, res ){
     })
 }
 
-exports.getItemsMatchingSearch = function( req, res ){
+exports.forGroup = function( req, res ){
+
+    var group = req.group;
+
+    Item.find({ owner : {$in : group.members }, removed: false})
+    .populate('tags')
+    .populate({ 
+        path: 'owner',
+        populate: {
+            path: 'location',
+            model: 'Location',
+        } 
+    })
+    .exec( function( err, items ){
+
+        if( err ){
+            return res.status( 500 );
+        }
+        
+        res.status( 200 ).json({ items: items });
+            
+    })
+}
+
+exports.forTag = function( req, res ){
+
+    var tag = req.tag;
+
+    Item.find({ tags: tag._id, removed: false })
+    .populate('tags')
+    .populate({ 
+        path: 'owner',
+        populate: {
+            path: 'location',
+            model: 'Location',
+        } 
+    }).exec( function( err, items ){
+
+        if( err ){
+            return res.status( 500 );
+        }
+        
+        res.json({items: items});
+            
+    })
+};
+
+exports.forSearch = function( req, res ){
 
     var query = req.params.query
 
