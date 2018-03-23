@@ -21,7 +21,7 @@ angular.module( 'myApp' ).factory( 'ItemService', function( $q, $timeout, $http 
     }
 
     function updateItem( item ){
-      return $http({ method: 'PATCH', url: '/api/items/'+item._id, data: item });
+      return $http({ method: 'PUT', url: '/api/items/'+item._id, data: item });
     }
 
 

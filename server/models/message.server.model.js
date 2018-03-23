@@ -3,9 +3,8 @@ var User = require( './user.server.model' );
 
 var messageSchema = mongoose.Schema({
 
-	// recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, unnecessary because the conversation stores users involved
-	sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-	content: String,
+	sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+	content: { type: String, required: true },
 	timestamp: { type: Date, default: Date.now }
 
 });

@@ -3,12 +3,12 @@ var User = require( './user.server.model' );
 
 var feedbackSchema = mongoose.Schema({
 
-	author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-	subject: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-	comment: String,
-	rating: Number,
+	author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+	subject: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+	comment: { type: String, required: true },
+	rating: { type: Number, required: true },
 	timestamp: { type: Date, default: Date.now },
-	exchangeHappened: Boolean
+	exchangeHappened: { type: Boolean, required: true }
 }, 
 { collection: 'feedback' });
 

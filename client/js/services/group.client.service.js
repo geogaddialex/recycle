@@ -4,7 +4,6 @@ angular.module( 'myApp' ).factory( 'GroupService', function( $q, $timeout, $http
       getGroups: getGroups,
       getGroup: getGroup,
       createGroup: createGroup,
-      deleteGroup: deleteGroup,
       updateGroup: updateGroup,
       getGroupsJoinedBy: getGroupsJoinedBy,
       getItemsForGroup: getItemsForGroup
@@ -15,12 +14,8 @@ angular.module( 'myApp' ).factory( 'GroupService', function( $q, $timeout, $http
       return $http({ method: 'POST', url: '/api/groups', data: group });
     }
 
-    function deleteGroup( ID ){
-      return $http({ method: 'DELETE', url: '/api/groups/'+ID });
-    }
-
     function updateGroup( group ){
-      return $http({ method: 'PATCH', url: '/api/groups/'+group._id, data: group });
+      return $http({ method: 'PUT', url: '/api/groups/'+group._id, data: group });
     }
 
 
@@ -101,7 +96,7 @@ angular.module( 'myApp' ).factory( 'GroupService', function( $q, $timeout, $http
     function getGroupsJoinedBy( id ){
        
       var deferred = $q.defer();
-      var url = '/api/users/'+id+'/groups'
+      var url = '/api/groups/forUser/'+id
 
       $http.get( url ).then(
         function successCallback( res ) {

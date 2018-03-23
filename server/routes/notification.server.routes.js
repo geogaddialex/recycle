@@ -5,7 +5,6 @@ var router = express.Router();
 
 router.get('/', notification.list );
 router.post('/', notification.create );
-router.patch('/:id', notification.update );
-router.delete('/:id', notification.delete );
+router.put('/:id', notification.update );
 
 module.exports = router;

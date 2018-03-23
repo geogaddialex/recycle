@@ -1,10 +1,8 @@
 angular.module( 'myApp' ).factory( 'FeedbackService', function( $q, $timeout, $http ){
 
     return ({
-      getFeedback: getFeedback,
       getFeedbackRegarding: getFeedbackRegarding,
-      createFeedback: createFeedback,
-      deleteFeedback: deleteFeedback
+      createFeedback: createFeedback
     });
 
 
@@ -12,37 +10,10 @@ angular.module( 'myApp' ).factory( 'FeedbackService', function( $q, $timeout, $h
       return $http({ method: 'POST', url: '/api/feedback', data: feedback });
     }
 
-    function deleteFeedback( ID ){
-      return $http({ method: 'DELETE', url: '/api/feedback/'+ID });
-    }
-
-    function getFeedback( id ){
-
-      var deferred = $q.defer();
-
-      $http.get( '/api/feedback/'+id ).then(
-        function successCallback( res ) {
-
-            if( res.data ){
-              deferred.resolve( res.data );
-            } else {
-              deferred.reject();
-            }
-
-        }, function errorCallback( res ){
-
-          deferred.reject();
-        }
-      );
-
-      return deferred.promise;
-    }
-
-
     function getFeedbackRegarding( id ){
        
       var deferred = $q.defer();
-      var url = '/api/users/'+id+'/feedback'
+      var url = '/api/feedback/forUser/'+id
 
       $http.get( url ).then(
         function successCallback( res ) {

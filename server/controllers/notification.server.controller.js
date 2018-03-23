@@ -2,7 +2,7 @@ var Notification = require( '../models/notification.server.model' );
 
 exports.list = function( req, res ){
 
-    Notification.find({user: req.user}).exec( function( err, notifications ){
+    Notification.find({ user: req.user }).exec( function( err, notifications ){
 
         if( err ){
             console.log( "error: " + err );
@@ -26,26 +26,11 @@ exports.create = function( req, res ){
 
         var socketio = req.app.get('socketio');
         socketio.sockets.emit('notification.created', notification);
+        res.status(201).json({ message: "Notification successfully added!", notification });
 
     });
 };
 
-exports.delete = function( req, res ){
-
-    var id = req.params.id;
-
-    Notification.findByIdAndRemove(id, (err, notification) => {  
-
-        if( err ){
-            console.log( "error: " + err );
-            return res.status(500).json({ errors: "Could not delete notification" });
-        } 
-
-        console.log("notification deleted: " + notification);
-        res.status( 200 ).json( notification );
-    });
-
-};
 
 exports.update = function( req, res ){
 

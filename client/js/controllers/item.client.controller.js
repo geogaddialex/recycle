@@ -139,6 +139,7 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
     $scope.createItem = function( item ){
 
         clearError()
+        item.owner = $scope.user
 
 
         if( !UtilityService.isValidItemName( item.name )){

@@ -1,21 +1,6 @@
 var Conversation = require( '../models/conversation.server.model' );
 
-exports.list = function( req, res ){
-
-    Conversation.find({ }).exec( function( err, conversations ){
-
-        if( err ){
-            console.log( "error: " + err );
-            return res.status( 500 );
-        }
-        
-        res.json({ conversations: conversations });
-            
-    })
-}
-
 exports.create = function( req, res ){
-
 
     var conversation = new Conversation({ users: req.body.users, messages: [] });
 
@@ -27,29 +12,13 @@ exports.create = function( req, res ){
 
         conversation.populate("sender", function(err, conversation) {
 
-            res.status( 201 ).json( conversation );
+            res.status( 201 ).json({ message: "Conversation successfully added!", conversation });
 
         });
 
     });
 };
 
-exports.delete = function( req, res ){
-
-    var id = req.params.id;
-
-    Conversation.findByIdAndRemove(id, (err, conversation) => {  
-
-        if( err ){
-            console.log( "error: " + err );
-            return res.status(500).json({ errors: "Could not delete conversation" });
-        } 
-
-        console.log("conversation deleted: " + conversation);
-        res.status( 200 ).json( conversation );
-    });
-
-};
 
 exports.update = function( req, res ){
 
@@ -65,7 +34,7 @@ exports.update = function( req, res ){
         var socketio = req.app.get('socketio');
         socketio.sockets.emit('conversation.updated', conversation);
 
-        res.status( 200 ).json( conversation );
+        res.status( 200 ).json({ message: "Conversation updated!", conversation });
     });
 };
 

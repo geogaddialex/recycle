@@ -6,8 +6,8 @@ var Feedback = require( './feedback.server.model' );
 
 var exchangeSchema = mongoose.Schema({
 
-	recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-	sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+	recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+	sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 	lastUpdatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 	created: { type: Date, default: Date.now },
 	lastModified: { type: Date, default: Date.now },
@@ -19,7 +19,7 @@ var exchangeSchema = mongoose.Schema({
 	
     conversation: { type: mongoose.Schema.Types.ObjectId, ref: 'Conversation' },
 
-    accepted: { recipient:0, sender:0 },
+    accepted: { recipient:0, sender: 0 },
     status: {type: String, default: 'In progress'},
 
     feedback:  { 
@@ -28,5 +28,17 @@ var exchangeSchema = mongoose.Schema({
 	}
 }, 
 { minimize: false });
+
+
+exchangeSchema.pre('validate', function( next ){
+
+  if( !this.items || ( this.items.sender.length < 1 && this.items.recipient.length < 1 ) ){
+    
+    	this.invalidate('items', 'There must be at least one item to create an exchange', this.items)
+  }
+
+  next();
+
+});
 
 module.exports = mongoose.model( 'Exchange', exchangeSchema );

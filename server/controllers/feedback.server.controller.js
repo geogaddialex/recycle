@@ -1,22 +1,8 @@
 var Feedback = require( '../models/feedback.server.model' );
 
-exports.list = function( req, res ){
-
-    Feedback.find({ }).populate('author').exec( function( err, feedback ){
-
-        if( err ){
-            console.log( "error: " + err );
-            return res.status( 500 );
-        }
-        
-        res.json({ feedback: feedback });
-            
-    })
-}
-
 exports.create = function( req, res ){
 
-    var feedback = new Feedback({ author: req.body.author, subject: req.body.subject, comment: req.body.comment, rating: req.body.rating });
+    var feedback = new Feedback( req.body );
 
     feedback.save( function( err ){
         if( err ){
@@ -26,64 +12,25 @@ exports.create = function( req, res ){
 
         feedback.populate("sender", function(err, feedback) {
 
-            res.status( 201 ).json( feedback );
+            res.status( 201 ).json({ message: "Feedback successfully added!", feedback });
 
         });
 
     });
 };
 
-exports.delete = function( req, res ){
+exports.forUser = function( req, res ){
 
-    var id = req.params.id;
+    var user = req.user;
 
-    Feedback.findByIdAndRemove(id, (err, feedback) => {  
-
-        if( err ){
-            console.log( "error: " + err );
-            return res.status(500).json({ errors: "Could not delete feedback" });
-        } 
-
-        console.log("feedback deleted: " + feedback);
-        res.status( 200 ).json( feedback );
-    });
-
-};
-
-exports.update = function( req, res ){
-
-    var id = req.params.id;
-
-    Feedback.findByIdAndUpdate(id, { $set: req.body }, (err, feedback) => {  
+    Feedback.find({ subject: user }).populate( 'author' ).exec( function( err, feedback ){
 
         if( err ){
             console.log( "error: " + err );
-            return res.status(500).json({ errors: "Could not update feedback" });
-        } 
-
-        console.log("feedback updated: " + feedback);
-        res.status( 200 ).json( feedback );
-    });
-};
-
-exports.lookupFeedback = function(req, res, next) {
-
-    var id = req.params.id;
-
-    Feedback.findOne({ '_id': id }).populate('owner').exec( function( err, feedback ){
-
-        if( err ){  
-            console.log( err ); 
-            return res.status(500).json({ errors: "Could not retrieve feedback" });
+            return res.status( 500 );
         }
-
-        if( !feedback ){
-            console.log( "No feedback found" );
-            return res.status(404).json({ errors: "No such feedback" });
-        } 
         
-        req.feedback = feedback;
-        next();
-    });
-  
+        res.json({ feedback: feedback });
+            
+    })
 }

@@ -2,11 +2,10 @@ var mongoose = require('mongoose');
 var User = require( './user.server.model' );
 
 var itemSchema = mongoose.Schema({
-	owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+	owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     name: { type: String, required: true },
     condition: { type: String, required: true },
     description: { type: String, default: "" },
-    location: { type: String },
     createdAt: { type: Date, default: Date.now },
     tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}],
     image: { type: String },

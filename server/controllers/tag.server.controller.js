@@ -25,7 +25,7 @@ exports.create = function( req, res ){
             return res.status(500).json({ errors: "Could not create tag" });
         } 
 
-        res.status( 201 ).json( tag );
+        res.status( 201 ).json({ message: "Tag successfully added!", tag });
 
     });
 };
@@ -59,7 +59,7 @@ exports.update = function( req, res ){
         } 
 
         console.log("tag updated: " + tag);
-        res.status( 200 ).json( tag );
+        res.status( 200 ).json({ message: "Tag updated!", tag });
     });
 };
 

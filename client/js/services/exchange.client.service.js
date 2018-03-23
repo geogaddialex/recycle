@@ -14,7 +14,7 @@ angular.module( 'myApp' ).factory( 'ExchangeService', function( $q, $timeout, $h
     }
 
     function amendExchange( exchange ){
-      return $http({ method: 'PATCH', url: '/api/exchanges/'+exchange._id, data: exchange });
+      return $http({ method: 'PUT', url: '/api/exchanges/'+exchange._id, data: exchange });
     }
 
     function getExchange( id ){
@@ -66,7 +66,7 @@ angular.module( 'myApp' ).factory( 'ExchangeService', function( $q, $timeout, $h
     function getExchangesInvolving( id ){
        
       var deferred = $q.defer();
-      var url = '/api/users/'+id+'/exchanges'
+      var url = '/api/exchanges/forUser/'+id
 
       $http.get( url ).then(
         function successCallback( res ) {

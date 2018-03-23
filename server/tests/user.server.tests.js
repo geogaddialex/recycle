@@ -12,10 +12,8 @@ let chaiHttp = require('chai-http');
 let should = chai.should();
 chai.use(chaiHttp); 
 
-//Our parent block
-describe('User tests\n', () => {
+describe('\nUser tests-----------------------------------------------------------------------\n', () => {
 
-    //Before each test we empty the database
     beforeEach((done) => { 
         User.remove({}, (err) => { 
            done();         
@@ -109,5 +107,14 @@ describe('User tests\n', () => {
 
     });
 
+
+});
+
+
+after( function(done){
+
+    User.remove({}, (err) => {
+        done()
+    })
 
 });

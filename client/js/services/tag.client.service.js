@@ -3,8 +3,7 @@ angular.module( 'myApp' ).factory( 'TagService', function( $q, $timeout, $http )
     return ({
       getTag: getTag,
       getTags: getTags,
-      createTag: createTag,
-      deleteTag: deleteTag,
+      createTag: createTag
     });
 
     function getTag( name ){
@@ -32,10 +31,6 @@ angular.module( 'myApp' ).factory( 'TagService', function( $q, $timeout, $http )
 
     function createTag( tag ){
       return $http({ method: 'POST', url: '/api/tags', data: tag });
-    }
-
-    function deleteTag( ID ){
-      return $http({ method: 'DELETE', url: '/api/tags/'+ID });
     }
 
     function getTags(){

@@ -1,7 +1,19 @@
 module.exports = function( mongoose ){
 
-	mongoose.Promise = global.Promise;
-	mongoose.connect('mongodb://admin:th3p455w0rd15@ds117156.mlab.com:17156/recycle'); 
+	var mongoose = require( 'mongoose' )
+
+	if( process.env.NODE_ENV !== "test" ){
+
+		mongoose.connect('mongodb://admin:th3p455w0rd15@ds117156.mlab.com:17156/recycle'); 
+		console.log("Connected to live DB")
+	
+	}else{
+
+		mongoose.connect('mongodb://localhost:27017/test');
+		console.log("Connected to local test DB")
+
+
+	}	
 
 }
 

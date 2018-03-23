@@ -13,7 +13,7 @@ angular.module( 'myApp' ).factory( 'UserService', function( $q, $timeout, $http 
   }
 
   function updateUser( user ){
-      return $http({ method: 'PATCH', url: '/api/users/'+user._id, data: user });
+      return $http({ method: 'PUT', url: '/api/users/'+user._id, data: user });
   }
 
 

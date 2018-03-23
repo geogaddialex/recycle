@@ -55,7 +55,6 @@ exports.list = function( req, res ){
 exports.create = function( req, res ){
 
     var item = new Item(req.body);
-    item.owner = req.user
 
     item.save( function( err ){
         if( err ){
@@ -65,7 +64,7 @@ exports.create = function( req, res ){
 
         var socketio = req.app.get('socketio');
         socketio.sockets.emit('item.created', item);
-        res.status( 200  ).json({ message: "Item successfully added!", item });
+        res.status( 200 ).json({ message: "Item successfully added!", item });
 
     });
 };
@@ -93,6 +92,31 @@ exports.update = function( req, res ){
         res.status( 200 ).json({ message: "Item updated!", item });
     });
 };
+
+exports.forUser = function( req, res ){
+
+    var user = req.user;
+
+    Item.find({owner: user, removed: false })
+    .populate('tags')
+    .populate({ 
+        path: 'owner',
+        populate: {
+            path: 'location',
+            model: 'Location',
+        } 
+    })
+    .exec( function( err, items ){
+
+        if( err ){
+            console.log( "error: " + err );
+            return res.status( 500 );
+        }
+        
+        res.json({ items: items });
+            
+    })
+}
 
 exports.getItemsMatchingSearch = function( req, res ){
 

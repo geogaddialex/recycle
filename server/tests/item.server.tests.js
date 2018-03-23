@@ -1,6 +1,7 @@
 process.env.NODE_ENV = 'test';
 let server = require('../../server');
 let Item = require('../models/item.server.model');
+let User = require('../models/user.server.model');
 
 let mongoose = require("mongoose");
 let Mockgoose = require('mockgoose').Mockgoose;
@@ -12,17 +13,28 @@ let chaiHttp = require('chai-http');
 let should = chai.should();
 chai.use(chaiHttp); 
 
+let user = new User({
+    local:{
+        name: "Alex",
+        email: "hello@alex.com",
+        password:"eiorhfjeuor"
+    }
+})
 
-describe('Item tests\n', () => {
+before( function(done){
+
+    user.save(function (err) { done(err) })
+})
+
+
+
+describe('\nItem tests-----------------------------------------------------------------------\n', () => {
 
     beforeEach((done) => { 
         Item.remove({}, (err) => { 
            done();         
         });     
     });
-
-
-    // Test the /GET route
 
 
     describe('/GET all items', () => {
@@ -39,16 +51,15 @@ describe('Item tests\n', () => {
     });
 
 
-    // Test the /POST route
 
-
-    describe('/POST item', () => {
+    describe('/POST/item', () => {
 
 
         it('it should not POST an item without a name', (done) => {
             
             let item = {
-                condition: "New"
+                condition: "New",
+                owner: user
             }
 
             chai.request(server)
@@ -68,7 +79,28 @@ describe('Item tests\n', () => {
         it('it should not POST an item without a condition', (done) => {
             
             let item = {
-                name: "chair"
+                name: "chair",
+                owner: user
+            }
+
+            chai.request(server)
+                .post( '/api/items' )
+                .send( item )
+                .end((err, res) => {
+
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                    res.body.errors.condition.should.have.property('kind').eql('required');
+                    done();
+                });
+        });
+
+        it('it should not POST an item without a condition', (done) => {
+            
+            let item = {
+                name: "chair",
+                owner: user
             }
 
             chai.request(server)
@@ -85,22 +117,27 @@ describe('Item tests\n', () => {
         });
 
 
-        it('it should POST an item ', (done) => {
+        it('it should POST an item', (done) => {
 
             let item = {
                 name: "Some item name",
-                condition: "New"
+                condition: "New",
+                owner: user
             }
 
             chai.request(server)
                 .post('/api/items')
                 .send(item)
                 .end((err, res) => {
+
+                    console.log(JSON.stringify(res.body,null,2))
                     res.should.have.status(200);
                     res.body.item.should.be.a('object');  
                     res.body.item.should.have.property('name');
+                    res.body.item.should.have.property('owner');
+                    res.body.item.should.have.property('condition');
                     res.body.should.have.property('message').eql('Item successfully added!');
-                  done();
+                    done();
                 });
         });
 
@@ -108,15 +145,12 @@ describe('Item tests\n', () => {
 
 
 
-
-    // Test the /GET/:id route
-
-    describe('/GET/:id item', () => {
+    describe('/GET/item/:id', () => {
 
         it('it should GET an item by the given id', (done) => {
 
             let item = new Item({
-                owner: "41224d776a326fb40f000001",
+                owner: user,
                 name: "Some item name",
                 condition: "New"
             })
@@ -141,16 +175,14 @@ describe('Item tests\n', () => {
 
 
 
-    // Test the /PUT/:id route
-
-    describe('/PUT/:id item', () => {
+    describe('/PUT/item/:id', () => {
 
         it('it should UPDATE an item given the id', (done) => {
 
             let item = new Item({
-                owner: "41224d776a326fb40f000001",
+                owner: user,
                 name: "Some item name",
-                condition: "Used"
+                condition: "New"
             })
 
             item.save((err, item) => {
@@ -171,16 +203,14 @@ describe('Item tests\n', () => {
 
 
 
-    // Test the /DELETE/:id route
-
-    describe('/DELETE/:id item', () => {
+    describe('/DELETE/item/:id', () => {
 
         it('it should DELETE an item given the id', (done) => {
 
             let item = new Item({
+                owner: user,
                 name: "Some item name",
-                condition: "Used"
-
+                condition: "New"
             })
 
             item.save((err, item) => {
@@ -197,6 +227,34 @@ describe('Item tests\n', () => {
               });
         });
         
+    });
+
+
+    describe('/GET/items/forUser/:id', () => {
+
+        it('it should GET all items owned by the specified user', (done) => {
+
+            let item = new Item({
+                owner: user,
+                name: "Some item name",
+                condition: "New"
+            })
+
+            item.save((err, item) => {
+                chai.request(server)
+                .get('/api/items/forUser/' + user._id)
+                .send(item)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.items.should.be.a('array');
+                    res.body.items.length.should.be.eql(1);
+                    done();
+                });
+            });
+        });
+
+
+
     });
 
 

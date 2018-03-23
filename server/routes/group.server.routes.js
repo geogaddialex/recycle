@@ -1,16 +1,15 @@
 var groups = require('../controllers/group.server.controller');
+var users = require('../controllers/user.server.controller');
 var express = require('express');
 var router = express.Router();
 
 router.get('/', groups.list );
-router.get('/:id', groups.getOne );
-
 router.post('/', groups.create );
-router.delete('/:id', groups.delete );
-
-router.patch('/:id', groups.update );
 router.put('/:id', groups.update );
 
+router.get('/forUser/:id', users.lookupUser, groups.forUser );
+
+router.get('/:id', groups.lookupGroup, function( req, res ){ res.json( req.group ); });
 router.get('/:id/items', groups.lookupGroup, groups.getItems );
 
 

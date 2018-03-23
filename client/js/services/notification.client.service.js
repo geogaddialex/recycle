@@ -3,7 +3,6 @@ angular.module( 'myApp' ).factory( 'NotificationService', function( $q, $timeout
     return ({
       getNotifications: getNotifications,
       createNotification: createNotification,
-      deleteNotification: deleteNotification,
       updateNotification: updateNotification
     });
 
@@ -12,12 +11,8 @@ angular.module( 'myApp' ).factory( 'NotificationService', function( $q, $timeout
       return $http({ method: 'POST', url: '/api/notifications', data: notification });
     }
 
-    function deleteNotification( ID ){
-      return $http({ method: 'DELETE', url: '/api/notifications/'+ID });
-    }
-
     function updateNotification( notification ){
-      return $http({ method: 'PATCH', url: '/api/notifications/'+notification._id, data: notification });
+      return $http({ method: 'PUT', url: '/api/notifications/'+notification._id, data: notification });
     }
 
     function getNotifications( ){
