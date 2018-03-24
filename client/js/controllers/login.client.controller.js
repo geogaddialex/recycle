@@ -49,6 +49,10 @@ angular.module('myApp').controller('loginController', function ($scope, $locatio
 
         setError( "The passwords you have entered do not match" )
 
+      }else if( !UtilityService.isSanitary( $scope.registerForm.name ) ){
+
+        setError( "The name can only contain letters, numbers, spaces and - / _ £ ? : . ," )
+        
       }else if( !$scope.registerForm.location || !$scope.registerForm.location.name ){
 
         setError( "The location entered isn't recognised, please use a location from the list provided" )
@@ -89,7 +93,33 @@ angular.module('myApp').controller('loginController', function ($scope, $locatio
 
       clearError()
 
-      AuthService.createLocal( $scope.registerForm.email, $scope.registerForm.password, $scope.registerForm.name ).then( function( ){
+      if( !UtilityService.isValidUserName( $scope.registerForm.name ) ){
+
+        setError( "Please enter a name" )
+      
+      }else if( !UtilityService.isValidEmail( $scope.registerForm.email ) ){
+
+        setError( "Please enter a valid email address" )
+
+      }else if( !UtilityService.isValidPassword( $scope.registerForm.password )){
+
+        setError( "Password invalid, please make sure your password contains an uppercase letter, a lowercase letter, a number and a special character.")
+
+      }else if( !UtilityService.passwordsMatch( $scope.registerForm.password, $scope.registerForm.confirmPassword )){
+
+        setError( "The passwords you have entered do not match" )
+
+      }else if( !UtilityService.isSanitary( $scope.registerForm.name ) ){
+
+        setError( "The name can only contain letters, numbers, spaces and - / _ £ ? : . ," )
+        
+      }else if( !$scope.registerForm.location || !$scope.registerForm.location.name ){
+
+        setError( "The location entered isn't recognised, please use a location from the list provided" )
+
+      }else{
+
+        AuthService.createLocal( $scope.registerForm.email, $scope.registerForm.password, $scope.registerForm.name ).then( function( ){
 
           $location.path( '/profile' );
 
@@ -98,6 +128,10 @@ angular.module('myApp').controller('loginController', function ($scope, $locatio
           setError( "Could not create local account" )
 
         });
+
+      }
+
+      
     };
 
     $scope.switchForm = function( ){

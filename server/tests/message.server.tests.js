@@ -75,6 +75,26 @@ describe('\nMessage tests-------------------------------------------------------
                 });
         });
 
+        it('it should not POST a message with content containing illegal characters', (done) => {
+
+            
+            let message = new Message({
+                sender: user,
+                content: "%%%^^^*& alex"
+            })
+
+            chai.request(server)
+                .post( '/api/messages' )
+                .send( message )
+                .end((err, res) => {
+
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                    done();
+                });
+        });
+
 
         it('it should POST a message ', (done) => {
             

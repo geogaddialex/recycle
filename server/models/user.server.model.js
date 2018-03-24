@@ -10,9 +10,9 @@ var userSchema = mongoose.Schema({
 
     local: {
 
-    	name: String,
-        email: String,
-        password: String
+    	name: { type: String, validate: /^[0-9a-zA-Z\- \/_£?:.,\s]*$/ },
+        email: { type: String, validate: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ },
+        password: { type: String }
 
     },
 

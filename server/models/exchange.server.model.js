@@ -23,7 +23,7 @@ var exchangeSchema = mongoose.Schema({
     	recipient: { type: Number, default: 0 },
     	sender: { type: Number, default: 1 }
     },
-    status: {type: String, enum: ['In progress', 'Completed', 'Cancelled'], required: true},
+    status: {type: String, enum: ['In progress', 'Completed', 'Cancelled', 'Agreed'], required: true},
 
     feedback:  { 
 		sender: { type: mongoose.Schema.Types.ObjectId, ref: 'Feedback' },

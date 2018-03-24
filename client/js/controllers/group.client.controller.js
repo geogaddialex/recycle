@@ -102,6 +102,10 @@ angular.module('myApp').controller('groupController', function( $routeParams, $l
 
           setError( "Not a valid group name, names must be between 4 and 40 characters" )
 
+        }else if( !UtilityService.isSanitary( group.name ) ){
+
+          setError( "The group name can only contain letters, numbers, spaces and - / _ £ ? : . ," )
+
         }else{
 
           ngDialog.openConfirm({ 
@@ -112,7 +116,7 @@ angular.module('myApp').controller('groupController', function( $routeParams, $l
 
               ConversationService.createConversation( ).then(function( createdConversation ){
 
-                  group.conversation = createdConversation.data;
+                  group.conversation = createdConversation.data.conversation;
 
                   GroupService.createGroup( group ).then( function( ){ 
 
@@ -229,6 +233,10 @@ angular.module('myApp').controller('groupController', function( $routeParams, $l
 
           setError("Messages cannot be empty")
 
+      }else if( !UtilityService.isSanitary( $scope.message.text ) ){
+
+          setError( "The message can only contain letters, numbers, spaces and - / _ £ ? : . ," )
+
       }else{
 
           var messageToCreate = {
@@ -239,7 +247,7 @@ angular.module('myApp').controller('groupController', function( $routeParams, $l
 
           MessageService.createMessage( messageToCreate ).then( function( createdMessage ){ 
 
-              $scope.group.conversation.messages.push( createdMessage.data )
+              $scope.group.conversation.messages.push( createdMessage.data.message )
 
               $scope.message.text = ""
               amendConversation()

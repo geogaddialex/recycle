@@ -69,12 +69,11 @@ describe('\nGroup tests---------------------------------------------------------
     describe('/POST/group', () => {
 
 
-        it('it should not POST a group without any members', (done) => {
+        it('it should not POST a group without a name', (done) => {
 
             
             let group = new Group({
-                name: "group name",
-                members: [],
+                members: [ user ],
                 conversation: conversation
             })
 
@@ -87,17 +86,17 @@ describe('\nGroup tests---------------------------------------------------------
                     res.body.should.be.a('object');
                     res.body.should.have.property('errors');
 
-                    done();
+                  done();
                 });
         });
 
-
-        it('it should not POST a group without a name', (done) => {
+        it('it should not POST a group with illegal characters in the name', (done) => {
 
             
             let group = new Group({
                 members: [ user ],
-                conversation: conversation
+                conversation: conversation,
+                name: "{}|wew"
             })
 
             chai.request(server)

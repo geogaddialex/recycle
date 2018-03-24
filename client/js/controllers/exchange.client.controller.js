@@ -377,6 +377,10 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
             setError("Messages cannot be empty")
 
+        }else if( !UtilityService.isSanitary( $scope.message.text ) ){
+
+            setError("The message can only contain letters, numbers, spaces and - / _ £ ? : . ,")
+
         }else{
 
             var messageToCreate = {
@@ -387,7 +391,7 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
             MessageService.createMessage( messageToCreate ).then( function( createdMessage ){ 
 
-                $scope.exchange.conversation.messages.push( createdMessage.data )
+                $scope.exchange.conversation.messages.push( createdMessage.data.message )
 
                 $scope.message = { text: "" }
                 amendConversation()

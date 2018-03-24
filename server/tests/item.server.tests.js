@@ -91,7 +91,25 @@ describe('\nItem tests----------------------------------------------------------
                 .send( item )
                 .end((err, res) => {
 
-                    console.log( JSON.stringify( res.body,null,2))
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                    done();
+                });
+        });
+
+        it('it should not POST an item with a name containing illegal characters', (done) => {
+            
+            let item = {
+                condition: "New",
+                owner: user,
+                name: "erF{}{"
+            }
+
+            chai.request(server)
+                .post( '/api/items' )
+                .send( item )
+                .end((err, res) => {
 
                     res.should.have.status(500);
                     res.body.should.be.a('object');
@@ -198,6 +216,27 @@ describe('\nItem tests----------------------------------------------------------
                     res.body.should.be.a('object');
                     res.body.should.have.property('errors');
                   done();
+                });
+        });
+
+        it('it should not POST an item with a description containing illegal characters', (done) => {
+            
+            let item = {
+                condition: "New",
+                owner: user,
+                name: "alexItem",
+                description: "euhrgre{}{}"
+            }
+
+            chai.request(server)
+                .post( '/api/items' )
+                .send( item )
+                .end((err, res) => {
+
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                    done();
                 });
         });
 

@@ -101,6 +101,14 @@ angular.module('myApp').controller('profileController', function( ngDialog, Auth
 
           setError( "The location entered isn't recognised, please use a location from the list provided" )
 
+      }else if( !UtilityService.isNumber( $scope.user.maxDistance )){
+
+        setError( "The maximum distance must be a whole number" )
+
+      }else if( $scope.user.maxDistance < 1 ){
+
+        setError( "The minimum distance is 1 mile, but such a small distance may not return many results" )
+
       }else{
 
           ngDialog.openConfirm({ 

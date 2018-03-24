@@ -4,14 +4,14 @@ var Conversation = require( './conversation.server.model' );
 
 var groupSchema = mongoose.Schema({
 
-	name: { type: String, required: true },
+	name: { type: String, required: true, validate: /^[0-9a-zA-Z\- \/_£?:.,\s]*$/ },
 	members: 
 			{ type: [{ 
 				
 				type: mongoose.Schema.Types.ObjectId, 
 				ref: 'User' 
 
-			}],validate: [arrayLimit, '{PATH} must have at least one entry']
+			}]
 	},
 
 	conversation: { type: mongoose.Schema.Types.ObjectId, ref: 'Conversation', required: true },
@@ -19,6 +19,8 @@ var groupSchema = mongoose.Schema({
 	
 });
 
+
+//not in use
 function arrayLimit( members ){
   return members.length >= 1;
 }

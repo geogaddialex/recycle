@@ -82,6 +82,27 @@ describe('\nNotification tests--------------------------------------------------
                 });
         });
 
+        it('it should not POST a notification with a message containing illegal characters', (done) => {
+
+            
+            let notification = new Notification({
+                user: user,
+                link: "/some/link",
+                message: "{W:EF{WE}:"
+            })
+
+            chai.request(server)
+                .post( '/api/notifications' )
+                .send( notification )
+                .end((err, res) => {
+
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                    done();
+                });
+        });
+
         it('it should not POST a notification without a link', (done) => {
 
             

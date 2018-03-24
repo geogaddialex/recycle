@@ -12,6 +12,15 @@
 	border: 2px solid #f2e7d9;
 }
 
+.group{
+	background-color:white;
+	text-align: center;
+	padding: 5px;
+	/*overflow:hidden;*/
+	border-radius: 5px;
+	border: 2px solid #f2e7d9;
+}
+
 .item .row {
 	margin:0 !important;
 }

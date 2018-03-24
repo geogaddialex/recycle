@@ -101,6 +101,25 @@ describe('\nTag tests-----------------------------------------------------------
                 });
         });
 
+        it('it should not POST a tag with name containing illegal characters', (done) => {
+
+            
+            let tag = {
+                name: "@$@$%@"
+            }
+
+            chai.request(server)
+                .post( '/api/tags' )
+                .send( tag )
+                .end((err, res) => {
+
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                    done();
+                });
+        });
+
 
         it('it should POST a tag ', (done) => {
             

@@ -108,6 +108,29 @@ describe('\nFeedback tests------------------------------------------------------
                 });
         });
 
+        it('it should not POST a feedback with an illegal comment', (done) => {
+
+            
+            let feedback = new Feedback({
+                author: user,
+                subject: user,
+                rating: 3,
+                exchangeHappened: false,
+                comment: "+++==()"
+            })
+
+            chai.request(server)
+                .post( '/api/feedback' )
+                .send( feedback )
+                .end((err, res) => {
+
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                    done();
+                });
+        });
+
         it('it should not POST a feedback without a rating', (done) => {
 
             

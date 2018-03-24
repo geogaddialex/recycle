@@ -14,8 +14,23 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http, $haver
       passwordsMatch: passwordsMatch,
       isEmailTaken: isEmailTaken,
       metresToMiles: metresToMiles,
-      calculateDistance: calculateDistance
+      calculateDistance: calculateDistance,
+      isSanitary: isSanitary,
+      isNumber: isNumber
     });
+
+    function isSanitary( input ){
+
+      return input.match( /^[0-9a-zA-Z\- \/_£?:.,\s]*$/ )
+
+    }
+
+    function isNumber( input ){
+
+      if( !input ) return false
+
+      return input.toString().match( /^[0-9]+$/ )
+    }
 
     function metresToMiles( metres ){
       return (metres*0.000621371).toFixed(0)

@@ -150,6 +150,14 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
             setError("Not a valid item description, they must be less than 500 characters")
 
+        }else if( !UtilityService.isSanitary( item.name ) ){
+
+          setError( "The item name can only contain letters, numbers, spaces and - / _ £ ? : . ," )
+
+        }else if( !UtilityService.isSanitary( $scope.newItem.description ) ){
+
+          setError( "The item description can only contain letters, numbers, spaces and - / _ £ ? : . ," )
+
         }else if( !item.condition ){
 
             setError("Please select an item condition")
@@ -244,6 +252,14 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
             setError("Not a valid item name, names must be between 3 and 30 characters")
 
+      }else if( !UtilityService.isSanitary( $scope.item.name ) ){
+
+        setError( "The item name can only contain letters, numbers, spaces and - / _ £ ? : . ," )
+
+      }else if( !UtilityService.isSanitary( $scope.item.description ) ){
+
+        setError( "The item description can only contain letters, numbers, spaces and - / _ £ ? : . ," )
+
       }else{
 
         ngDialog.openConfirm({ 
@@ -322,9 +338,11 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
               setError("Not a valid tag name, tags must be between 3 and 15 characters")
 
+          }else if( !UtilityService.isSanitary( tagToAdd ) ){
+
+              setError( "The tag can only contain letters, numbers, spaces and - / _ £ ? : . ," )
+
           }else if( false ){
-
-
 
               //need to ensure tag isnt already existing (with different capitalisation etc ) before adding to DB
               //if it already exists, just push that tag rather than giving an error
