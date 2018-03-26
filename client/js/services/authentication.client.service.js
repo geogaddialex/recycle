@@ -61,10 +61,21 @@ angular.module( 'myApp' ).factory( 'AuthService', function( $q, $timeout, $http 
 
         var deferred = $q.defer();
 
-        $http.post( '/api/auth/register', { email: formData.email, password: formData.password, name: formData.name, location: formData.location } ).then(
-          function successCallback( res ){
+        $http.post( '/api/auth/register', { 
+
+                                            email: formData.email,
+                                            password: formData.password,
+                                            name: formData.name, location:
+                                            formData.location
+
+                                          })
+
+        .then( function ( res ){
+            
             deferred.resolve();
-        }, function errorCallback( res ){
+
+        }, function( ){
+
             deferred.reject();
         });
 

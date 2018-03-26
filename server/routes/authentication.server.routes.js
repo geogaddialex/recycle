@@ -60,10 +60,7 @@ module.exports = function( passport ){
 
               }
 
-              res.status( 200 ).json({
-
-                status: 'Login successful!'
-              });
+              res.status( 200 ).json(user);
           });
 
       })( req, res, next );
@@ -75,11 +72,11 @@ module.exports = function( passport ){
       passport.authenticate('local-signup', function(err, user, info) {
 
           if ( err ){
-            return next( err );
+            return res.status(500).json({ errors: "Could not create user" });
           }
 
           if ( !user ){
-            return res.send({ success : false, message : 'authentication failed' });
+            return res.status(500).json({ errors: "Could not create user" });
           }
 
           req.login( user, loginErr => {
@@ -87,7 +84,9 @@ module.exports = function( passport ){
               if ( loginErr ){
                 return next( loginErr );
               }
-                return res.send({ success : true, message : 'authentication succeeded' });
+
+              return res.status( 201 ).json(user);
+
           });  
 
       })(req, res, next);
@@ -119,10 +118,29 @@ module.exports = function( passport ){
 // link accounts ----------------------------------------------------------------------
 
     // locally --------------------------------
-        router.post('/connect/local', passport.authenticate('local-signup', {
-            successRedirect : '/profile',
-            failureRedirect : '/connect/local' // redirect back to the signup page if there is an error
-        }));
+
+      router.post('/connect/local', function(req, res) {
+          var user            = req.user;
+
+          console.log("passed local info: " +   JSON.stringify(req.body,null,2))
+
+          user.local.email    = req.body.email;
+          user.local.name = req.body.name;
+          user.local.password = user.generateHash(req.body.password)
+
+          console.log("new user: " +   JSON.stringify( user,null,2 ))
+
+          User.findByIdAndUpdate(user._id, { $set: user }, {new: true, runValidators: true}, (err, user) => {  
+
+              if( err ){
+                  console.log( "error: " + err );
+                  return res.status(500).json({ errors: "Could not update user" });
+              } 
+
+              res.status( 200 ).json({ message: "User updated!", user });
+          });
+        
+      });
 
     // facebook -------------------------------
         router.get('/connect/facebook', passport.authorize('facebook', { 

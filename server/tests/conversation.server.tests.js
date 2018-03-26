@@ -4,6 +4,8 @@ let server = require('../../server');
 let Conversation = require('../models/conversation.server.model');
 let User = require('../models/user.server.model');
 let Message = require('../models/message.server.model');
+let Location = require('../models/location.server.model');
+
 
 var Mongoose = require("mongoose").Mongoose;
 var mongoose = new Mongoose();
@@ -13,12 +15,21 @@ let chaiHttp = require('chai-http');
 let should = chai.should();
 chai.use(chaiHttp);
 
+let location = new Location({
+
+        name: "france",
+        country: "UK",
+        lat: "0.1",
+        long: "1.4"
+})
+
 let user = new User({
     local:{
         name: "Alex",
         email: "hello@alex.com",
         password:"eiorhfjeuor"
-    }
+    },
+    location: location
 })
 
 let message = new Message({

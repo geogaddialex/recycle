@@ -3,6 +3,8 @@ let server = require('../../server');
 
 let Feedback = require('../models/feedback.server.model');
 let User = require('../models/user.server.model');
+let Location = require('../models/location.server.model');
+
 
 var Mongoose = require("mongoose").Mongoose;
 var mongoose = new Mongoose();
@@ -15,12 +17,21 @@ chai.use(chaiHttp);
 
 describe('\nFeedback tests-----------------------------------------------------------------------\n', () => {
 
+    let location = new Location({
+
+            name: "france",
+            country: "UK",
+            lat: "0.1",
+            long: "1.4"
+    })
+
     let user = new User({
         local:{
             name: "Alex",
             email: "hello@alex.com",
             password:"eiorhfjeuor"
-        }
+        },
+        location: location
     })
 
     before( function(done){
@@ -94,6 +105,52 @@ describe('\nFeedback tests------------------------------------------------------
                 subject: user,
                 rating: 3,
                 exchangeHappened: false
+            })
+
+            chai.request(server)
+                .post( '/api/feedback' )
+                .send( feedback )
+                .end((err, res) => {
+
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                    done();
+                });
+        });
+
+        it('it should not POST a feedback with a comment of length > 140', (done) => {
+
+            
+            let feedback = new Feedback({
+                author: user,
+                subject: user,
+                rating: 3,
+                exchangeHappened: false,
+                comment: "12345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345"
+            })
+
+            chai.request(server)
+                .post( '/api/feedback' )
+                .send( feedback )
+                .end((err, res) => {
+
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                    done();
+                });
+        });
+
+        it('it should not POST a feedback with a comment of length < 1', (done) => {
+
+            
+            let feedback = new Feedback({
+                author: user,
+                subject: user,
+                rating: 3,
+                exchangeHappened: false,
+                comment: ""
             })
 
             chai.request(server)

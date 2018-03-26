@@ -4,7 +4,7 @@ var Conversation = require( './conversation.server.model' );
 
 var groupSchema = mongoose.Schema({
 
-	name: { type: String, required: true, validate: /^[0-9a-zA-Z\- \/_£?:.,\s]*$/ },
+	name: { type: String, required: true, minlength: 4, maxlength: 40, validate: /^[0-9a-zA-Z\- \/_£?:.,\s]*$/ },
 	members: 
 			{ type: [{ 
 				

@@ -17,7 +17,7 @@ angular.module('myApp').controller('notificationController', function( AuthServi
 
       })
 
-    }).catch( function( err ){
+    }, function( err ){
         
       setError( "Cannot get user" )
 
@@ -51,7 +51,7 @@ angular.module('myApp').controller('notificationController', function( AuthServi
 
           $location.path( notification.link );
 
-      }).catch( function(err){
+      }, function(err){
 
           setError( "Cannot update notifications" )
       })

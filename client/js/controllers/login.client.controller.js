@@ -21,7 +21,7 @@ angular.module('myApp').controller('loginController', function ($scope, $locatio
 
           $location.path('/profile');
         
-        }).catch(function () {
+        }, function () {
 
           setError( "Invalid email and/or password" )
 
@@ -35,7 +35,7 @@ angular.module('myApp').controller('loginController', function ($scope, $locatio
 
       if( !UtilityService.isValidUserName( $scope.registerForm.name ) ){
 
-        setError( "Please enter a name" )
+        setError( "Please enter a name between 1 and 70 characters long" )
       
       }else if( !UtilityService.isValidEmail( $scope.registerForm.email ) ){
 
@@ -71,7 +71,7 @@ angular.module('myApp').controller('loginController', function ($scope, $locatio
 
               $location.path( '/profile' );
 
-            }).catch( function( ){
+            }, function( ){
               
               setError( "Could not register" )
 
@@ -113,17 +113,13 @@ angular.module('myApp').controller('loginController', function ($scope, $locatio
 
         setError( "The name can only contain letters, numbers, spaces and - / _ £ ? : . ," )
         
-      }else if( !$scope.registerForm.location || !$scope.registerForm.location.name ){
-
-        setError( "The location entered isn't recognised, please use a location from the list provided" )
-
       }else{
 
         AuthService.createLocal( $scope.registerForm.email, $scope.registerForm.password, $scope.registerForm.name ).then( function( ){
 
           $location.path( '/profile' );
 
-        }).catch( function( ){
+        }, function( ){
           
           setError( "Could not create local account" )
 

@@ -4,6 +4,8 @@ let Item = require('../models/item.server.model');
 let User = require('../models/user.server.model');
 let Conversation = require('../models/conversation.server.model');
 let Group = require('../models/group.server.model');
+let Location = require('../models/location.server.model');
+
 
 let mongoose = require("mongoose");
 let Mockgoose = require('mockgoose').Mockgoose;
@@ -15,12 +17,21 @@ let chaiHttp = require('chai-http');
 let should = chai.should();
 chai.use(chaiHttp); 
 
+let location = new Location({
+
+        name: "france",
+        country: "UK",
+        lat: "0.1",
+        long: "1.4"
+})
+
 let user = new User({
     local:{
         name: "Alex",
         email: "hello@alex.com",
         password:"eiorhfjeuor"
-    }
+    },
+    location: location
 })
 
 let conversation = new Conversation({
@@ -226,6 +237,27 @@ describe('\nItem tests----------------------------------------------------------
                 owner: user,
                 name: "alexItem",
                 description: "euhrgre{}{}"
+            }
+
+            chai.request(server)
+                .post( '/api/items' )
+                .send( item )
+                .end((err, res) => {
+
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                    done();
+                });
+        });
+
+        it('it should not POST an item with a description of length > 500', (done) => {
+            
+            let item = {
+                condition: "New",
+                owner: user,
+                name: "alexItem",
+                description: "1234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345"
             }
 
             chai.request(server)

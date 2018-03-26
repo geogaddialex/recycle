@@ -38,7 +38,6 @@ exports.update = function( req, res ){
 };
 
 
-
 exports.lookupUser = function(req, res, next) {
 
     var id = req.params.id;
@@ -51,6 +50,25 @@ exports.lookupUser = function(req, res, next) {
 
         if( !user ){
             console.log( "No user found" );
+            return res.status(404).json({ errors: "No such user" });
+        } 
+        
+        req.user = user;
+        next();
+    });
+}
+
+exports.lookupUserByEmail = function(req, res, next) {
+
+    var email = req.params.email;
+
+    User.findOne({ 'local.email': email }).populate('location').exec( function( err, user ){
+        if( err ){  
+            console.log( err ); 
+            return res.status(500).json({ errors: "Could not retrieve user" });
+        }
+
+        if( !user ){
             return res.status(404).json({ errors: "No such user" });
         } 
         

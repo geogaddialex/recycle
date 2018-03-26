@@ -22,7 +22,7 @@ angular.module('myApp').controller('groupController', function( $routeParams, $l
 
                     $scope.items = items
 
-                }).catch( function( err ){
+                }, function( err ){
 
                     setError( "Cannot retrieve items" )
 
@@ -41,7 +41,7 @@ angular.module('myApp').controller('groupController', function( $routeParams, $l
 
             $scope.groups = groups;
 
-          }).catch( function( err ){
+          }, function( err ){
                             
               setError( "Cannot retrieve groups" )
 
@@ -54,7 +54,7 @@ angular.module('myApp').controller('groupController', function( $routeParams, $l
               
               $scope.myGroups = groups;
 
-            }).catch( function( err ){
+            }, function( err ){
                             
                 setError( "Cannot retrieve groups" )
 
@@ -73,6 +73,10 @@ angular.module('myApp').controller('groupController', function( $routeParams, $l
             $scope.group.members.push( $scope.user )
         }
 
+
+    }, function(){
+
+        setError( "Could not get logged in user" )
 
     });
 
@@ -218,6 +222,10 @@ angular.module('myApp').controller('groupController', function( $routeParams, $l
 
             $scope.updateGroup()
 
+          }, function(){
+
+            setError( "Could not leave group" )
+
           })
       }, function(error){
 
@@ -231,7 +239,7 @@ angular.module('myApp').controller('groupController', function( $routeParams, $l
 
       if( !UtilityService.isValidMessage( $scope.message.text ) ){
 
-          setError("Messages cannot be empty")
+          setError("Please enter a message between 1 and 500 characters long")
 
       }else if( !UtilityService.isSanitary( $scope.message.text ) ){
 

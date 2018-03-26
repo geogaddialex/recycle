@@ -24,7 +24,7 @@ angular.module('myApp').controller('navController', function( $location, AuthSer
 
             })
 
-          }).catch( function( err ){
+          }, function( err ){
 
               setError( "Cannot get user" )
           });
@@ -46,7 +46,7 @@ angular.module('myApp').controller('navController', function( $location, AuthSer
 
           $scope.unreadNotifications = $scope.notifications.some(checkUnread);
 
-      }).catch( function(err){
+      }, function(err){
 
           setError( "Cannot update notifications" )
       })
@@ -65,7 +65,7 @@ angular.module('myApp').controller('navController', function( $location, AuthSer
           $scope.unreadNotifications = $scope.notifications.some(checkUnread);
           $location.path( notification.link );
 
-      }).catch( function(err){
+      }, function(err){
 
           setError( "Cannot update notifications" )
       })
@@ -109,7 +109,7 @@ angular.module('myApp').controller('navController', function( $location, AuthSer
 
         }
 
-      }).catch( function(err){
+      }, function(err){
 
           setError( "Cannot get user" )
       })

@@ -3,6 +3,8 @@ let server = require('../../server');
 
 let Notification = require('../models/notification.server.model');
 let User = require('../models/user.server.model');
+let Location = require('../models/location.server.model');
+
 
 var Mongoose = require("mongoose").Mongoose;
 var mongoose = new Mongoose();
@@ -15,12 +17,21 @@ chai.use(chaiHttp);
 
 describe('\nNotification tests-----------------------------------------------------------------------\n', () => {
 
+    let location = new Location({
+
+            name: "france",
+            country: "UK",
+            lat: "0.1",
+            long: "1.4"
+    })
+
     let user = new User({
         local:{
             name: "Alex",
             email: "hello@alex.com",
             password:"eiorhfjeuor"
-        }
+        },
+        location: location
     })
 
     before( function(done){
@@ -68,6 +79,48 @@ describe('\nNotification tests--------------------------------------------------
             let notification = new Notification({
                 user: user,
                 link: "/some/link"
+            })
+
+            chai.request(server)
+                .post( '/api/notifications' )
+                .send( notification )
+                .end((err, res) => {
+
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                    done();
+                });
+        });
+
+        it('it should not POST a notification with message length > 100', (done) => {
+
+            
+            let notification = new Notification({
+                user: user,
+                link: "/some/link",
+                message: "123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345"
+            })
+
+            chai.request(server)
+                .post( '/api/notifications' )
+                .send( notification )
+                .end((err, res) => {
+
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                    done();
+                });
+        });
+
+        it('it should not POST a notification with message length < 5', (done) => {
+
+            
+            let notification = new Notification({
+                user: user,
+                link: "/some/link",
+                message: "1234"
             })
 
             chai.request(server)

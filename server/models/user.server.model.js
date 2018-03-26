@@ -6,11 +6,11 @@ var Location = require( './location.server.model' );
 var userSchema = mongoose.Schema({
 
     location: { type: mongoose.Schema.Types.ObjectId, ref: 'Location'},
-    maxDistance: { type: Number, default: 50 },
+    maxDistance: { type: Number, default: 50, min: 1 },
 
     local: {
 
-    	name: { type: String, validate: /^[0-9a-zA-Z\- \/_£?:.,\s]*$/ },
+    	name: { type: String, validate: /^[0-9a-zA-Z\- \/_£?:.,\s]*$/, minlength: 1, maxlength: 70 },
         email: { type: String, validate: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ },
         password: { type: String }
 
@@ -38,7 +38,7 @@ var userSchema = mongoose.Schema({
 
         total: { type: Number, default: 0 }, 
         count: { type: Number, default: 0 },
-        score: { type: Number, default: 100 }
+        score: { type: Number, default: 100, max:100 }
     }
 
 });
@@ -49,10 +49,25 @@ userSchema.pre('validate', function( next ){
     
     this.invalidate('local', 'User must have at least one of local, facebook or google login details', this.local);  
 
-  }else{
-  
-    next();
+  }else if( this.local && !this.local.name ){
+
+    this.invalidate('local', 'When registering, the user must have a name', this.local )
+
+  }else if( this.local && !this.local.email ){
+
+    this.invalidate('local', 'When registering, the user must have a name', this.local )
+
+  }else if( this.local && !this.local.password ){
+
+    this.invalidate('local', 'When registering, the user must have a password', this.local )
+
+  }else if( this.local && !this.location ){
+
+    this.invalidate('location', 'When registering locally, a location must be provided', this.location )
+
   }
+
+    next();
 
 });
 

@@ -6,6 +6,9 @@ angular.module('myApp').controller('userController', function( $routeParams, $lo
     AuthService.getUser().then( function( user ){
 
       $scope.userThatsViewing = user
+    }, function(){
+
+      setError("Cannot get user")
     })
 
     if( $location.path() == "/users" ){
@@ -30,9 +33,10 @@ angular.module('myApp').controller('userController', function( $routeParams, $lo
           $scope.user = user;
 
           ItemService.getItemsBelongingTo( $scope.user._id ).then( function( items ){
+            
             $scope.user.items = items;
 
-          }).catch( function( err ){
+          }, function( err ){
 
               setError( "Cannot get items" )
 
@@ -48,7 +52,7 @@ angular.module('myApp').controller('userController', function( $routeParams, $lo
 
           })
 
-      }).catch(function( err ){
+      }, function( err ){
         
           setError( "Cannot get user" )
       });

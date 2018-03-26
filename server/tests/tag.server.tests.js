@@ -3,6 +3,7 @@ let server = require('../../server');
 
 let Tag = require('../models/tag.server.model');
 
+
 var Mongoose = require("mongoose").Mongoose;
 var mongoose = new Mongoose();
 var ObjectId = mongoose.Types.ObjectId;
@@ -37,9 +38,6 @@ describe('\nTag tests-----------------------------------------------------------
               });
         });
     });
-
-
-    // Test the /POST route
 
 
     describe('/POST/tag', () => {

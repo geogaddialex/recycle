@@ -14,7 +14,12 @@ angular.module('myApp').controller('tagController', function( AuthService, ngDia
     })
 
     AuthService.getUser().then( function(user){
+
       $scope.user = user;
+      
+    }, function(){
+
+      setError( "Cannot get user" )
     })
 
     SocketService.on('tag.created', function( tag ){

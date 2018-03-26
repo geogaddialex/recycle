@@ -4,6 +4,7 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http, $haver
       formatTimestamp: formatTimestamp,
       getUserName: getUserName,
       isValidMessage: isValidMessage,
+      isValidFeedbackMessage: isValidFeedbackMessage,
       isValidUserName: isValidUserName,
       isValidItemName: isValidItemName,
       isValidItemDescription: isValidItemDescription,
@@ -19,7 +20,11 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http, $haver
       isNumber: isNumber
     });
 
+    var notBlank = /^(?!\s*$).+/
+
     function isSanitary( input ){
+
+      if (!input) return true
 
       return input.match( /^[0-9a-zA-Z\- \/_£?:.,\s]*$/ )
 
@@ -44,16 +49,23 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http, $haver
 
     function getUserName( user ){
 
-        return name = user.local ? user.local.name : user.google ? user.google.name : user.facebook.name
+        return name = user.facebook ? user.facebook.name : user.google ? user.google.name : user.local.name
     }
 
     function isValidMessage( message ){
 
-        var notBlank = /^(?!\s*$).+/
+        if (!message) return false
+
+        return ( message.length > 0 && message.match( notBlank ) && message.length <=500 )
+
+    }
+
+
+    function isValidFeedbackMessage( message ){
 
         if (!message) return false
 
-        return ( message.length > 0 && message.match( notBlank ) ) ? true : false
+        return ( message.length > 0 && message.match( notBlank ) && message.length <=140 )
 
     }
 
@@ -63,7 +75,7 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http, $haver
 
       var notBlank = /^(?!\s*$).+/
 
-      return ( name.match( notBlank ) ) ? true : false
+      return ( name.match( notBlank ) && name.length <= 70 )
         
     }
 
@@ -71,13 +83,13 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http, $haver
 
         if (!name) return false
 
-        return ( name.length > 2 && name.length < 31 ) ? true : false
+        return ( name.length > 2 && name.length < 31 )
         
     }
 
     function isValidItemDescription( desc ){
 
-        return ( !desc || desc.length < 500  ) ? true : false
+        return ( !desc || desc.length < 500  )
         
     }
 
@@ -85,7 +97,7 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http, $haver
 
       if (!name) return false
 
-      return ( name.length > 2 && name.length < 16 ) ? true : false
+      return ( name.length > 2 && name.length < 16 )
         
     }
 
@@ -93,8 +105,15 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http, $haver
 
       if (!name) return false
 
-      return ( name.length > 3 && name.length < 41 ) ? true : false
+      return ( name.length > 3 && name.length < 41 )
         
+    }
+
+    function isValidFeebackComment( comment ){
+
+      if (!comment) return false
+
+      return ( comment.length > 0 && comment.length < 141 )
     }
 
     function isValidPassword( password ){
@@ -103,7 +122,7 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http, $haver
 
       var regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
 
-      return ( password.match( regex ) ) ? true : false
+      return ( password.match( regex ) )
     }   
 
     function isValidEmail( email ){
@@ -114,7 +133,7 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http, $haver
 
     function passwordsMatch( one, two ){
 
-      return ( one === two ) ? true : false
+      return ( one === two )
     }
 
 
@@ -130,6 +149,8 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http, $haver
        }).then(
 
         function successCallback( res ) {
+
+            console.log( JSON.stringify( res.data,null,2 ) )
 
             if( res.data ){
 

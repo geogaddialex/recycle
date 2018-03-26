@@ -4,6 +4,8 @@ let server = require('../../server');
 let Group = require('../models/group.server.model');
 let User = require('../models/user.server.model');
 let Conversation = require('../models/conversation.server.model');
+let Location = require('../models/location.server.model');
+
 
 var Mongoose = require("mongoose").Mongoose;
 var mongoose = new Mongoose();
@@ -13,12 +15,21 @@ let chaiHttp = require('chai-http');
 let should = chai.should();
 chai.use(chaiHttp);
 
+let location = new Location({
+
+        name: "france",
+        country: "UK",
+        lat: "0.1",
+        long: "1.4"
+})
+
 let user = new User({
     local:{
         name: "Alex",
         email: "hello@alex.com",
         password:"eiorhfjeuor"
-    }
+    },
+    location: location
 })
 
 let conversation = new Conversation({
@@ -97,6 +108,52 @@ describe('\nGroup tests---------------------------------------------------------
                 members: [ user ],
                 conversation: conversation,
                 name: "{}|wew"
+            })
+
+            chai.request(server)
+                .post( '/api/groups' )
+                .send( group )
+                .end((err, res) => {
+
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+
+                  done();
+                });
+        });
+
+
+        it('it should not POST a group with name length < 4', (done) => {
+
+            
+            let group = new Group({
+                members: [ user ],
+                conversation: conversation,
+                name: "wew"
+            })
+
+            chai.request(server)
+                .post( '/api/groups' )
+                .send( group )
+                .end((err, res) => {
+
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+
+                  done();
+                });
+        });
+
+
+        it('it should not POST a group with name length > 40', (done) => {
+
+            
+            let group = new Group({
+                members: [ user ],
+                conversation: conversation,
+                name: "posdjgpoiehrgopejrgsuidgfiusgfouihgfoiuehgfjshfiuegfuisgfiufghouevfkjeshgfosvrhhseoiugeifhoifhouregrou"
             })
 
             chai.request(server)

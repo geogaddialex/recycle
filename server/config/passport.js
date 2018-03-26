@@ -33,6 +33,7 @@ module.exports = function( passport ){
 
             User.findOne({ 'local.email' :  email }, function(err, user) {
 
+
                 if( err ){
                     return done(err);
                 }
@@ -43,16 +44,26 @@ module.exports = function( passport ){
 
                 } else {
 
+
+
                     var newUser                 = new User();
 
                     newUser.local.email         = email;
-                    newUser.local.password      = newUser.generateHash(password);
                     newUser.local.name          = req.body.name
-                    newUser.location            = req.body.location    
+                    newUser.location            = req.body.location   
+
+                    if( password && password.match( /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/ ) ){
+                     
+                        newUser.local.password      = newUser.generateHash(password);
+                    }
 
                     newUser.save(function(err) {
-                        if (err)
-                            throw err;
+                        
+                        if (err){
+                            console.log("error: " + err)
+                            // throw err;
+                            done(null)
+                        }
                         return done(null, newUser);
                     });
                 }

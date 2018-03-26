@@ -28,14 +28,14 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
                   
                     $scope.tags = tags;
 
-                }).catch( function( err ){
+                }, function( err ){
 
                   setError("Could not retrieve tags")
                 });
 
               }
 
-          }).catch( function( err ){
+          }, function( err ){
 
             setError("Could not retrieve item")
           });       
@@ -48,7 +48,7 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
             $scope.items = items;
 
-          }).catch( function( err ){
+          }, function( err ){
 
               setError("Could not retrieve items")
           });
@@ -60,7 +60,7 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
               
               $scope.myItems = items;
 
-            }).catch( function( err ){
+            }, function( err ){
 
               setError("Could not retrieve items")
               
@@ -82,7 +82,7 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
               
               $scope.tags = tags;
 
-            }).catch( function( err ){
+            }, function( err ){
 
               setError("Could not retrieve tags")
             });
@@ -96,7 +96,7 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
               
             $scope.items = items;
 
-          }).catch( function( err ){
+          }, function( err ){
 
             setError("Could not retrieve items")
           });
@@ -109,13 +109,17 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
               
             $scope.items = items;
 
-          }).catch( function( err ){
+          }, function( err ){
 
             setError("Could not retrieve items")
           });
 
         }
 
+
+    }, function(){
+
+      setError( "Could not get logged in user" )
 
     });
 
@@ -215,7 +219,7 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
       
     }
 
-    $scope.deleteItem = function( ID, event ){
+    $scope.deleteItem = function( item, event ){
 
       clearError()
    
@@ -225,9 +229,12 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
       }).then(function (success) {
 
-        ItemService.deleteItem( ID ).then( function( ){ 
+        item.removed = true
 
-            $route.reload();
+        ItemService.updateItem( item ).then( function( ){ 
+
+              var itemIndex =  $scope.myItems.findIndex(i => i._id === item._id)
+              $scope.myItems.splice( itemIndex, 1 )
 
          }, function(){
 
@@ -323,53 +330,59 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
 
       }else if( $scope.selectedTag === "addTag" ){
 
-          // TagService.getTag( tagToAdd ).then( function( tag ){
 
-          //   var tagExists = tag
+          TagService.getTag( tagToAdd ).then( function( tag ){
 
-          // },function(){
+              var uniqueTag = itemToEdit.tags.findIndex(i => i._id === tag._id) == -1
 
-          //   var tagExists = false
-
-          // })
-
-
-          if( !UtilityService.isValidTagName( tagToAdd )){
-
-              setError("Not a valid tag name, tags must be between 3 and 15 characters")
-
-          }else if( !UtilityService.isSanitary( tagToAdd ) ){
-
-              setError( "The tag can only contain letters, numbers, spaces and - / _ £ ? : . ," )
-
-          }else if( false ){
-
-              //need to ensure tag isnt already existing (with different capitalisation etc ) before adding to DB
-              //if it already exists, just push that tag rather than giving an error
-
-          }else{
-
-            ngDialog.openConfirm({ 
-
-              template: '/partials/dialog_create_tag.html'
+              if(uniqueTag){
               
-            }).then(function (success) {
+                  itemToEdit.tags.push( tag )
+              
+              }else{
 
-                TagService.createTag({ name: tagToAdd }).then( function( newTag ){
+                  setError( "You have already added that tag" )
 
-                    itemToEdit.tags.push( newTag.data )
-                    $scope.newTag.name = ""
+              }
 
-                }, function(){
+          }, function(){
 
-                  setError("Tag couldn't be added")
+            //if the tag doesnt already exist
+
+              if( !UtilityService.isValidTagName( tagToAdd )){
+
+                setError("Not a valid tag name, tags must be between 3 and 15 characters")
+
+              }else if( !UtilityService.isSanitary( tagToAdd ) ){
+
+                  setError( "The tag can only contain letters, numbers, spaces and - / _ £ ? : . ," )
+
+              }else{
+
+                ngDialog.openConfirm({ 
+
+                  template: '/partials/dialog_create_tag.html'
+                  
+                }).then(function (success) {
+
+                    TagService.createTag({ name: tagToAdd }).then( function( newTag ){
+
+                        itemToEdit.tags.push( newTag.data.tag )
+                        $scope.newTag.name = ""
+
+                    }, function(){
+
+                      setError("Tag couldn't be added")
+
+                    })
+
+                }, function(error){
+
                 })
 
-            }, function(error){
+              }
 
-            })
-              
-          }
+          })
 
 
       }else{

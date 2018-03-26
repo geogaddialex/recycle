@@ -20,7 +20,6 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
                 sender: $scope.user,
                 lastUpdatedBy: $scope.user,
                 items: { sender: [], recipient: [] },
-                accepted: { sender: true, recipient: false },
                 status: "In progress"
             }  
 
@@ -93,7 +92,7 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
                             $scope.options.recipient.push( items[x] );
                         }
 
-                    }).catch( function( err ){
+                    }, function( err ){
 
                         setError( "Could not get recipient's items" )
 
@@ -110,7 +109,7 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
                 $scope.exchanges = exchanges;
 
-            }).catch( function( err ){
+            }, function( err ){
 
                 setError( "Could not get exchanges" )
 
@@ -124,7 +123,7 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
                 $scope.myExchanges = exchanges;
 
-            }).catch( function( err ){
+            }, function( err ){
                 
                 setError( "Could not get exchanges" )
 
@@ -186,7 +185,7 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
                     })
 
-                }).catch( function( err ){
+                }, function( err ){
 
                     setError( "Could not get exchange" )
 
@@ -194,6 +193,10 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
             }
         }
 
+
+    }, function(){
+
+        setError( "Could not get logged in user" )
 
     });
 
@@ -250,7 +253,7 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
             setError( "Please select a user to send the offer to" )
 
-        }else if( exchange.items.recipient.length < 1 && exchange.items.recipient.length < 1 ){
+        }else if( exchange.items.recipient.length < 1 && exchange.items.sender.length < 1 ){
 
             setError( "At least one item must be selected to send an offer (you can request or offer an item for nothing in return)" )
 
@@ -375,7 +378,7 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
         if( !UtilityService.isValidMessage( $scope.message.text ) ){
 
-            setError("Messages cannot be empty")
+            setError("Please enter a message between 1 and 500 characters long")
 
         }else if( !UtilityService.isSanitary( $scope.message.text ) ){
 
@@ -447,6 +450,9 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
                 setError( "Could not cancel exchange" )
             })
 
+        }, function(){
+
+            setError( "Could not cancel exchange" )
         })
     }
 
@@ -454,37 +460,59 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
         clearError()
 
-        FeedbackService.createFeedback( $scope.feedback ).then( function( createdFeedback ){ 
+        if( !$scope.feedback.rating ){
 
-            if( $scope.userIsSender ){
+            setError( "Please enter a comment that is 1-140 characters long" )
 
-                $scope.exchange.feedback.sender = createdFeedback.data
+        }else if( !UtilityService.isValidFeedbackMessage( $scope.feedback.comment )){
 
-            }else{
+            setError( "Please enter a comment that is 1-140 characters long" )
+        
+        }else if( !UtilityService.isSanitary( $scope.feedback.comment )){
 
-                $scope.exchange.feedback.recipient = createdFeedback.data
-            }
+            setError( "The comment can only contain letters, numbers, spaces and - / _ £ ? : . ," )
+        
+        }else if( !$scope.feedback.exchangeHappened ){
 
-            amendExchange()
-            updateFeedbackScore()
+            setError( "Please tell us whether the exchange actually took place" )
+        
+        }else{
+            FeedbackService.createFeedback( $scope.feedback ).then( function( createdFeedback ){ 
 
-            console.log( "exchangeHappened: " + $scope.feedback.exchangeHappened )
-            if( $scope.feedback.exchangeHappened ){
+                if( $scope.userIsSender ){
 
-                removeSwappedItems( $scope.exchange, $scope.userIsSender )
-            }
+                    $scope.exchange.feedback.sender = createdFeedback.data.feedback
 
-            $scope.feedbackSubmitted = createdFeedback.data
+                }else{
 
-            createdFeedback.data.author = $scope.user
-            $scope.otherUserFeedbacks.push( createdFeedback.data )
+                    $scope.exchange.feedback.recipient = createdFeedback.data.feedback
+                }
+
+                amendExchange()
+                updateFeedbackScore()
+
+                if( $scope.feedback.exchangeHappened === "true" ){
+
+                    console.log( "did exchange happen? - " + $scope.feedback.exchangeHappened)
+
+                    removeSwappedItems( $scope.exchange, $scope.userIsSender )
+                }
+
+                $scope.feedbackSubmitted = createdFeedback.data.feedback
+
+                createdFeedback.data.feedback.author = $scope.user
+                $scope.otherUserFeedbacks.push( createdFeedback.data.feedback )
 
 
-        }, function(){
+            }, function(){
 
-            setError( "Could not submit feedback" )
+                setError( "Could not submit feedback" )
 
-        })
+            })
+
+        }
+
+        
 
     }
 
@@ -548,7 +576,7 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
             $scope.exchange.conversation = retrievedConversation
 
-        }).catch( function( err ){
+        }, function( err ){
 
             setError( "Could not send message" )
         })
@@ -604,7 +632,7 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
                 }
             }
 
-        }).catch( function( err ){
+        }, function( err ){
 
             setError( "Could not get items" )
         });
@@ -631,7 +659,7 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
                 }
             }
 
-        }).catch( function( err ){
+        }, function( err ){
 
             setError( "Could not get items" )
         });  
@@ -639,29 +667,29 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
     var removeSwappedItems = function( exchange, userIsSender ){
 
+
         var items = userIsSender ? exchange.items.sender : exchange.items.recipient
-
-        console.log( JSON.stringify( items, null, 2))
-        console.log( "length: " + items.length)
-
 
         for(var x=0; x<items.length; x++){
 
+            var item = items[x]
 
-            items[x].removed = true
+            if(item){
 
-            console.log("item " + x + ": " + JSON.stringify(items[x],null,2))
+                item.removed = true
+                
+                ItemService.updateItem( item ).then(function(){
+
+
+                }, function(){
+
+                    console.log( "couldn't remove " + item.name )
+
+                })
+
+            }
+
             
-            ItemService.updateItem( items[x] ).then(function(){
-
-                console.log( "removed " + items[x].name )
-
-            },function(){
-
-                console.log( "couldn't remove " + items[x].name )
-
-
-            })
 
         }
 

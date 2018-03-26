@@ -46,13 +46,11 @@
 }
 
 .profileSection{
-	height:250px;
+	height:220px;
 	
 }
 
 .googleSection, .facebookSection{
-	height:250px;
-	line-height: 250px;
 	text-align: center;
 }
 

@@ -20,8 +20,8 @@ var exchangeSchema = mongoose.Schema({
     conversation: { type: mongoose.Schema.Types.ObjectId, ref: 'Conversation', required: true },
 
     accepted: { 
-    	recipient: { type: Number, default: 0 },
-    	sender: { type: Number, default: 1 }
+    	recipient: { type: Boolean, default: false },
+    	sender: { type: Boolean, default: true }
     },
     status: {type: String, enum: ['In progress', 'Completed', 'Cancelled', 'Agreed'], required: true},
 

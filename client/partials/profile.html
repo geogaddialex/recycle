@@ -64,6 +64,17 @@
     
 
     <div class="row">
+
+        <div class="col-xs-12 whiteDiv">
+
+                <button ng-click="updateProfile()" class="btn btn-danger">Save</button>
+                <button ng-click="resetProfile()" class="btn btn-danger">Reset</button>
+        </div>
+
+    </div>
+    <div class="row">
+
+
         <div class="col whiteDiv">
 
             <div class="form-group">
@@ -75,8 +86,6 @@
                 <label>How many miles do you want to see items within?</label>
                 <input type="number" name="maxDistance" ng-model="user.maxDistance" class="form-control">
 
-                <button ng-click="updateLocation()" class="white">Save</button>
-                <button ng-click="reset()" class="white">Reset</button>
 
             </div>  
         </div>
@@ -93,11 +102,9 @@
                             <input type="text" ng-model="user.local.name" placeholder="Your full name" class="form-control"/>
                             <label>Email</label>
                             <input type="email" ng-model="user.local.email" placeholder="Email address" class="form-control"/>
-                            <button ng-click="updateLocal()" class="white">Save</button>
-                            <button ng-click="resetLocal()" class="white">Reset</button>
                         </div>
 
-                    <a ng-if="user.local && (user.facebook || user.google)" href="/api/auth/unlink/local" class="btn btn-danger">Unlink</a>
+                    <a ng-if="user.local && (user.facebook || user.google)" ng-click="removeLocal()" class="btn btn-danger">Remove</a>
                     <a ng-if="!user.local" href="/connect/local" class="btn btn-danger">Create Recycle Login</a>
         </div>
 
