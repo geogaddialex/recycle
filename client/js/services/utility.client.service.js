@@ -150,8 +150,6 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http, $haver
 
         function successCallback( res ) {
 
-            console.log( JSON.stringify( res.data,null,2 ) )
-
             if( res.data ){
 
               deferred.resolve( true );

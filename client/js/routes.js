@@ -6,9 +6,9 @@ angular.module("myApp").config( function( $routeProvider, $locationProvider ){
         .when('/connect/local', { templateUrl: 'partials/createLocal.html', controller: 'loginController', restricted: true })
         .when('/profile', { templateUrl: 'partials/profile.html', controller: 'profileController', restricted: true })
 
-        .when('/users', { templateUrl: 'partials/users.html', controller: 'userController', restricted: true })
         .when('/users/:user', { templateUrl: 'partials/user.html', controller: 'userController', restricted: true })
         .when('/users/:user/feedback', { templateUrl: 'partials/feedback.html', controller: 'userController', restricted: true })
+        .when('/users/:user/exchanges', { templateUrl: 'partials/exchanges_user.html', controller: 'userController', restricted: true })
 
         .when('/items', { templateUrl: 'partials/items_browse.html', controller: 'itemController', restricted: true })
         .when('/items/add', { templateUrl: 'partials/items_new.html', controller: 'itemController', restricted: true })
@@ -19,8 +19,6 @@ angular.module("myApp").config( function( $routeProvider, $locationProvider ){
         .when('/tags', { templateUrl: 'partials/tags.html', controller: 'tagController', restricted: true })
 
         .when('/myExchanges', { templateUrl: 'partials/exchanges_my.html', controller: 'exchangeController', restricted: true })
-        .when('/exchanges', { templateUrl: 'partials/exchanges.html', controller: 'exchangeController', restricted: true })
-
         .when('/exchange/:id', { templateUrl: 'partials/exchange.html', controller: 'exchangeController', restricted: true })
 
         .when('/newExchange', { templateUrl: 'partials/exchanges_new.html', controller: 'exchangeController', restricted: true })

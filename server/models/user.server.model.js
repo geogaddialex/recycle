@@ -7,6 +7,8 @@ var userSchema = mongoose.Schema({
 
     location: { type: mongoose.Schema.Types.ObjectId, ref: 'Location'},
     maxDistance: { type: Number, default: 50, min: 1 },
+    completedExchanges: { type: Number, default: 0 },
+
 
     local: {
 
@@ -43,33 +45,33 @@ var userSchema = mongoose.Schema({
 
 });
 
-userSchema.pre('validate', function( next ){
+// userSchema.pre('validate', function( next ){
 
-  if( !(this.local || this.facebook || this.google) ){
+//   if( !(this.local || this.facebook || this.google) ){
     
-    this.invalidate('local', 'User must have at least one of local, facebook or google login details', this.local);  
+//     this.invalidate('local', 'User must have at least one of local, facebook or google login details', this.local);  
 
-  }else if( this.local && !this.local.name ){
+//   }else if( this.local && !this.local.name ){
 
-    this.invalidate('local', 'When registering, the user must have a name', this.local )
+//     this.invalidate('local', 'When registering, the user must have a name', this.local )
 
-  }else if( this.local && !this.local.email ){
+//   }else if( this.local && !this.local.email ){
 
-    this.invalidate('local', 'When registering, the user must have a name', this.local )
+//     this.invalidate('local', 'When registering, the user must have a name', this.local )
 
-  }else if( this.local && !this.local.password ){
+//   }else if( this.local && !this.local.password ){
 
-    this.invalidate('local', 'When registering, the user must have a password', this.local )
+//     this.invalidate('local', 'When registering, the user must have a password', this.local )
 
-  }else if( this.local && !this.location ){
+//   }else if( this.local && !this.location ){
 
-    this.invalidate('location', 'When registering locally, a location must be provided', this.location )
+//     this.invalidate('location', 'When registering locally, a location must be provided', this.location )
 
-  }
+//   }
 
-    next();
+//     next();
 
-});
+// });
 
 
 userSchema.methods.generateHash = function(password) {

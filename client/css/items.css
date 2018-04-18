@@ -3,6 +3,11 @@
 /*	height: 400px;*/
 }
 
+.imageContainer{
+
+	display: flex;
+  	justify-content: center;
+}
 .item{
 	background-color:white;
 	text-align: center;

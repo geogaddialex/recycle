@@ -12,7 +12,7 @@
             Located in: {{ user.location.name }} <span ng-if="userThatsViewing">({{ UtilityService.calculateDistance( user, userThatsViewing ) }} miles away)</span><br><br>
             Feedback score: <b>{{ user.feedback.score }}%</b>
             <span class="glyphicon glyphicon-thumbs-up green"></span>
-            ({{ user.feedback.count }} completed exchanges)
+            <a href="/users/{{ user._id }}/exchanges">({{ user.completedExchanges }} completed exchanges)</a>
             
             <br><br>
 

@@ -14,7 +14,7 @@
 
             Feedback score: <b>{{ user.feedback.score }}%</b> 
             <span class="glyphicon glyphicon-thumbs-up green"></span>
-            ({{ user.feedback.count }} completed exchanges)
+            <a href="/myExchanges">({{ user.completedExchanges }} completed exchanges)</a>
             
             <br><br>
 
@@ -93,9 +93,9 @@
 
     <div class="row">
 
-        <div class="col-sm-12 col-md-4 whiteDiv profileSection">
+        <div class="col-sm-12 whiteDiv profileSection">
 
-                <h5>Local</h5>
+                <h5>Account</h5>
 
                         <div class="form-group" ng-if="user.local">
                             <label>Full name</label>
@@ -105,10 +105,10 @@
                         </div>
 
                     <a ng-if="user.local && (user.facebook || user.google)" ng-click="removeLocal()" class="btn btn-danger">Remove</a>
-                    <a ng-if="!user.local" href="/connect/local" class="btn btn-danger">Create Recycle Login</a>
+                    <a ng-if="!user.local" href="/connect/local" class="btn btn-danger">Create Email/Password Login</a>
         </div>
 
-        <div class="col-sm-12 col-md-4 whiteDiv profileSection facebookSection">
+        <!-- <div class="col-sm-12 col-md-4 whiteDiv profileSection facebookSection">
             <span>
                 <h5 class="text-primary">Facebook</h5>
 
@@ -132,7 +132,7 @@
 
                     <a ng-if="user.google.token" href="/api/auth/unlink/google" class="btn btn-danger">Unlink</a>
                     <a ng-if="!user.google.token" href="/api/auth/connect/google" class="btn btn-danger">Connect Google</a>
-        </span></div>
+        </span></div> -->
 
     </div>
 

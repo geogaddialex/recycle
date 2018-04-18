@@ -102,19 +102,6 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
         }
 
-        // viewing all exchanges (admin functionality) --------------------------------
-        if( path == "/exchanges" ){
-
-            ExchangeService.getExchanges( ).then( function( exchanges ){
-
-                $scope.exchanges = exchanges;
-
-            }, function( err ){
-
-                setError( "Could not get exchanges" )
-
-            });
-        }
 
         // viewing my exchanges ------------------------------------------------
         if( path == "/myExchanges" ){
@@ -142,17 +129,7 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
                     $scope.exchange = exchange
                     $scope.userIsSender = $scope.user._id == exchange.sender._id
                     $scope.otherUser = $scope.userIsSender ? exchange.recipient : exchange.sender
-
-                    if( exchange.status == "In progress"){
-
-                        $scope.showDiv = "negotiate"
-                    }else if( exchange.status == "Agreed" ){
-
-                        $scope.showDiv = "swap"
-                    }else if( exchange.status == "Completed" ){
-
-                        $scope.showDiv = "feedback"
-                    }
+                    $scope.viewerIsParty = $scope.user._id == exchange.sender._id || $scope.user._id == exchange.recipient._id
 
                     updateOptions()
                     updateConversation( )
@@ -270,7 +247,7 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
                     exchange.conversation = createdConversation.data.conversation;
                     ExchangeService.createExchange( exchange ).then( function( ){ 
 
-                        $location.path("/myExchanges");
+                        $location.path("/exchange/"+exchange._id);
 
                     }, function(){
                         
@@ -318,7 +295,7 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
         }else{
 
-            setError( "Could not remove item" )
+            setError( "Could not add item" )
 
 
         }
@@ -416,6 +393,21 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
         if( $scope.exchange.accepted.recipient && $scope.exchange.accepted.sender ){
 
             $scope.exchange.status = "Agreed"
+
+            UserService.getUser( $scope.exchange.recipient._id ).then( function( user ){
+
+                user.completedExchanges += 1
+                UserService.updateUser( user )
+
+            })
+
+
+            UserService.getUser( $scope.exchange.sender._id ).then( function( user ){
+
+                user.completedExchanges += 1
+                UserService.updateUser( user )
+
+            })
 
         }
 

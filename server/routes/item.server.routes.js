@@ -10,7 +10,7 @@ router.get('/', items.list );
 router.get('/search/:query', items.forSearch );
 router.get('/user/:id', users.lookupUser, items.forUser );
 router.get('/group/:id', groups.lookupGroup, items.forGroup );
-router.get('/tag/:id', tags.lookupTag, items.forTag );
+router.get('/tag/:tag', tags.lookupTag, items.forTag );
 
 router.post('/', items.create );
 router.get('/:id', items.getOne );

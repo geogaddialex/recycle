@@ -12,13 +12,24 @@
 
             <div ng-if="userIsSender">
                 <div ng-repeat="item in options.sender">
-                    <a ng-click="addToExchange(item)"><div class="item">{{item.name}}</div></a>
+                    <a ng-click="addToExchange(item)">
+                        <div class="item">
+                            {{item.name}}
+                            <span title="View info" class="glyphicon glyphicon-info-sign" 
+                            ng-click="showInfo(item); $event.stopPropagation();"></span>
+                        </div></a>
                 </div>
             </div>
 
             <div ng-if="!userIsSender">
                 <div ng-repeat="item in options.recipient">
-                    <a ng-click="addToExchange(item)"><div class="item">{{item.name}}</div></a>
+                    <a ng-click="addToExchange(item)">
+                        <div class="item">
+                            {{item.name}}
+                            <span title="View info" class="glyphicon glyphicon-info-sign" 
+                            ng-click="showInfo(item); $event.stopPropagation();"></span>
+                        </div>
+                    </a>
                 </div>
             </div>
 
@@ -40,10 +51,18 @@
                             <div ng-repeat="item in exchange.items.sender">
 
                                 <a ng-if="exchange.status=='In progress'" ng-click="removeFromExchange(item)">
-                                    <div class="exchangeItem">{{ item.name }}</div>
+                                    <div class="exchangeItem">
+                                        {{item.name}}
+                                        <span title="View info" class="glyphicon glyphicon-info-sign" 
+                                        ng-click="showInfo(item); $event.stopPropagation();"></span>
+                                    </div>
                                 </a> 
                                 <a ng-if="exchange.status!='In progress'">
-                                    <div class="exchangeItem">{{ item.name }}</div>
+                                    <div class="exchangeItem">
+                                        {{item.name}}
+                                        <span title="View info" class="glyphicon glyphicon-info-sign" 
+                                        ng-click="showInfo(item); $event.stopPropagation();"></span>
+                                    </div>
                                 </a> 
 
                             </div>
@@ -54,10 +73,18 @@
 
 
                                 <a ng-if="exchange.status=='In progress'" ng-click="removeFromExchange(item)">
-                                    <div class="exchangeItem">{{ item.name }}</div>
+                                    <div class="exchangeItem">
+                                        {{item.name}}
+                                        <span title="View info" class="glyphicon glyphicon-info-sign" 
+                                        ng-click="showInfo(item); $event.stopPropagation();"></span>
+                                    </div>
                                 </a>
                                 <a ng-if="exchange.status!='In progress'">
-                                    <div class="exchangeItem">{{ item.name }}</div>
+                                    <div class="exchangeItem">
+                                        {{item.name}}
+                                        <span title="View info" class="glyphicon glyphicon-info-sign" 
+                                        ng-click="showInfo(item); $event.stopPropagation();"></span>
+                                    </div>
                                 </a>  
 
                             </div>
@@ -72,10 +99,18 @@
                             <div ng-repeat="item in exchange.items.sender">
 
                                 <a ng-click="removeFromExchange(item)" ng-if="exchange.status=='In progress'">
-                                    <div class="exchangeItem">{{ item.name }}</div>
+                                    <div class="exchangeItem">
+                                        {{item.name}}
+                                        <span title="View info" class="glyphicon glyphicon-info-sign" 
+                                        ng-click="showInfo(item); $event.stopPropagation();"></span>
+                                    </div>
                                 </a>
                                 <a ng-if="exchange.status!='In progress'">
-                                    <div class="exchangeItem">{{ item.name }}</div>
+                                    <div class="exchangeItem">
+                                        {{item.name}}
+                                        <span title="View info" class="glyphicon glyphicon-info-sign" 
+                                        ng-click="showInfo(item); $event.stopPropagation();"></span>
+                                    </div>
                                 </a> 
 
                             </div>
@@ -85,10 +120,18 @@
                             <div ng-repeat="item in exchange.items.recipient">
 
                                 <a ng-click="removeFromExchange(item)" ng-if="exchange.status=='In progress'">
-                                    <div class="exchangeItem">{{ item.name }}</div>
+                                    <div class="exchangeItem">
+                                        {{item.name}}
+                                        <span title="View info" class="glyphicon glyphicon-info-sign" 
+                                        ng-click="showInfo(item); $event.stopPropagation();"></span>
+                                    </div>
                                 </a>  
                                 <a ng-if="exchange.status!='In progress'">
-                                    <div class="exchangeItem">{{ item.name }}</div>
+                                    <div class="exchangeItem">
+                                        {{item.name}}
+                                        <span title="View info" class="glyphicon glyphicon-info-sign" 
+                                        ng-click="showInfo(item); $event.stopPropagation();"></span>
+                                    </div>
                                 </a>     
 
                             </div>
@@ -152,13 +195,26 @@
 
                 <div ng-if="userIsSender">
                     <div ng-repeat="item in options.recipient">
-                        <a ng-click="addToExchange(item)"><div class="item">{{item.name}}</div></a>
+                        <a ng-click="addToExchange(item)">
+                            <div class="item">
+                                        {{item.name}}
+                                        <span title="View info" class="glyphicon glyphicon-info-sign" 
+                                        ng-click="showInfo(item); $event.stopPropagation();"></span>
+                            </div>
+
+                        </a>
                     </div>
                 </div>
 
                 <div ng-if="!userIsSender">
                     <div ng-repeat="item in options.sender">
-                        <a ng-click="addToExchange(item)"><div class="item">{{item.name}}</div></a>
+                        <a ng-click="addToExchange(item)">
+                            <div class="item">
+                                {{item.name}}
+                                <span title="View info" class="glyphicon glyphicon-info-sign" 
+                                ng-click="showInfo(item); $event.stopPropagation();"></span>
+                            </div>
+                        </a>
                     </div>
                 </div>
 
@@ -229,7 +285,7 @@
 
 
 
-<div id="exchangeFooter" class="row">
+<div id="exchangeFooter" class="row" ng-if="viewerIsParty">
 
     <div class="col-xs-6" id="messenger">
 

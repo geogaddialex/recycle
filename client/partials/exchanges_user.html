@@ -1,26 +1,26 @@
 
 <div ng-show="error.message" class="alert alert-danger">{{error.message}}</div>
 
-<div ng-if="myExchanges.length < 1" class="alert alert-danger">You do not have any exchanges, click <a href="/newExchange">here</a> to start one now</div>
+<div ng-if="exchanges.length < 1" class="alert alert-danger">You do not have any exchanges, click <a href="/newExchange">here</a> to start one now</div>
 
 <div class="container-fluid content">
 
         <div id="page-content-wrapper">
 
             <div class="row">
-                <div ng-show="myExchanges">
+                <div ng-show="exchanges">
                         
-                    <div ng-repeat="exchange in myExchanges | orderBy : '-created'" class="col-xs-12 exchange">
+                    <div ng-repeat="exchange in exchanges | orderBy : '-created'" class="col-xs-12 exchange" 
+                    ng-show="exchange.status == 'Agreed'">
                        
                             <div class="row"> 
 
                                 <div class="col-xs-6"><!-- exchange details -->
 
             Reference: <a href="/exchange/{{ exchange._id }}">{{ exchange._id }}</a><br>
-            Status: {{ exchange.status }}<br>
             <br>
 
-            User: <a href="/users/{{ exchange.recipient._id }}" ng-if="user._id == exchange.sender._id">
+            Exchange partner: <a href="/users/{{ exchange.recipient._id }}" ng-if="user._id == exchange.sender._id">
             {{ UtilityService.getUserName( exchange.recipient ) }}</a>
             <a href="/users/{{ exchange.sender._id }}" ng-if="user._id != exchange.sender._id">
             {{ UtilityService.getUserName( exchange.sender ) }}</a>
@@ -40,7 +40,7 @@
                     "{{ exchange.feedback.sender.comment }}" [{{ UtilityService.formatTimestamp( exchange.feedback.sender.timestamp ) }}]
                 </div>
                 <div ng-if="!exchange.feedback.sender">
-                    No feeback yet
+                    No feedback yet
                 </div>
                 
             </div>
@@ -53,7 +53,7 @@
                     "{{ exchange.feedback.recipient.comment }}" [{{ UtilityService.formatTimestamp( exchange.feedback.recipient.timestamp ) }}]
                 </div>
                 <div ng-if="!exchange.feedback.recipient">
-                    No feeback yet
+                    No feedback yet
                 </div>
 
             </div>
@@ -68,7 +68,7 @@
                     "{{ exchange.feedback.sender.comment }}" [{{ UtilityService.formatTimestamp( exchange.feedback.sender.timestamp ) }}]
                 </div>
                 <div ng-if="!exchange.feedback.sender">
-                    No feeback yet
+                    No feedback yet
                 </div>
             </div>
             <div ng-if="exchange.sender._id == user._id">
@@ -88,7 +88,7 @@
 
                                 <div class="col-xs-2"><!-- exchange actions -->
 
-                                    <a href="/exchange/{{ exchange._id }}"><button class="btn exchangeAction">View</button></a><br>
+                                    <a href="/exchange/{{ exchange._id }}"><button class="btn">View full details</button></a><br>
 
                                     <button class="btn exchangeAction" 
                                         ng-if="exchange.status=='In progress'"

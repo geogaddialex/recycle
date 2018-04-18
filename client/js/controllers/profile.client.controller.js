@@ -44,17 +44,17 @@ angular.module('myApp').controller('profileController', function( $http, ngDialo
 
         clearError()
 
-        if( !UtilityService.isValidUserName( $scope.user.local.name ) ){
+        if( $scope.user.local && !UtilityService.isValidUserName( $scope.user.local.name ) ){
 
             setError( "Please enter a name between 1 and 70 characters long" )
 
-        }else if( !UtilityService.isValidEmail( $scope.user.local.email ) ){
+        }else if( $scope.user.local && !UtilityService.isValidEmail( $scope.user.local.email ) ){
 
             setError( "Please enter a valid email address" )
 
         }else if( !$scope.user.location || !$scope.user.location.name ){
 
-          setError( "The location entered isn't recognised, please use a location from the list provided" )
+          setError( "The location entered isn't recognised, please select a location from the suggestions list" )
 
         }else if( !UtilityService.isNumber( $scope.user.maxDistance )){
 
@@ -63,6 +63,27 @@ angular.module('myApp').controller('profileController', function( $http, ngDialo
         }else if( $scope.user.maxDistance < 1 ){
 
           setError( "The minimum distance is 1 mile, but such a small distance may not return many results" )
+
+        }else if( !$scope.user.local ){
+
+            ngDialog.openConfirm({ 
+
+                template: '/partials/dialog_save_changes.html'
+
+            }).then(function (success) {
+
+                UserService.updateUser( $scope.user ).then( function(){
+
+                    setSuccess( "Profile updated successfully")
+
+                }, function(){
+
+                    setError( "Cannot update profile" )
+                })
+
+            }, function(error){
+
+            })
 
         }else{
 

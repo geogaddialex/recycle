@@ -8,7 +8,12 @@
             <h4> Your items </h4>
             
             <div ng-repeat="item in options.sender">
-                <a ng-click="addToExchange(item)"><div class="item">{{item.name}}</div></a>
+                <a ng-click="addToExchange(item)">
+                        <div class="item">
+                            {{item.name}}
+                            <span title="View info" class="glyphicon glyphicon-info-sign" 
+                            ng-click="showInfo(item); $event.stopPropagation();"></span>
+                        </div></a>
             </div>
         </div>
 
@@ -21,7 +26,13 @@
                         <h3 ng-if="user"> {{ UtilityService.getUserName( user ) }} </h3>
 
                         <div ng-repeat="item in exchange.items.sender">
-                            <a ng-click="removeFromExchange(item)"><div class="item">{{ item.name }}</div></a> 
+                            <a ng-click="removeFromExchange(item)">
+                                 <div class="exchangeItem">
+                                        {{item.name}}
+                                        <span title="View info" class="glyphicon glyphicon-info-sign" 
+                                        ng-click="showInfo(item); $event.stopPropagation();"></span>
+                                    </div>
+                            </a> 
                         </div>
                 </div>
 
@@ -32,7 +43,13 @@
 
 
                         <div ng-repeat="item in exchange.items.recipient">
-                            <a ng-click="removeFromExchange(item)"><div class="item">{{ item.name }}</div></a>    
+                            <a ng-click="removeFromExchange(item)">
+                                 <div class="exchangeItem">
+                                        {{item.name}}
+                                        <span title="View info" class="glyphicon glyphicon-info-sign" 
+                                        ng-click="showInfo(item); $event.stopPropagation();"></span>
+                                    </div>
+                            </a>    
                         </div>
 
                 </div>
@@ -58,7 +75,14 @@
             </select> 
 
             <div ng-repeat="item in options.recipient">
-                <a ng-click="addToExchange(item)"><div class="item">{{item.name}}</div></a>  
+                <a ng-click="addToExchange(item)">
+                    <div class="item">
+                                {{item.name}}
+                                <span title="View info" class="glyphicon glyphicon-info-sign" 
+                                ng-click="showInfo(item); $event.stopPropagation();"></span>
+                    </div>
+
+                </a>
             </div>
         </div>
 

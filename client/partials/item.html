@@ -50,7 +50,7 @@
 
                     <div class="row">
                         <div class="col">
-                            <a href="/users/{{item.owner._id}}">{{ UtilityService.getUserName( item.owner ) }}</a> (<b>{{ user.feedback.score }}%</b> <span class="glyphicon glyphicon-thumbs-up green"></span> - {{ user.feedback.count }} completed exchanges)
+                            <a href="/users/{{item.owner._id}}">{{ UtilityService.getUserName( item.owner ) }}</a> (<b>{{ item.owner.feedback.score }}%</b> <span class="glyphicon glyphicon-thumbs-up green"></span> - <a href="/users/{{ item.owner._id }}/exchanges">{{ item.owner.completedExchanges }} completed exchanges</a>)
 
                            <br>{{ item.owner.location.name }} ({{ UtilityService.calculateDistance( user, item.owner ) }} miles away)<br>
             

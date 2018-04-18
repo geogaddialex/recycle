@@ -1,4 +1,4 @@
-angular.module('myApp').controller('userController', function( $routeParams, $location, $scope, ngDialog, ItemService, AuthService, UserService, FeedbackService, UtilityService ){
+angular.module('myApp').controller('userController', function( $routeParams, $location, $scope, ngDialog, ItemService, AuthService, UserService, FeedbackService, UtilityService, ExchangeService ){
 
     $scope.UtilityService = UtilityService
     $scope.error = {}
@@ -45,6 +45,16 @@ angular.module('myApp').controller('userController', function( $routeParams, $lo
           FeedbackService.getFeedbackRegarding( user._id ).then( function( feedbacks ){
 
             $scope.feedbacks = feedbacks
+
+          }, function(){
+
+              setError( "Cannot get feedback for user" )
+
+          })
+
+          ExchangeService.getExchangesInvolving( user._id ).then( function( exchanges ){
+
+            $scope.exchanges = exchanges
 
           }, function(){
 
