@@ -120,7 +120,7 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http, $haver
 
       //8 chars minimum, lowercase, uppercase, number, special char
 
-      var regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+      var regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[ !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]).{8,}$/
 
       return ( password.match( regex ) )
     }   

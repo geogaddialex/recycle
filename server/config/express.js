@@ -80,8 +80,6 @@ var server = app.listen( port )
 var io = socketio.listen( server );
 console.log( 'Site live at port: ' + port )
 
-// var server = http.createServer( app );
-// var io = socketio.listen( server );
 app.set( 'socketio', io );
 // app.set( 'server', server );
 

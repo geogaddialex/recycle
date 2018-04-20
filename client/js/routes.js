@@ -1,6 +1,6 @@
 angular.module("myApp").config( function( $routeProvider, $locationProvider ){
     $routeProvider
-        .when('/', { templateUrl: 'partials/home.html', restricted: true })
+        .when('/', { templateUrl: 'partials/items_browse.html', controller: 'itemController', restricted: true })
 
         .when('/enter', { templateUrl: 'partials/enter.html', controller: 'loginController' })
         .when('/connect/local', { templateUrl: 'partials/createLocal.html', controller: 'loginController', restricted: true })

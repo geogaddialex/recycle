@@ -245,9 +245,10 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
                 ConversationService.createConversation( ).then(function( createdConversation ){
 
                     exchange.conversation = createdConversation.data.conversation;
-                    ExchangeService.createExchange( exchange ).then( function( ){ 
 
-                        $location.path("/exchange/"+exchange._id);
+                    ExchangeService.createExchange( exchange ).then( function( exchange ){ 
+
+                        $location.path("/exchange/"+exchange.data.exchange._id);
 
                     }, function(){
                         

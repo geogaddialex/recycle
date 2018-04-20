@@ -42,7 +42,7 @@ angular.module('myApp').controller('itemController', function( $routeParams, $lo
             
         }
 
-        if( $location.path() == "/items" ){
+        if( $location.path() == "/items" || $location.path() =="/" ){
 
           ItemService.getItems( ).then( function( items ){
 

@@ -1,39 +1,21 @@
 angular.module('myApp').controller('navController', function( $location, AuthService, UserService, NotificationService, UtilityService, SocketService, $scope, $location ){
 
-    var path = $location.path()
+    // var path = $location.path()
 
     $scope.authService = AuthService;
     $scope.UtilityService = UtilityService
     $scope.error = {}
+    var loggedIn = false
 
-    //these two lines needed so that AuthService doesn't try to getUser before logged in (undefined error on login screen)
-    AuthService.getUserStatus().then( function(){
-      if( AuthService.isLoggedIn() ){
-    
-          AuthService.getUser( ).then( function( user ){
-            $scope.user = user;
+    var interval = setInterval( function( ){
 
-            NotificationService.getNotifications( ).then( function( notifications ){
-
-              $scope.notifications = notifications
-              $scope.unreadNotifications = $scope.notifications.some(checkUnread);
-
-            }, function(){
-
-              setError( "Cannot get notifications" )
-
-            })
-
-          }, function( err ){
-
-              setError( "Cannot get user" )
-          });
+      if (loggedIn) {
+        clearInterval(interval);
+        initialiseNotifications()
       }
-    }, function(){
+      loggedIn = AuthService.isLoggedIn()
 
-        setError( "Cannot get user status" )
-    })
-
+    }, 100);
 
     $scope.markRead = function( event, notification ){
 
@@ -139,6 +121,30 @@ angular.module('myApp').controller('navController', function( $location, AuthSer
     var setError = function( message ){
 
       $scope.error.message = message
+
+    }
+
+    var initialiseNotifications = function(){
+
+      AuthService.getUser( ).then( function( user ){
+
+            $scope.user = user;
+
+            NotificationService.getNotifications( ).then( function( notifications ){
+
+              $scope.notifications = notifications
+              $scope.unreadNotifications = $scope.notifications.some(checkUnread);
+
+            }, function(){
+
+              setError( "Cannot get notifications" )
+
+            })
+
+      }, function( err ){
+
+          setError( "Cannot get user" )
+      });
 
     }
   
