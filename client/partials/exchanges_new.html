@@ -6,10 +6,12 @@
 
         <div class="col-xs-2" id="myItems">
             <h4> Your items </h4>
-            
+
+
+            <div class="itemOption" ng-show="options.sender.length<1">No items</div>
             <div ng-repeat="item in options.sender">
                 <a ng-click="addToExchange(item)">
-                        <div class="item">
+                        <div class="itemOption">
                             {{item.name}}
                             <span title="View info" class="glyphicon glyphicon-info-sign" 
                             ng-click="showInfo(item); $event.stopPropagation();"></span>
@@ -18,12 +20,12 @@
         </div>
 
         <div class="col-xs-8" id="exchange">
-            <div class="row"><h2>Exchange</h2></div>
+            <div class="row"><h3>Exchange</h3></div>
             <div class="row">
 
                 <div class="col-xs-6" id="myExchangeItems">
 
-                        <h3 ng-if="user"> {{ UtilityService.getUserName( user ) }} </h3>
+                        <h4 ng-if="user"> {{ UtilityService.getUserName( user ) }} </h4>
 
                         <div ng-repeat="item in exchange.items.sender">
                             <a ng-click="removeFromExchange(item)">
@@ -38,8 +40,8 @@
 
                 <div class="col-xs-6" id="theirExchangeItems">
 
-                        <h3 ng-if="otherUser"> {{ UtilityService.getUserName( otherUser ) }} </h3>
-                        <h3 ng-if="!otherUser"> No user selected </h3>
+                        <h4 ng-if="otherUser"> {{ UtilityService.getUserName( otherUser ) }} </h4>
+                        <h4 ng-if="!otherUser"> No user selected </h4>
 
 
                         <div ng-repeat="item in exchange.items.recipient">
@@ -74,9 +76,10 @@
                 <option value="">Select User</option>
             </select> 
 
+            <div class="itemOption" ng-show="options.recipient.length<1">No items</div>
             <div ng-repeat="item in options.recipient">
                 <a ng-click="addToExchange(item)">
-                    <div class="item">
+                    <div class="itemOption">
                                 {{item.name}}
                                 <span title="View info" class="glyphicon glyphicon-info-sign" 
                                 ng-click="showInfo(item); $event.stopPropagation();"></span>

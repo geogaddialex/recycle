@@ -41,7 +41,11 @@
 	margin: 2px;
 }
 
-.exchangeItem{
+#userSelect{
+	margin-bottom: 10px;
+}
+
+/*.exchangeItem{
 	background-color:#eae7e74d;
 	text-align: center;
 	padding: 5px;
@@ -53,12 +57,26 @@
 .exchangeItem:hover{
 	border: 1px solid #d9e4f2;
 }
+*/
 
-a > .exchangeItem{
+.itemOption, .exchangeItem{
+	background-color: #eae7e74d;
+	text-align: center;
+	padding:5px;
+	overflow:hidden;
+	border-radius: 10px;
+	border: 1px solid #ffb40000;
+}
+
+.itemOption:hover, .exchangeItem:hover{
+	border: 1px solid #d9e4f2;
+}
+
+a > .exchangeItem, a > .itemOption{
 	color:black;
 }
 
-a > .exchangeItem:hover{
+a > .exchangeItem:hover, a > .itemOption:hover{
 	color:#007280;
 }
 

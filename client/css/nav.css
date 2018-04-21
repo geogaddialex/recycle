@@ -9,6 +9,11 @@
 
 }
 
+a.navbar-brand{
+  font-size: 24px;
+  font-weight:bold;
+}
+
 .navbar-default {
     background-color: white;
     border-color: white;

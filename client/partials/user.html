@@ -16,7 +16,7 @@
             
             <br><br>
 
-            <div ng-if="feedbacks.length<1" class="alert alert-danger">This user hasn't received any feedback yet</div>
+            <div ng-if="feedbacks.length<1" class="alert alert-warning">This user hasn't received any feedback yet</div>
             <div id="displayFeedback" ng-if="feedbacks.length>0">
 
                 <table>
@@ -59,6 +59,7 @@
     <div class="row">
                 
         <div ng-if="user.items">
+            <div ng-if="user.items.length<1" class="alert alert-warning">This user hasn't got any items</div>
             <div ng-repeat="item in user.items | filter: filterDistance" class="col-xs-12 col-sm-4 col-md-3 itemContainer">
                 <div class="item">
 
