@@ -1,5 +1,3 @@
-// var images = require('../controllers/image.server.controller');
-// var Image = require( '../models/image.server.model' );
 var express = require('express');
 var router = express.Router();
 var multer = require('multer')

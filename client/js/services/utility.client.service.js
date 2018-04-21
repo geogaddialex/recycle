@@ -109,13 +109,6 @@ angular.module( 'myApp' ).factory( 'UtilityService', function( $q, $http, $haver
         
     }
 
-    function isValidFeebackComment( comment ){
-
-      if (!comment) return false
-
-      return ( comment.length > 0 && comment.length < 141 )
-    }
-
     function isValidPassword( password ){
 
       //8 chars minimum, lowercase, uppercase, number, special char

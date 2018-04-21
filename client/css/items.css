@@ -8,22 +8,24 @@
 	display: flex;
   	justify-content: center;
 }
+
 .item{
-	background-color:white;
+	background-color:#eae7e74d;
 	text-align: center;
 	padding: 5px;
 	/*overflow:hidden;*/
 	border-radius: 5px;
-	border: 2px solid #f2e7d9;
+	border: 1px solid #eae7e74d;
+
 }
 
 .group{
-	background-color:white;
+	background-color:#eae7e74d;
 	text-align: center;
 	padding: 5px;
 	/*overflow:hidden;*/
 	border-radius: 5px;
-	border: 2px solid #f2e7d9;
+	border: 1px solid #eae7e74d;
 }
 
 .item .row {
@@ -31,7 +33,7 @@
 }
 
 .item:hover{
-	border: 2px solid #d9e4f2;
+	border: 1px solid #d9e4f2;
 }
 
 .addItem{

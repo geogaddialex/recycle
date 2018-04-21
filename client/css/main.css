@@ -4,8 +4,12 @@ html, body {
 
 body{
 	overflow-x:hidden;
-	background-color: #F2E7D9;
-	padding-top:55px !important;
+  padding-top:55px !important;
+  font-family: Helvetica;
+}
+
+h1, h2, h3{
+  margin-top: 0;
 }
 
 a{
@@ -29,42 +33,10 @@ a:hover{
     padding-bottom: 130px;
 }
 
-#searchBox{
-  width:100%;
-  border-radius: 5px;
-  border:1px solid #cccccc;
-  height: 40px;
-  text-align: center;
-}
-
-#searchButton{
-  height:40px;
-  width:100%;
-  background-color: #BD081C;
-  color:white;
-  border:0 !important;
-
-}
-
-.searchNav{
-  height:40px;
-  min-height: 42px;
-  margin-bottom: 10px;
-}
-
-.searchNav .container-fluid .row .col{
-  padding:0;
-}
 
 .whiteDiv{
   background-color: white;
-  border-radius: 5px;
-  border: 1px solid #f2e7d9;
   padding:5px;
-}
-
-.navbar{
-  padding: 0 3%;
 }
 
 a.dropdown-toggle{
@@ -94,12 +66,14 @@ a.dropdown-toggle{
 button{
   text-align: center;
   border-radius: 5px;
-  border: 1px solid #f2e7d9 !important;
+  border:none !important;
   padding:5px;
+  background-color: #55cfcf80;
 }
 
 button:hover{
-  border: 1px solid #d9e4f2;
+  border: none;
+  color:white;
 }
 
 .whiteBackground{
@@ -128,6 +102,8 @@ tr .feedbackRating{
 
   text-align: center
 }
+
+
 
 table{
 

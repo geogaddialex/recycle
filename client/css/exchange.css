@@ -10,9 +10,9 @@
 }
 
 #messenger, #otherUserInfo, #userInfo, #members{
+	border: 1px solid #d9e4f2;
+	border-width: 1px 1px 1px 0;
 	background-color: white;
-	border-radius: 5px;
-	border: 1px solid #f2e7d9;
 	height: 250px;
 }
 
@@ -20,7 +20,7 @@
 	overflow-y: auto;
 	overflow-x: hidden;
 	height:170px;
-	border: 1px solid #f2e7d9;
+	border: 1px solid #d9e4f2;
 	padding: 2px;
 }
 
@@ -42,34 +42,44 @@
 }
 
 .exchangeItem{
-	background-color:white;
+	background-color:#eae7e74d;
 	text-align: center;
 	padding: 5px;
 	overflow:hidden;
 	border-radius: 5px;
-	border: 1px solid #f2e7d9;
+	border: 1px solid #eae7e74d;
+}
+
+.exchangeItem:hover{
+	border: 1px solid #d9e4f2;
+}
+
+a > .exchangeItem{
+	color:black;
+}
+
+a > .exchangeItem:hover{
+	color:#007280;
 }
 
 #exchange{
-	background-color:white;
-	border-radius: 5px;
-	border: 1px solid #f2e7d9;
+
 	padding:5px;
 }
 
 .exchange{
-	background-color:white;
+	background-color:#eae7e74d;
 	text-align: left;
 	padding: 5px;
 	padding-left:50px;
 	margin:2px;
 	overflow:hidden;
 	border-radius: 5px;
-	border: 2px solid #f2e7d9;
+	border: 1px solid #eae7e74d;
 }
 
 .exchange:hover{
-	border: 2px solid #d9e4f2;
+	border: 1px solid #d9e4f2;
 }
 
 #exchangeDecision{
@@ -79,10 +89,6 @@
 
 .exchangeAction {
 	width:100px;
-}
-
-button{
-	background-color: #F9F4EE;
 }
 
 #exchangeDecision div button{

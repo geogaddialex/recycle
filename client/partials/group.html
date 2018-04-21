@@ -7,8 +7,8 @@
     <div class="row">
 
         <h3>{{ group.name }}</h3>
-        <button ng-if="!userInGroup" ng-click="joinGroup( group._id )" class="whiteBackground">Join</button>
-        <button ng-if="userInGroup" ng-click="leaveGroup( group._id )" class="whiteBackground">Leave</button>
+        <button ng-if="!userInGroup" ng-click="joinGroup( group._id )">Join</button>
+        <button ng-if="userInGroup" ng-click="leaveGroup( group._id )">Leave</button>
         
 
         <div class="col-xs-12 groupContainer">
