@@ -155,14 +155,16 @@
                 <div ng-if="userIsSender">
 
                     <div class="col-xs-6">
-                        <label>I agree to this exchange
+                        <label>
                             <input type="checkbox" ng-model="exchange.accepted.sender" ng-click="toggleAcceptance()">
+                             I agree to this exchange
                         </label>
                     </div>
 
                     <div class="col-xs-6">
-                        <label>{{ UtilityService.getUserName( otherUser ) }} agrees to this exchange
+                        <label>
                             <input type="checkbox" ng-model="exchange.accepted.recipient" disabled="disabled">
+                             {{ UtilityService.getUserName( otherUser ) }} agrees to this exchange
                         </label>
                     </div>
 
@@ -171,21 +173,23 @@
                 <div ng-if="!userIsSender">
 
                     <div class="col-xs-6">
-                        <label>I agree to this exchange
+                        <label>
                             <input type="checkbox" ng-model="exchange.accepted.recipient" ng-click="toggleAcceptance()">
+                             I agree to this exchange
                         </label>
                     </div>
 
                     <div class="col-xs-6">
-                        <label>{{ UtilityService.getUserName( otherUser ) }} agrees to this exchange
+                        <label>
                             <input type="checkbox" ng-model="exchange.accepted.sender" disabled="disabled">
+                            {{ UtilityService.getUserName( otherUser ) }} agrees to this exchange
                         </label>
                     </div>
 
                 </div>
 
                 <div class="col-xs-12">
-                    <button type="button" class="btn btn-outline-danger" ng-click="cancelExchange()">Cancel exchange</button>
+                    <button type="button" class="btn btn-outline-danger" ng-click="cancelExchange(exchange._id)">Cancel exchange</button>
                 </div>
 
             </div>

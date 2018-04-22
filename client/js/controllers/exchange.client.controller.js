@@ -417,15 +417,15 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
     }
 
-    $scope.cancelExchange = function(){
+    // $scope.cancelExchange = function(){
 
-        clearError()
+    //     clearError()
 
-        $scope.exchange.status = "Cancelled"
+    //     $scope.exchange.status = "Cancelled"
 
-        amendExchange()
+    //     amendExchange()
 
-    }
+    // }
 
     $scope.cancelExchange = function( ID ){
 

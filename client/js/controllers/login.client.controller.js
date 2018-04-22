@@ -13,6 +13,16 @@ angular.module('myApp').controller('loginController', function ($scope, $locatio
       name: ""
     }
 
+    LocationService.getLocations( ).then(function( locations ){
+
+        $scope.locations = locations
+
+    }, function(){
+
+        setError("Cannot get locations")
+
+    })
+
 
     $scope.login = function( ){
 
@@ -142,16 +152,6 @@ angular.module('myApp').controller('loginController', function ($scope, $locatio
           $scope.altMessage = "Don't have an account?"
       
       }else{
-
-          LocationService.getLocations( ).then(function( locations ){
-
-              $scope.locations = locations
-
-          }, function(){
-
-              setError("Cannot get locations")
-
-          })
 
           $scope.formToShow = "Join"
           $scope.formToggleText = "Log in"
