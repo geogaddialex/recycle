@@ -36,8 +36,8 @@
                         </div>
                         
                         <div class="form-group">
-                            <input type="submit" name="register-submit" id="register-submit" class="form-control button loginButton" value="Join" 
-                            style="background-color:#BD081C;color:white;font-weight:2px">
+                            <button type="submit" name="register-submit" id="register-submit" class="form-control button loginButton" value="Join" 
+                            style="background-color:#55cfcf80;color:black;font-weight:2px">Join</button>
                         </div>
 
                     </form>
@@ -51,18 +51,18 @@
                             <input type="password" name="password" id="loginPassword" class="form-control loginInput" placeholder="Password" ng-model="loginForm.password">
                         </div>
                         <div class="form-group">
-                            <input type="submit" name="login-submit" id="login-submit" class="form-control button loginButton" value="Log In"
-                            style="background-color:#BD081C;color:white;font-weight:2px">
+                            <button type="submit" name="login-submit" id="login-submit" class="form-control button loginButton" value="Log In"
+                            style="background-color:#55cfcf80;color:black;font-weight:2px">Log In</button>
                         </div>
 
                     </form>
 
-                    <div class="form-group loginInput">
-                        or
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="form-control button" ng-bind="formToggleText" ng-click="switchForm()" 
-                            style="background-color:#BD081C;color:white;font-weight:2px">Log in</button>
+                    <div class="form-group row">
+                        <div class="col-xs-4 loginCol">{{altMessage}}</div>
+                        <div class="col-xs-8 loginCol">
+                            <button type="submit" class="form-control button" ng-bind="formToggleText" ng-click="switchForm()" 
+                            style="background-color:#55cfcf80;color:black;font-weight:2px">Log in</button>
+                        </div>
                     </div>
                     <!-- <div class="form-group">
                         <a href="/api/auth/facebook">

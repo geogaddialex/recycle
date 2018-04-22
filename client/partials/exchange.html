@@ -11,7 +11,7 @@
             <h4><a href="/myItems">Your items</a></h4>
 
             <div ng-if="userIsSender">
-                <div class="itemOption" ng-show="options.sender.length<1">No items</div>
+                <div class="itemOption" ng-show="options.sender.length<1">No items to include</div>
                 <div ng-repeat="item in options.sender">
                     <a ng-click="addToExchange(item)">
                         <div class="itemOption">
@@ -23,7 +23,7 @@
             </div>
 
             <div ng-if="!userIsSender">
-                <div class="itemOption" ng-show="options.recipient.length<1">No items</div>
+                <div class="itemOption" ng-show="options.recipient.length<1">No items to include</div>
                 <div ng-repeat="item in options.recipient">
                     <a ng-click="addToExchange(item)">
                         <div class="itemOption">
@@ -50,6 +50,7 @@
                         <h4><a href="/profile">{{ UtilityService.getUserName( user ) }}</a></h4>
 
                         <div ng-if="userIsSender">
+                            <div class="exchangeItem" ng-show="exchange.items.sender.length<1">None of your items included in the exchange</div>
                             <div ng-repeat="item in exchange.items.sender">
 
                                 <a ng-if="exchange.status=='In progress'" ng-click="removeFromExchange(item)">
@@ -71,6 +72,7 @@
                         </div>
 
                         <div ng-if="!userIsSender">
+                            <div class="exchangeItem" ng-show="exchange.items.recipient.length<1">None of your items included in the exchange</div>
                             <div ng-repeat="item in exchange.items.recipient">
 
 
@@ -98,6 +100,7 @@
                         <h4><a href="/users/{{ otherUser._id }}">{{ UtilityService.getUserName( otherUser ) }}</a></h4>
 
                         <div ng-if="!userIsSender">
+                            <div class="exchangeItem" ng-show="exchange.items.sender.length<1">None of their items included in the exchange</div>
                             <div ng-repeat="item in exchange.items.sender">
 
                                 <a ng-click="removeFromExchange(item)" ng-if="exchange.status=='In progress'">
@@ -119,6 +122,7 @@
                         </div>
 
                         <div ng-if="userIsSender">
+                            <div class="exchangeItem" ng-show="exchange.items.recipient.length<1">None of their items included in the exchange</div>
                             <div ng-repeat="item in exchange.items.recipient">
 
                                 <a ng-click="removeFromExchange(item)" ng-if="exchange.status=='In progress'">
@@ -151,13 +155,13 @@
                 <div ng-if="userIsSender">
 
                     <div class="col-xs-6">
-                        <label>
+                        <label>I agree to this exchange
                             <input type="checkbox" ng-model="exchange.accepted.sender" ng-click="toggleAcceptance()">
                         </label>
                     </div>
 
                     <div class="col-xs-6">
-                        <label>
+                        <label>{{ UtilityService.getUserName( otherUser ) }} agrees to this exchange
                             <input type="checkbox" ng-model="exchange.accepted.recipient" disabled="disabled">
                         </label>
                     </div>
@@ -167,13 +171,13 @@
                 <div ng-if="!userIsSender">
 
                     <div class="col-xs-6">
-                        <label>
+                        <label>I agree to this exchange
                             <input type="checkbox" ng-model="exchange.accepted.recipient" ng-click="toggleAcceptance()">
                         </label>
                     </div>
 
                     <div class="col-xs-6">
-                        <label>
+                        <label>{{ UtilityService.getUserName( otherUser ) }} agrees to this exchange
                             <input type="checkbox" ng-model="exchange.accepted.sender" disabled="disabled">
                         </label>
                     </div>
@@ -196,7 +200,7 @@
                 <h4><a href="/users/{{ otherUser._id }}">{{ UtilityService.getUserName( otherUser ) }}'s items</a></h4>
 
                 <div ng-if="userIsSender">
-                    <div class="itemOption" ng-show="options.recipient.length<1">No items</div>
+                    <div class="itemOption" ng-show="options.recipient.length<1">No items to include</div>
                     <div ng-repeat="item in options.recipient">
                         <a ng-click="addToExchange(item)">
                             <div class="itemOption">
@@ -210,7 +214,7 @@
                 </div>
 
                 <div ng-if="!userIsSender">
-                    <div class="itemOption" ng-show="options.sender.length<1">No items</div>
+                    <div class="itemOption" ng-show="options.sender.length<1">No items to include</div>
                     <div ng-repeat="item in options.sender">
                         <a ng-click="addToExchange(item)">
                             <div class="itemOption">

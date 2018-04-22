@@ -8,7 +8,7 @@
             <h4> Your items </h4>
 
 
-            <div class="itemOption" ng-show="options.sender.length<1">No items</div>
+            <div class="itemOption" ng-show="options.sender.length<1">No items to include</div>
             <div ng-repeat="item in options.sender">
                 <a ng-click="addToExchange(item)">
                         <div class="itemOption">
@@ -27,6 +27,7 @@
 
                         <h4 ng-if="user"> {{ UtilityService.getUserName( user ) }} </h4>
 
+                        <div class="exchangeItem" ng-show="exchange.items.sender.length<1">None of your items included in the exchange</div>
                         <div ng-repeat="item in exchange.items.sender">
                             <a ng-click="removeFromExchange(item)">
                                  <div class="exchangeItem">
@@ -43,7 +44,7 @@
                         <h4 ng-if="otherUser"> {{ UtilityService.getUserName( otherUser ) }} </h4>
                         <h4 ng-if="!otherUser"> No user selected </h4>
 
-
+                        <div class="exchangeItem" ng-show="exchange.items.recipient.length<1">None of their items included in the exchange</div>
                         <div ng-repeat="item in exchange.items.recipient">
                             <a ng-click="removeFromExchange(item)">
                                  <div class="exchangeItem">
@@ -76,7 +77,7 @@
                 <option value="">Select User</option>
             </select> 
 
-            <div class="itemOption" ng-show="options.recipient.length<1">No items</div>
+            <div class="itemOption" ng-show="options.recipient.length<1">No items to include</div>
             <div ng-repeat="item in options.recipient">
                 <a ng-click="addToExchange(item)">
                     <div class="itemOption">

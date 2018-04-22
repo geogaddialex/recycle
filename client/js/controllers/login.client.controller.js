@@ -1,8 +1,9 @@
 angular.module('myApp').controller('loginController', function ($scope, $location, AuthService, UtilityService, LocationService) {
 
     $scope.loginForm = {};
-    $scope.formToShow = "Log in"
-    $scope.formToggleText = "Join"
+    $scope.formToShow = "Join"
+    $scope.formToggleText = "Log in"
+    $scope.altMessage = "Already have an account?"
     $scope.error = {}
 
     $scope.registerForm = {
@@ -138,6 +139,7 @@ angular.module('myApp').controller('loginController', function ($scope, $locatio
 
           $scope.formToShow = "Log in"
           $scope.formToggleText = "Join"
+          $scope.altMessage = "Don't have an account?"
       
       }else{
 
@@ -153,6 +155,7 @@ angular.module('myApp').controller('loginController', function ($scope, $locatio
 
           $scope.formToShow = "Join"
           $scope.formToggleText = "Log in"
+          $scope.altMessage = "Already have an account?"
 
       }
           

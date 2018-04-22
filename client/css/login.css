@@ -20,22 +20,11 @@
    text-align:center !important;
 }
 
-/*::-webkit-input-placeholder {
-   text-align: center;
+.loginCol{
+	padding:0;
+	height:34px;
+	line-height: 34px;
 }
-
-:-moz-placeholder { 
-   text-align: center;  
-}
-
-::-moz-placeholder {  
-   text-align: center;  
-}
-
-:-ms-input-placeholder {  
-   text-align: center; 
-}*/
-
 
 #login-form div{
 	padding:0;

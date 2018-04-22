@@ -322,8 +322,6 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
             var array = $scope.exchange.items.sender
             array.splice( array.indexOf(senderHasIt), 1 ) 
-
-            $scope.options.sender.push( itemToRemove );
             
 
         }else if( recipientHasIt) {
@@ -331,7 +329,6 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
             var array = $scope.exchange.items.recipient
             array.splice( array.indexOf(recipientHasIt), 1 ) 
 
-            $scope.options.recipient.push( itemToRemove );
 
         } else{
 
@@ -344,6 +341,10 @@ angular.module('myApp').controller('exchangeController', function( $routeParams,
 
             $scope.exchange.accepted = { sender: 0, recipient: 0 };
             amendExchange()
+
+        }else{
+
+            senderHasIt ? $scope.options.sender.push( itemToRemove ) : $scope.options.recipient.push( itemToRemove )
 
         }
 

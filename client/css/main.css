@@ -33,6 +33,10 @@ a:hover{
     padding-bottom: 130px;
 }
 
+.form-group input{
+  margin-bottom: 10px;
+}
+
 
 .whiteDiv{
   background-color: white;
