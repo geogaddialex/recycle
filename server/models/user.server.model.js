@@ -45,35 +45,6 @@ var userSchema = mongoose.Schema({
 
 });
 
-// userSchema.pre('validate', function( next ){
-
-//   if( !(this.local || this.facebook || this.google) ){
-    
-//     this.invalidate('local', 'User must have at least one of local, facebook or google login details', this.local);  
-
-//   }else if( this.local && !this.local.name ){
-
-//     this.invalidate('local', 'When registering, the user must have a name', this.local )
-
-//   }else if( this.local && !this.local.email ){
-
-//     this.invalidate('local', 'When registering, the user must have a name', this.local )
-
-//   }else if( this.local && !this.local.password ){
-
-//     this.invalidate('local', 'When registering, the user must have a password', this.local )
-
-//   }else if( this.local && !this.location ){
-
-//     this.invalidate('location', 'When registering locally, a location must be provided', this.location )
-
-//   }
-
-//     next();
-
-// });
-
-
 userSchema.methods.generateHash = function(password) {
 
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
