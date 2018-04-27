@@ -1,4 +1,4 @@
-angular.module( 'myApp' ).factory( 'MessageService', function( $q, $timeout, $http ){
+angular.module( 'myApp' ).factory( 'MessageService', function( $http ){
 
     return ({
       createMessage: createMessage
